@@ -7,6 +7,12 @@ namespace WebserviceColumbus.Classes.Encryption
 {
     public static class Hash
     {
+        /// <summary>
+        /// Hashes the text with SHA1.
+        /// </summary>
+        /// <param name="password">Password to has</param>
+        /// <param name="salt">Salt for the hash (Username)</param>
+        /// <returns></returns>
         public static string HashText(string password, string salt)
         {
             SHA1CryptoServiceProvider hasher = new SHA1CryptoServiceProvider();
@@ -14,19 +20,6 @@ namespace WebserviceColumbus.Classes.Encryption
             byte[] hashedBytes = hasher.ComputeHash(textWithSaltBytes);
             hasher.Clear();
             return Convert.ToBase64String(hashedBytes);
-        }
-
-        private static string GenerateSalt(int maxSize = 64)
-        {
-            var alphaSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890#!".ToCharArray();
-            var crypto = new RNGCryptoServiceProvider();
-            var bytes = new byte[maxSize];
-            crypto.GetBytes(bytes);
-            var tempSB = new StringBuilder(maxSize);
-            foreach (var b in bytes) {
-                tempSB.Append(alphaSet[b % (alphaSet.Length)]);
-            }
-            return tempSB.ToString();
         }
     }
 }

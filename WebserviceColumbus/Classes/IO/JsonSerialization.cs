@@ -9,22 +9,27 @@ namespace WebserviceColumbus.Classes.IO
 {
     public static class JsonSerialization
     {
-        public static void Serialization(object objectToSerialize, string filePath)
+        /// <summary>
+        /// Serializes the object in JSON format to the given file. The file will be overwritten.
+        /// </summary>
+        /// <param name="objectToSerialize"></param>
+        /// <param name="filePath"></param>
+        public static void Serialize(object objectToSerialize, string filePath)
         {
             if (File.Exists(filePath)) {
-                using (FileStream fs = File.Open(filePath, FileMode.Append)) {
-                    using (StreamWriter sw = new StreamWriter(fs)) {
-                        using (JsonWriter jw = new JsonTextWriter(sw)) {
-                            jw.Formatting = Formatting.Indented;
-                            JsonSerializer serializer = new JsonSerializer();
-                            serializer.Serialize(jw, objectToSerialize);
-                        }
-                    }
+                string result = Serialize(objectToSerialize);
+                if (result != null && result.Length > 0) {
+                    System.IO.File.WriteAllText(filePath, result);
                 }
             }
         }
 
-        public static string Serialization(object objectToSerialize)
+        /// <summary>
+        /// Serializes the object to a JSON string.
+        /// </summary>
+        /// <param name="objectToSerialize"></param>
+        /// <returns></returns>
+        public static string Serialize(object objectToSerialize)
         {
             return JsonConvert.SerializeObject(objectToSerialize);
         }

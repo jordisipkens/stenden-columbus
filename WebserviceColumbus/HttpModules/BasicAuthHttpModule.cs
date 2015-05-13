@@ -13,9 +13,12 @@ namespace WebserviceColumbus.HttpModules
     {
         private const string Realm = "Columbus";
 
+        /// <summary>
+        /// Initiates the handlers.
+        /// </summary>
+        /// <param name="context"></param>
         public void Init(HttpApplication context)
         {
-            // Register event handlers
             context.AuthenticateRequest += OnApplicationAuthenticateRequest;
             context.EndRequest += OnApplicationEndRequest;
         }
@@ -28,6 +31,12 @@ namespace WebserviceColumbus.HttpModules
             }
         }
 
+        /// <summary>
+        /// Checks wether the given username or password are correct.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         private static bool CheckPassword(string username, string password)
         {
             return username == "user" && password == "password";
@@ -46,16 +55,14 @@ namespace WebserviceColumbus.HttpModules
 
                 if (CheckPassword(name, password)) {
                     var identity = new GenericIdentity(name);
-                    SetPrincipal(new GenericPrincipal(identity, null));
+                    SetPrincipal(new GenericPrincipal(identity, null)); //Correct username or password. Principal is set.
                 }
                 else {
-                    // Invalid username or password.
-                    HttpContext.Current.Response.StatusCode = 401;
+                    HttpContext.Current.Response.StatusCode = 401;  // Invalid username or password.
                 }
             }
             catch (FormatException) {
-                // Credentials were not formatted correctly.
-                HttpContext.Current.Response.StatusCode = 401;
+                HttpContext.Current.Response.StatusCode = 401;  // Credentials were not formatted correctly.
             }
         }
 
@@ -67,16 +74,18 @@ namespace WebserviceColumbus.HttpModules
                 var authHeaderVal = AuthenticationHeaderValue.Parse(authHeader);
 
                 // RFC 2617 sec 1.2, "scheme" name is case-insensitive
-                if (authHeaderVal.Scheme.Equals("basic",
-                        StringComparison.OrdinalIgnoreCase) &&
-                    authHeaderVal.Parameter != null) {
+                if (authHeaderVal.Scheme.Equals("basic",StringComparison.OrdinalIgnoreCase) &&
+                        authHeaderVal.Parameter != null) {
                     AuthenticateUser(authHeaderVal.Parameter);
                 }
             }
         }
 
-        // If the request was unauthorized, add the WWW-Authenticate header 
-        // to the response.
+        /// <summary>
+        /// If the request was unauthorized a WWW-Authenticate Header is added to response.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void OnApplicationEndRequest(object sender, EventArgs e)
         {
             var response = HttpContext.Current.Response;
@@ -86,8 +95,12 @@ namespace WebserviceColumbus.HttpModules
             }
         }
 
+        /// <summary>
+        /// Disposes itself.
+        /// </summary>
         public void Dispose()
         {
+            this.Dispose();
         }
     }
 }

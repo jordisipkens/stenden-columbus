@@ -7,16 +7,15 @@ namespace WebserviceColumbus.Controllers
 {
     public class DummyController : ApiController
     {
-        [Authorize]
         // GET: api/Dummy
         public string Get()
         {
-            string result = IOManager.ReadFile(IOManager.GetProjectFilePath("DummyData/Travel.json"));
+            string result = IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json"));
             if(result != null) {
                 return result;
             }
             else {
-                return JsonSerialization.Serialization(new Error() {
+                return JsonSerialization.Serialize(new Error() {
                     ErrorID = 204,
                     Message = "No travels found"
                 });
@@ -24,13 +23,14 @@ namespace WebserviceColumbus.Controllers
         }
 
         [HttpGet]
+        // GET: api/Login?username=...&password=...
         public string Login(string username, string password)
         {
             if (username.Equals("columbus") && Hash.HashText(password, username).Equals("ahE0/lFr7o3HH6zTJsw7QniGfgo=")) {
                 return string.Empty;
             }
             else {
-                return JsonSerialization.Serialization(new Error() {
+                return JsonSerialization.Serialize(new Error() {
                     ErrorID = 401,
                     Message = "Invalid password"
                 });
