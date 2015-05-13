@@ -73,10 +73,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="HttpModules\BasicAuthHttpModule.cs" />
+    <Compile Include="Classes\Encryption\Hash.cs" />
     <Compile Include="Classes\ErrorHandler.cs" />
     <Compile Include="Classes\IO\IOManager.cs" />
     <Compile Include="Classes\IO\JsonSerialization.cs" />
@@ -84,6 +88,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\Reference.cs" />
     <Compile Include="Models\Other\Root.cs" />

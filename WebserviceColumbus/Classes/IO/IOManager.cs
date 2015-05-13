@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Web;
 
 namespace WebserviceColumbus.Classes.IO
 {
@@ -19,6 +16,11 @@ namespace WebserviceColumbus.Classes.IO
                 return result;
             }
             return null;
+        }
+
+        public static string GetProjectFilePath(string projectPath)
+        {
+            return Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), projectPath);
         }
     }
 }

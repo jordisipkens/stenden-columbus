@@ -1,18 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
+using WebserviceColumbus.Classes.Encryption;
+using WebserviceColumbus.Classes.IO;
+using WebserviceColumbus.Models;
 
 namespace WebserviceColumbus.Controllers
 {
     public class DummyController : ApiController
     {
+        [Authorize]
         // GET: api/Dummy
         public string Get()
         {
-            return WebserviceColumbus.Classes.IO.IOManager.ReadFile(@"D:\Code Projects\WebserviceColumbus\WebserviceColumbus\DummyData\Travel.json");
+            string result = IOManager.ReadFile(IOManager.GetProjectFilePath("DummyData/Travel.json"));
+            if(result != null) {
+                return result;
+            }
+            else {
+                return JsonSerialization.Serialization(new Error() {
+                    ErrorID = 204,
+                    Message = "No travels found"
+                });
+            }
+        }
+
+        [HttpGet]
+        public string Login(string username, string password)
+        {
+            if (username.Equals("columbus") && Hash.HashText(password, username).Equals("ahE0/lFr7o3HH6zTJsw7QniGfgo=")) {
+                return string.Empty;
+            }
+            else {
+                return JsonSerialization.Serialization(new Error() {
+                    ErrorID = 401,
+                    Message = "Invalid password"
+                });
+            }
         }
 
         // GET: api/Dummy/5

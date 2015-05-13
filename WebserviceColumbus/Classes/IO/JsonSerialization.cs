@@ -24,6 +24,11 @@ namespace WebserviceColumbus.Classes.IO
             }
         }
 
+        public static string Serialization(object objectToSerialize)
+        {
+            return JsonConvert.SerializeObject(objectToSerialize);
+        }
+
         public static T Deserialize<T>(string value)
         {
             try {
