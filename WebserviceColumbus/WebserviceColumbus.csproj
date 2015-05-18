@@ -80,6 +80,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\TravelController.cs" />
+    <Compile Include="Controllers\TravelOgueController.cs" />
     <Compile Include="HttpModules\BasicAuthHttpModule.cs" />
     <Compile Include="Classes\Encryption\Hash.cs" />
     <Compile Include="Classes\ErrorHandler.cs" />
@@ -105,6 +107,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="Resources\DummyData\Travel.json" />
+    <Content Include="Resources\DummyData\TravelOgue.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

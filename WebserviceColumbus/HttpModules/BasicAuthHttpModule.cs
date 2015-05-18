@@ -6,9 +6,13 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Web;
+using WebserviceColumbus.Classes;
 
 namespace WebserviceColumbus.HttpModules
 {
+    /// <summary>
+    /// Copyright of Mircosoft
+    /// </summary>
     public class BasicAuthHttpModule : IHttpModule
     {
         private const string Realm = "Columbus";
@@ -39,7 +43,7 @@ namespace WebserviceColumbus.HttpModules
         /// <returns></returns>
         private static bool CheckPassword(string username, string password)
         {
-            return username == "user" && password == "password";
+            return username.Equals("C0lumbus") && password.Equals("C0lumbus");
             //TODO
         }
 
@@ -66,16 +70,15 @@ namespace WebserviceColumbus.HttpModules
             }
         }
 
-        private static void OnApplicationAuthenticateRequest(object sender, EventArgs e)
+        public static void OnApplicationAuthenticateRequest(object sender, EventArgs e)
         {
             var request = HttpContext.Current.Request;
             var authHeader = request.Headers["Authorization"];
             if (authHeader != null) {
                 var authHeaderVal = AuthenticationHeaderValue.Parse(authHeader);
 
-                // RFC 2617 sec 1.2, "scheme" name is case-insensitive
-                if (authHeaderVal.Scheme.Equals("basic",StringComparison.OrdinalIgnoreCase) &&
-                        authHeaderVal.Parameter != null) {
+                if (authHeaderVal.Scheme.Equals("Basic", StringComparison.OrdinalIgnoreCase)    // RFC 2617 sec 1.2, "scheme" name is case-insensitive
+                    && authHeaderVal.Parameter != null) {
                     AuthenticateUser(authHeaderVal.Parameter);
                 }
             }
@@ -100,7 +103,6 @@ namespace WebserviceColumbus.HttpModules
         /// </summary>
         public void Dispose()
         {
-            this.Dispose();
         }
     }
 }
