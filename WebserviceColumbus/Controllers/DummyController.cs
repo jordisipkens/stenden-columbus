@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Web;
 using System.Web.Http;
+using System.Web.Security;
+using WebserviceColumbus.Authorization;
+using WebserviceColumbus.Classes.Encryption;
 using WebserviceColumbus.Classes.IO;
 using WebserviceColumbus.Models;
 using WebserviceColumbus.Models.Travel;
@@ -11,83 +16,74 @@ namespace WebserviceColumbus.Controllers
 {
     public class DummyController : ApiController
     {
-        //GET: api/Dummy/GetTravel?index=..
-        [Authorize]
-        public string GetTravel(int index)
+        // GET: api/Dummy/Login?username=..&password=..
+        [HttpGet]
+        public HttpResponseMessage Login()
         {
-            if (index > 1 || index < 0) {
-                index = 1;
-            }
-            Travel travel = JsonSerialization.Deserialize<List<Travel>>(IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json")))[index];
-            string result = JsonSerialization.Serialize(travel);
+            string test = "12-12-00:Roy";
+            string test1 = Hash.Encrypt(test, AuthorizationDictionary.REALM);
+            string test2 = Hash.Decrypt(test1, AuthorizationDictionary.REALM);
+
+
+            string result = TokenManager.CreateToken(HttpContext.Current);
             if (result != null) {
-                return result;
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    result
+                );
             }
-            else {
-                return JsonSerialization.Serialize(new Error() {
-                    ErrorID = 204,
-                    Message = "No travels found"
-                });
+            return Request.CreateResponse(HttpStatusCode.Unauthorized);
+        }
+
+        //GET: api/Dummy/GetTravel?index=..
+        public HttpResponseMessage GetTravel(int id)
+        {
+            if (TokenManager.IsAuthorized(HttpContext.Current)) {
+                if (id > 1 || id < 0) {
+                    id = 1;
+                }
+                Travel travel = JsonSerialization.Deserialize<List<Travel>>(IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json")))[id];
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    JsonSerialization.Serialize(travel)
+                );
             }
+            return Request.CreateResponse(HttpStatusCode.Unauthorized);
         }
 
         //GET: api/Dummy/GetAllTravels
-        [Authorize]
-        public string GetAllTravels()
+        public HttpResponseMessage GetAllTravels()
         {
-            string result = IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json"));
-            if (result != null) {
-                return result;
+            if (TokenManager.IsAuthorized(HttpContext.Current)) {
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json"))
+                );
             }
-            else {
-                return JsonSerialization.Serialize(new Error() {
-                    ErrorID = 204,
-                    Message = "No travels found"
-                });
-            }
+            return Request.CreateResponse(HttpStatusCode.Unauthorized);
         }
 
         // GET: api/Dummy/GetTravelOgue
-        [Authorize]
-        public string GetTravelOgue()
+        public HttpResponseMessage GetTravelOgue()
         {
-            string result = IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/TravelOgue.json"));
-            if (result != null) {
-                return result;
+            if (TokenManager.IsAuthorized(HttpContext.Current)) {
+                return Request.CreateResponse(HttpStatusCode.OK, 
+                    IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/TravelOgue.json"))
+                );
             }
-            else {
-                return JsonSerialization.Serialize(new Error() {
-                    ErrorID = 204,
-                    Message = "No travelogue's found"
-                });
+            return Request.CreateResponse(HttpStatusCode.Unauthorized);
+        }
+
+        // GET: api/Dummy/GetUserInfo
+        [HttpGet]
+        public HttpResponseMessage GetUserInfo()
+        {
+            if (TokenManager.IsAuthorized(HttpContext.Current)) {
+                return Request.CreateResponse(HttpStatusCode.OK, JsonSerialization.Serialize(new Models.User() {
+                    ID = 0,
+                    FirstName = "Jan",
+                    LastName = "Lange",
+                    Email = "lange.jan@email.com"
+                }));
             }
-        }
-
-        // GET: api/Dummy/Login?username=..&password=..
-        public void Login(string username, string password)
-        {
-            string uri = "http://localhost:2758/api/Travel";
-            WebRequest req = WebRequest.Create(uri);
-            string userInfo = string.Format("{0}:{1}", username, password);
-            string encodedUserInfo = Convert.ToBase64String(Encoding.GetEncoding("iso-8859-1").GetBytes(userInfo));
-            string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);
-            req.Headers["Authorization"] = credentials;
-            System.Net.WebResponse response = req.GetResponse();
-        }
-
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Dummy
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/Dummy/5
-        public void Put(int id, [FromBody]string value)
-        {
+            return Request.CreateResponse(HttpStatusCode.Unauthorized);
         }
     }
 }
