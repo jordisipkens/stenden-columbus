@@ -1,0 +1,94 @@
+[  
+   {  
+      "ID":0,
+      "StartDate":"2015-05-13T12:52:44.0945817+02:00",
+      "EndDate":"2015-05-14T12:52:44.0945817+02:00",
+	  "Title":"Reis 1",
+      "Locations":[  
+         {  
+            "ID":0,
+            "Date":"2015-05-13T14:52:44.0955818+02:00",
+            "Note":"Vrijheidsbeeld",
+            "LocationDetails":{  
+               "ID":0,
+               "Name":"Vrijheidsbeeld",
+               "Adres":"Liberty Island",
+               "PhoneNumber":"555-1234",
+               "PlaceID":"ABC123",
+               "Coordinates":{  
+                  "Latitude":123.0,
+                  "Longitude":123.0
+               }
+            }
+         },
+         {  
+            "ID":0,
+            "Date":"2015-05-14T09:32:44.0955818+02:00",
+            "Note":"Domino's",
+            "LocationDetails":{  
+               "ID":0,
+               "Name":"Domino's Pizza",
+               "Adres":"West Upper Side, Manhattan",
+               "PhoneNumber":"555-4321",
+               "PlaceID":"XYZ987",
+               "Coordinates":{  
+                  "Latitude":200.0,
+                  "Longitude":200.0
+               }
+            }
+         }
+      ],
+      "User":{  
+         "ID":0,
+         "Email":"Jan.Bakker@email.com",
+         "FirstName":"Jan",
+         "LastName":"Bakker"
+      }
+   },
+   {  
+      "ID":1,
+      "StartDate":"2015-05-13T12:52:44.0945817+02:00",
+      "EndDate":"2015-05-14T12:52:44.0945817+02:00",
+	  "Title":"Reis 2",
+      "Locations":[  
+         {  
+            "ID":1,
+            "Date":"2015-05-13T14:52:44.0955818+02:00",
+            "Note":"Vrijheidsbeeld",
+            "LocationDetails":{  
+               "ID":1,
+               "Name":"Vrijheidsbeeld",
+               "Adres":"Liberty Island",
+               "PhoneNumber":"555-1234",
+               "PlaceID":"ABC123",
+               "Coordinates":{  
+                  "Latitude":123.0,
+                  "Longitude":123.0
+               }
+            }
+         },
+         {  
+            "ID":1,
+            "Date":"2015-05-14T09:32:44.0955818+02:00",
+            "Note":"Domino's",
+            "LocationDetails":{  
+               "ID":1,
+               "Name":"Domino's Pizza",
+               "Adres":"West Upper Side, Manhattan",
+               "PhoneNumber":"555-4321",
+               "PlaceID":"XYZ987",
+               "Coordinates":{  
+                  "Latitude":200.0,
+                  "Longitude":200.0
+               }
+            }
+         }
+      ],
+      "User":{  
+         "ID":0,
+         "Email":"Jan.Bakker@email.com",
+         "FirstName":"Jan",
+         "LastName":"Bakker"
+      }
+   }
+]

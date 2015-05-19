@@ -1,0 +1,29 @@
+﻿@model IList<ColombusWebapplicatie.Models.Travel>
+
+@{
+    ViewBag.Title = "Reizen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<table>
+    <tr>
+        <th>Titel:</th>
+        <th>Begindatum:</th>
+        <th>Einddatum:</th>
+    </tr>
+@if (Model.Count>0) {
+    foreach(var travel in Model){
+    <tr>
+        <td>@Html.ActionLink(travel.Title, "ViewTravel", new {id = travel.Id})</td>
+        <td>@travel.StartDate</td>
+        <td>@travel.EndDate</td>
+    </tr>
+    }
+}
+else { 
+    <tr>
+        <td colspan="3">Er zijn geen reizen beschikbaar.</td>
+    </tr>
+}
+</table>
