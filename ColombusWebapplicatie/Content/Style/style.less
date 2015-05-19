@@ -1,29 +1,101 @@
-﻿@orange: #ff7200;
+﻿//Define colors
+@orange: #ff7200;
+@white: white;
 @font_color: #323232;
+@font_color_light: @white;
 
+//Width of a container div
 @content_width: 56.250em;
+@header_height: 5em;
+@logo_size: 4.8em;
+
+//Location of the logo
+@logo: url(/Content/Images/Logo/logo_transparant.png);
 
 //Transparency for the black overlay on background images.
 @transparency: 0.5;
+
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
 
 body {
     margin: 0px;
     padding: 0px;
     font-family: 'Segoe UI';
     color: @font_color;
+    background-color: @white;
+}
+
+#body {
+    margin-top: @header_height;
+    background-color: @white;
 }
 
 header {
     width: 100%;
-    min-height: 9.375em;
+    min-height: @header_height;
     background-color: @orange;
+    color: @font_color_light;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
-footer {
-    width: 100%;
-    min-height: 6.250em;
-    background-color: @orange;
+h1 {
+    margin: 0px;
+    text-align: center;
+    font-family: 'Segoe UI Light';
 }
+
+h2 {
+    margin: 0px;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    text-align: center;
+    font-family: 'Segoe UI Light';
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: @white;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: @white;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: @white;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: @white;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px @orange inset;
+    -webkit-text-fill-color: @white;
+}
+
+#logo {
+    width: @logo_size;
+    height: @logo_size;
+    float: left;
+    background-image: @logo;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#slogan {
+    float: left;
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 1.5em;
+    line-height: @logo_size * 0.75;
+}
+
 
 .container {
     width: @content_width;
@@ -33,23 +105,155 @@ footer {
 
 .background-image {
     width: 100%;
-    min-height: 20em;
-    color: white;
+    color: @font_color_light;
     text-align: center;
     padding-top: 2em;
     padding-bottom: 2em;
-
+    float: left;
     background: linear-gradient( rgba(0, 0, 0, @transparency), rgba(0, 0, 0, @transparency) ), url(/Content/Images/Background/bridge.jpg) no-repeat;
     background-position-y: 100%;
+    background-size: 100%;
 
     &.sunset {
         background: linear-gradient( rgba(0, 0, 0, @transparency), rgba(0, 0, 0, @transparency) ), url(/Content/Images/Background/sunset.jpg) no-repeat;
         background-position-y: 100%;
+        background-size: 100%;
     }
 
     &.balloons {
         background: linear-gradient( rgba(0, 0, 0, @transparency), rgba(0, 0, 0, @transparency) ), url(/Content/Images/Background/balloons.jpg) no-repeat;
         background-position-y: 100%;
+        background-size: 100%;
     }
 }
 
+.button {
+
+    &.orange {
+        background-color: @orange;
+        color: @white;
+        padding: 1em;
+    }
+
+    &.orange:hover {
+        background-color: lighten(@orange, 10%);
+        color: @white;
+        padding: 1em;
+    }
+}
+
+.orange-block {
+    width: 100%;
+    background-color: @orange;
+    color: @font_color_light;
+    float: left;
+}
+
+.white-block {
+    width: 100%;
+    float: left;
+    background-color: @white;
+    color: @font_color;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    padding-top: 2em;
+    padding-bottom: 2em;
+
+    h2{
+        color: @orange;
+    }
+}
+
+.login {
+    background-color: rgba(255,255,255, 0.75);
+
+    &.input {
+        background-color: @orange;
+        color: @white;
+        padding: 1em;
+        text-align: center;    }
+}
+
+
+#menu {
+    float: right;
+
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        display: block;
+        padding: 2em;
+        /*border-right: 1px solid darken(@white, 1%);
+    border-left: 1px solid darken(@white, 1%);*/
+        background-color: @white;
+        color: @orange;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    a:hover {
+        display: block;
+        padding: 2em;
+        background-color: rgba(255,255,255, 0.95);
+        color: @orange;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    li {
+        display: inline;
+        float: left;
+    }
+}
+
+footer {
+    float: left;
+    width: 100%;
+    float: left;
+    padding-bottom: 2em;
+    padding-top: 0.7em;
+    background-color: @orange;
+
+    h2 {
+        margin: 0px;
+        text-align: left;
+        font-family: 'Segoe UI Light';
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        display: block;
+        color: darken(@white,20%);
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    a:hover {
+        display: block;
+        /*background-color: rgba(255,255,255, 0.95);*/
+        color: @white;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    li {
+        display: inline;
+    }
+
+    .half {
+        width: 48%;
+        margin-right: 2%;
+        float: left;
+        color: darken(@white,5%);
+    }
+}

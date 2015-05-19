@@ -126,6 +126,9 @@
     <Content Include="Content\Images\Background\balloons.jpg" />
     <Content Include="Content\Images\Background\bridge.jpg" />
     <Content Include="Content\Images\Background\sunset.jpg" />
+    <Content Include="Content\Images\Logo\logo_transparant.png" />
+    <Content Include="Content\Images\Logo\logo_highres.png" />
+    <Content Include="Content\Images\Logo\logo.png" />
     <Content Include="Content\Scripts\Less\Less.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -140,9 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Images\" />
-    <Folder Include="Content\style\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

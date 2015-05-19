@@ -6,13 +6,45 @@
     <link href="~/favicon.ico"
           rel="shortcut icon" type="image/x-icon" />
     <link href="~/Content/Style/style.less" rel="stylesheet/less" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Schoolbell&v1' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <script src="~/Content/Scripts/Less/Less.js" type="text/javascript"></script>
-    <header></header>
+    <header>
+        <div class="container">
+            <div id="logo"></div>
+            <div id="slogan">Explore the world!</div>
+            <div id="menu">
+                <ul>
+                    <li class="menu-item">@Html.ActionLink("HOME", "/")</li>
+                    <li class="menu-item">@Html.ActionLink("mijn reizen", "/")</li>
+                    <li class="menu-item">@Html.ActionLink("account", "/")</li>
+                </ul>
+            </div>
+        </div>
+    </header>
     <div id="body">
         @RenderBody()
     </div>
-    <footer></footer>
+    <footer>
+        <div class="container">
+            <div class="half">
+                <h2>Lorem Ipsum</h2>
+                <ul>
+                    <li>@Html.ActionLink("Home", "/")</li>
+                    <li>@Html.ActionLink("Mijn reizen", "/")</li>
+                    <li>@Html.ActionLink("Account", "/")</li>
+                </ul>
+            </div>
+            <div class="half">
+                <h2>Lorem Ipsum</h2>
+                <ul>
+                    <li>@Html.ActionLink("verslagen", "/")</li>
+                    <li>@Html.ActionLink("Over ons", "/")</li>
+                    <li>@Html.ActionLink("Android app", "/")</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 </body>
 </html> 
