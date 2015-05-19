@@ -11,4 +11,7 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="about">Deze applicatie is gemaakt in opdracht van Stenden Hogeschool te Emmen. Het doel van dit project was het ontwikkelen van een project aan de hand van Kennismanagement.
+    \n\nDeze applicatie wordt mogelijk gemaakt door: \nRoy Bekkering \nJarno Botke  \nJordi Sipkens \nMarc Tibben</string>
 </resources>
