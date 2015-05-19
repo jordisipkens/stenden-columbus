@@ -1,0 +1,55 @@
+﻿@orange: #ff7200;
+@font_color: #323232;
+
+@content_width: 56.250em;
+
+//Transparency for the black overlay on background images.
+@transparency: 0.5;
+
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Segoe UI';
+    color: @font_color;
+}
+
+header {
+    width: 100%;
+    min-height: 9.375em;
+    background-color: @orange;
+}
+
+footer {
+    width: 100%;
+    min-height: 6.250em;
+    background-color: @orange;
+}
+
+.container {
+    width: @content_width;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.background-image {
+    width: 100%;
+    min-height: 20em;
+    color: white;
+    text-align: center;
+    padding-top: 2em;
+    padding-bottom: 2em;
+
+    background: linear-gradient( rgba(0, 0, 0, @transparency), rgba(0, 0, 0, @transparency) ), url(/Content/Images/Background/bridge.jpg) no-repeat;
+    background-position-y: 100%;
+
+    &.sunset {
+        background: linear-gradient( rgba(0, 0, 0, @transparency), rgba(0, 0, 0, @transparency) ), url(/Content/Images/Background/sunset.jpg) no-repeat;
+        background-position-y: 100%;
+    }
+
+    &.balloons {
+        background: linear-gradient( rgba(0, 0, 0, @transparency), rgba(0, 0, 0, @transparency) ), url(/Content/Images/Background/balloons.jpg) no-repeat;
+        background-position-y: 100%;
+    }
+}
+
