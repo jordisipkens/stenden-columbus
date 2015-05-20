@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Web;
 using System.Web.Http;
-using System.Web.Security;
 using WebserviceColumbus.Authorization;
-using WebserviceColumbus.Classes.Encryption;
 using WebserviceColumbus.Classes.IO;
-using WebserviceColumbus.Models;
 using WebserviceColumbus.Models.Travel;
 
 namespace WebserviceColumbus.Controllers
@@ -20,11 +15,6 @@ namespace WebserviceColumbus.Controllers
         [HttpGet]
         public HttpResponseMessage Login()
         {
-            string test = "12-12-00:Roy";
-            string test1 = Hash.Encrypt(test, AuthorizationDictionary.REALM);
-            string test2 = Hash.Decrypt(test1, AuthorizationDictionary.REALM);
-
-
             string result = TokenManager.CreateToken(HttpContext.Current);
             if (result != null) {
                 return Request.CreateResponse(HttpStatusCode.OK,
@@ -35,55 +25,46 @@ namespace WebserviceColumbus.Controllers
         }
 
         //GET: api/Dummy/GetTravel?index=..
+        [HttpGet, TokenRequired]
         public HttpResponseMessage GetTravel(int id)
         {
-            if (TokenManager.IsAuthorized(HttpContext.Current)) {
-                if (id > 1 || id < 0) {
-                    id = 1;
-                }
-                Travel travel = JsonSerialization.Deserialize<List<Travel>>(IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json")))[id];
-                return Request.CreateResponse(HttpStatusCode.OK,
-                    JsonSerialization.Serialize(travel)
-                );
+            if (id > 1 || id < 0) {
+                id = 1;
             }
-            return Request.CreateResponse(HttpStatusCode.Unauthorized);
+            Travel travel = JsonSerialization.Deserialize<List<Travel>>(IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json")))[id];
+            return Request.CreateResponse(HttpStatusCode.OK,
+                JsonSerialization.Serialize(travel)
+            );
         }
 
         //GET: api/Dummy/GetAllTravels
+        [HttpGet, TokenRequired]
         public HttpResponseMessage GetAllTravels()
         {
-            if (TokenManager.IsAuthorized(HttpContext.Current)) {
-                return Request.CreateResponse(HttpStatusCode.OK,
-                    IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json"))
-                );
-            }
-            return Request.CreateResponse(HttpStatusCode.Unauthorized);
+            return Request.CreateResponse(HttpStatusCode.OK,
+                IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json"))
+            );
         }
 
         // GET: api/Dummy/GetTravelOgue
+        [HttpGet, TokenRequired]
         public HttpResponseMessage GetTravelOgue()
         {
-            if (TokenManager.IsAuthorized(HttpContext.Current)) {
-                return Request.CreateResponse(HttpStatusCode.OK, 
-                    IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/TravelOgue.json"))
-                );
-            }
-            return Request.CreateResponse(HttpStatusCode.Unauthorized);
+            return Request.CreateResponse(HttpStatusCode.OK,
+                IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/TravelOgue.json"))
+            );
         }
 
         // GET: api/Dummy/GetUserInfo
-        [HttpGet]
+        [HttpGet, TokenRequired]
         public HttpResponseMessage GetUserInfo()
         {
-            if (TokenManager.IsAuthorized(HttpContext.Current)) {
-                return Request.CreateResponse(HttpStatusCode.OK, JsonSerialization.Serialize(new Models.User() {
-                    ID = 0,
-                    FirstName = "Jan",
-                    LastName = "Lange",
-                    Email = "lange.jan@email.com"
-                }));
-            }
-            return Request.CreateResponse(HttpStatusCode.Unauthorized);
+            return Request.CreateResponse(HttpStatusCode.OK, JsonSerialization.Serialize(new Models.User() {
+                ID = 0,
+                FirstName = "Jan",
+                LastName = "Lange",
+                Email = "lange.jan@email.com"
+            }));
         }
     }
 }

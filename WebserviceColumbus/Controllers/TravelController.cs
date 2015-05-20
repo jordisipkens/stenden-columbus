@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Web.Http;
 using WebserviceColumbus.Classes;
-using WebserviceColumbus.Classes.IO;
-using WebserviceColumbus.Models;
-using WebserviceColumbus.Models.Travel;
 
 namespace WebserviceColumbus.Controllers
 {

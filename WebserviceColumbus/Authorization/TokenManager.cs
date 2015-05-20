@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
-using System.Web.Http;
-using System.Web.Http.Controllers;
 using WebserviceColumbus.Classes.Encryption;
 
 namespace WebserviceColumbus.Authorization
 {
     public class TokenManager
     {
-        public static bool IsAuthorized(HttpContext httpContext)
+        public static bool IsAuthorized(string token)
         {
-            if (CheckToken(httpContext.Request.Headers["Token"])) {
-                return true;
-            }
-            return false;
+            return CheckToken(token);
         }
 
         private static bool CheckToken(string token)

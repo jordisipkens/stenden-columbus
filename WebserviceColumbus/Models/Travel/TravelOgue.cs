@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 namespace WebserviceColumbus.Models.Travel
 {
     public class Travelogue
