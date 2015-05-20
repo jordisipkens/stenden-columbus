@@ -8,9 +8,11 @@ namespace ColombusWebapplicatie.Models
 {
     public class Travel
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
+        public string Title { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string Title { get; set; }
+        public List<Location> Locations { get; set; }
+        public User User { get; set; }
     }
 }
