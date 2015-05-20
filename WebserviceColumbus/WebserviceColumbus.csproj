@@ -80,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Authorization\AuthorizationDictionary.cs" />
     <Compile Include="Authorization\TokenRequired.cs" />
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\TravelController.cs" />

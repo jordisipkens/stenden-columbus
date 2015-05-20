@@ -8,6 +8,8 @@ namespace WebserviceColumbus.Authorization
 {
     public class TokenManager
     {
+        public static string REALM = "apiColumbus";
+
         public static bool IsAuthorized(string token)
         {
             return CheckToken(token);
@@ -16,7 +18,7 @@ namespace WebserviceColumbus.Authorization
         private static bool CheckToken(string token)
         {
             if (token != null) {
-                string value = Hash.Decrypt(token.Replace("\"", ""), AuthorizationDictionary.REALM);
+                string value = Hash.Decrypt(token.Replace("\"", ""), REALM);
                 if (value != null) {
                     string[] values = value.Split(':');
                     if (values.Length == 2) {
@@ -54,7 +56,7 @@ namespace WebserviceColumbus.Authorization
             string password = Hash.Decrypt(credentials.Substring(separator + 1));
             if (CheckPassword(username, password)) {
                 string token = string.Format("{0}:{1}", DateTime.Now.ToString("MM-dd-yy"), username);
-                token = Hash.Encrypt(token, AuthorizationDictionary.REALM);
+                token = Hash.Encrypt(token, REALM);
                 return token;
             }
             return null;
@@ -62,11 +64,10 @@ namespace WebserviceColumbus.Authorization
 
         private static bool CheckPassword(string username, string password)
         {
-            return true;
             if (username != null && password != null) {
                 return username.Equals("C0lumbus") && password.Equals("C0lumbus");
             }
-            return false;
+            return true;//false;
             //TODO
         }
     }
