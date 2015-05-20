@@ -9,6 +9,15 @@ namespace ColombusWebapplicatie.Controllers
     public class BaseController : Controller
     {
 
+        public ActionResult Error(string errorMessage, ActionResult result)
+        {
+            TempData["error"] = errorMessage;
+            return result;
+        }
 
+        public ActionResult ErrorToIndex(string errorMessage)
+        {
+            return Error(errorMessage, RedirectToAction("Index"));
+        }
     }
 }
