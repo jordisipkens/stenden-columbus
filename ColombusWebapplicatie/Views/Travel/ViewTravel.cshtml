@@ -5,4 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>Reistitel</h2>
+<div>
+    <span>Begindatum: @Model.StartDate.Day-@Model.StartDate.Month-@Model.StartDate.Year</span>
+    <span>Einddatum: @Model.EndDate.Day-@Model.EndDate.Month-@Model.EndDate.Year</span>
+</div>
+<h3>Locaties</h3>
+<table>
+    <tr>
+        <th>Datum:</th>
+        <th>Notitie:</th>
+        <th>Details:</th>
+    </tr>
+</table>

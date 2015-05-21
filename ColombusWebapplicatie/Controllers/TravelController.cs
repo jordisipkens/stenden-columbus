@@ -9,7 +9,7 @@ using ColombusWebapplicatie.Models;
 
 namespace ColombusWebapplicatie.Controllers
 {
-    public class TravelController : Controller
+    public class TravelController : BaseController
     {
         //
         // GET: /Travel/
@@ -21,13 +21,27 @@ namespace ColombusWebapplicatie.Controllers
             StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travel.json"));
             // Deserialize Json to list of Travel objects.
             List<Travel> travels = JsonConvert.DeserializeObject<List<Travel>>(streamReader.ReadToEnd());
+            // Return the regarding view.
             return View(travels);
         }
 
         // View one travel.
-        public ActionResult ViewTravel(int id)
+        public ActionResult ViewTravel(int? id)
         {
-            return View();
+            // !!! Important: Not finished, just for testing !!! Supposed to check if the travel with the regarding id exists.
+            if (id!=id) {
+                // Return to the index of the controller with an error message.
+                return ErrorToIndex("Deze reis bestaat niet (meer).");
+            } else {
+                // Load Json file.
+                StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travel.json"));
+                // Deserialize Json to list of Travel objects.
+                List<Travel> travels = JsonConvert.DeserializeObject<List<Travel>>(streamReader.ReadToEnd());
+                // !!! Important: Not finished, just for testing !!! Supposed to get the travel with the regarding id.
+                Travel travel = travels.First();
+                // Return the regarding view.
+                return View(travel);
+            }
         }
 
     }
