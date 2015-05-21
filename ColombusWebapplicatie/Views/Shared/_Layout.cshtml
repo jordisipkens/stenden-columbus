@@ -16,9 +16,9 @@
             <div id="slogan">Explore the world!</div>
             <div id="menu">
                 <ul>
-                    <li class="menu-item">@Html.ActionLink("HOME", "/")</li>
-                    <li class="menu-item">@Html.ActionLink("mijn reizen", "/")</li>
-                    <li class="menu-item">@Html.ActionLink("account", "/")</li>
+                    <li class="menu-item">@Html.ActionLink("Home", "/", "home" ,new { }, new { })</li>
+                    <li class="menu-item">@Html.ActionLink("Mijn reizen", "/", "travel", new { }, new { })</li>
+                    <li class="menu-item">@Html.ActionLink("Verslagen", "/")</li>
                 </ul>
             </div>
         </div>
@@ -31,8 +31,8 @@
             <div class="half">
                 <h2>Lorem Ipsum</h2>
                 <ul>
-                    <li>@Html.ActionLink("Home", "/")</li>
-                    <li>@Html.ActionLink("Mijn reizen", "/")</li>
+                    <li>@Html.ActionLink("HOME", "/", "home", new { }, new { })</li>
+                    <li>@Html.ActionLink("Mijn reizen", "/", "travel", new { }, new { })</li>
                     <li>@Html.ActionLink("Account", "/")</li>
                 </ul>
             </div>
