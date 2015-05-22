@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
@@ -18,11 +19,11 @@ namespace WebserviceColumbus.Authorization
         private static bool CheckToken(string token)
         {
             if (token != null) {
-                string value = Hash.Decrypt(token.Replace("\"", ""), REALM);
+                string value = Hash.Decrypt(token, REALM);
                 if (value != null) {
-                    string[] values = value.Split(':');
+                    string[] values = value.Split('/');
                     if (values.Length == 2) {
-                        DateTime parsedDate = DateTime.Parse(values[0]);
+                        DateTime parsedDate = DateTime.Parse(values[0], null, DateTimeStyles.RoundtripKind);
                         if (CheckDate(parsedDate) && IsUser(values[1])) {
                             return true;
                         }
@@ -55,7 +56,7 @@ namespace WebserviceColumbus.Authorization
             string username = credentials.Substring(0, separator);
             string password = Hash.Decrypt(credentials.Substring(separator + 1));
             if (CheckPassword(username, password)) {
-                string token = string.Format("{0}:{1}", DateTime.Now.ToString("MM-dd-yy"), username);
+                string token = string.Format("{0}/{1}", DateTime.Now.ToString("u"), username);
                 token = Hash.Encrypt(token, REALM);
                 return token;
             }
@@ -67,7 +68,7 @@ namespace WebserviceColumbus.Authorization
             if (username != null && password != null) {
                 return username.Equals("C0lumbus") && password.Equals("C0lumbus");
             }
-            return true;//false;
+            return false;
             //TODO
         }
 

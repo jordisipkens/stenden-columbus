@@ -24,7 +24,7 @@ namespace WebserviceColumbus.Authorization
         {
             IEnumerable<string> values;
             if (actionContext.Request.Headers.TryGetValues("Token", out values) && values.Count() > 0) {
-                return values.First();
+                return values.First().Replace("\"", "");
             }
             return null;
         }
