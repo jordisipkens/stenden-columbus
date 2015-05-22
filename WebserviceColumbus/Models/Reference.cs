@@ -6,6 +6,5 @@ namespace WebserviceColumbus.Models
     {
         public string Tag { get; set; }
         public DateTime Date { get; set; }
-        public User User { get; set; }
     }
 }

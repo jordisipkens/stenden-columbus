@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,7 +21,7 @@ namespace WebserviceColumbus.Models.Travel
 
         public virtual ICollection<Location> Locations { get; set; }
 
-        [ForeignKey("UserID")]
+        [ForeignKey("UserID"), JsonIgnore]
         public virtual User User { get; set; }
         [Required]
         public int UserID { get; set; }

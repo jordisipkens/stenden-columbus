@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 namespace WebserviceColumbus.Models.Travel.Travelogue
 {
     public class Paragraph
@@ -19,6 +20,7 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
         public int Height { get; set; }
 
         //Navigation
+        [JsonIgnore]
         public virtual Travelogue Travelogue { get; set; }
     }
 }

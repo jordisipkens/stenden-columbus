@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebserviceColumbus.Database;
@@ -20,6 +21,7 @@ namespace WebserviceColumbus.Models.Travel
         public int LocationDetailsID { get; set; }
 
         //Navigation
+        [JsonIgnore]
         public virtual Travel Travel { get; set; }
     }
 }

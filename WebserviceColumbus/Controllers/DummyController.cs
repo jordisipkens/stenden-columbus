@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Http;
 using WebserviceColumbus.Authorization;
 using WebserviceColumbus.Classes.IO;
+using WebserviceColumbus.Models;
 using WebserviceColumbus.Models.Travel;
 
 namespace WebserviceColumbus.Controllers
@@ -28,13 +29,19 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired]
         public HttpResponseMessage GetTravel(int id)
         {
-            if (id > 1 || id < 0) {
-                id = 1;
+            Response response;
+            List<Travel> travels = JsonSerialization.Deserialize<List<Travel>>(IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json")));
+            if (id < 0 || id > travels.Count - 1) {
+                response = new Response() { Error = new Error() {
+                    Message = "Index out of bounds"
+                }};
+            } 
+            else {
+                    response = new Response() {
+                        Information = travels[id]
+                    };
             }
-            Travel travel = JsonSerialization.Deserialize<List<Travel>>(IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json")))[id];
-            return Request.CreateResponse(HttpStatusCode.OK,
-                JsonSerialization.Serialize(travel)
-            );
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         //GET: api/Dummy/GetAllTravels
