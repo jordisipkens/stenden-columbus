@@ -1,4 +1,4 @@
-﻿namespace WebserviceColumbus.Models.Other
+﻿namespace WebserviceColumbus.Models.Google
 {
     public class Root
     {

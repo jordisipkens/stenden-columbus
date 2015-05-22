@@ -1,6 +1,7 @@
-﻿namespace WebserviceColumbus.Models
+﻿using WebserviceColumbus.Database;
+namespace WebserviceColumbus.Models
 {
-    public class Photo
+    public class Photo : iDbEntity
     {
         public int ID { get; set; }
         public string Caption { get; set; }
