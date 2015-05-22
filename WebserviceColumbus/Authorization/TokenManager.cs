@@ -23,7 +23,7 @@ namespace WebserviceColumbus.Authorization
                     string[] values = value.Split(':');
                     if (values.Length == 2) {
                         DateTime parsedDate = DateTime.Parse(values[0]);
-                        if (parsedDate != null && true/*values[1] == IsUser()*/) {
+                        if (CheckDate(parsedDate) && IsUser(values[1]) {
                             return true;
                         }
                     }
@@ -68,6 +68,18 @@ namespace WebserviceColumbus.Authorization
                 return username.Equals("C0lumbus") && password.Equals("C0lumbus");
             }
             return true;//false;
+            //TODO
+        }
+
+        private static bool CheckDate(DateTime time)
+        {
+            TimeSpan diff = DateTime.Now - time;
+            return diff.TotalHours <= 3;
+        }
+
+        private static bool IsUser(string username)
+        {
+            return true;
             //TODO
         }
     }
