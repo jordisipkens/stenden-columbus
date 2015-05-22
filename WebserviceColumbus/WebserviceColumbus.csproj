@@ -83,6 +83,7 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Resources\ErrorLog.txt" />
+    <Content Include="Resources\TestStuff.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -98,6 +99,7 @@
     <Compile Include="Classes\IO\IOManager.cs" />
     <Compile Include="Classes\IO\JsonSerialization.cs" />
     <Compile Include="Controllers\DummyController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Database\BaseManager.cs" />
     <Compile Include="Database\ColumbusContext.cs" />
     <Compile Include="Database\iDbEntity.cs" />
@@ -118,6 +120,7 @@
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\Reference.cs" />
     <Compile Include="Models\Google\Root.cs" />
+    <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Travel\Coordinates.cs" />
     <Compile Include="Models\Travel\Location.cs" />
     <Compile Include="Models\Travel\LocationDetails.cs" />
