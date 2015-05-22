@@ -23,7 +23,7 @@ namespace WebserviceColumbus.Authorization
                     string[] values = value.Split(':');
                     if (values.Length == 2) {
                         DateTime parsedDate = DateTime.Parse(values[0]);
-                        if (CheckDate(parsedDate) && IsUser(values[1]) {
+                        if (CheckDate(parsedDate) && IsUser(values[1])) {
                             return true;
                         }
                     }

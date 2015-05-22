@@ -1,5 +1,12 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Linq;
+using WebserviceColumbus.Classes.IO;
+using WebserviceColumbus.Database;
+using WebserviceColumbus.Models.Travel;
+using System.Data.Entity.Validation;
+using System;
 
 namespace WebserviceColumbus
 {
