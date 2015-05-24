@@ -5,14 +5,14 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebserviceColumbus.Other;
+using WebserviceColumbus.Classes;
 
 namespace WebserviceColumbus.Database
 {
     public abstract class BaseManager<T> where T : class, iDbEntity 
     {
         #region Getters
-        public static T GetEntity(int id)
+        public T getEntity(int id)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -25,7 +25,7 @@ namespace WebserviceColumbus.Database
             return null;
         }
 
-        public static List<T> GetEntities()
+        public List<T> getEntities()
         {
             try {
                 using (var db = new ColumbusDbContext()) {
@@ -40,7 +40,7 @@ namespace WebserviceColumbus.Database
         #endregion Getters
 
         #region Setters
-        public static bool AddEntity(T entity)
+        public bool addEntity(T entity)
         {
             try {
                 using (var db = new ColumbusDbContext()) {
@@ -54,7 +54,7 @@ namespace WebserviceColumbus.Database
             return false;
         }
 
-        public static bool AddEntities(List<T> entities)
+        public bool addEntities(List<T> entities)
         {
             try {
                 using (var db = new ColumbusDbContext()) {
@@ -72,7 +72,7 @@ namespace WebserviceColumbus.Database
         #endregion Setters
 
         #region Update
-        public static bool UpdateEntity(T entity)
+        public bool updateEntity(T entity)
         {
             try {
                 using (var db = new ColumbusDbContext()) {
@@ -89,7 +89,7 @@ namespace WebserviceColumbus.Database
         #endregion Update
 
         #region Delete
-        public static bool DeleteEntity(T entity)
+        public bool deleteEntity(T entity)
         {
             try {
                 using (var db = new ColumbusDbContext()) {
@@ -104,11 +104,11 @@ namespace WebserviceColumbus.Database
             return false;
         }
 
-        public static bool DeleteEntity(int id)
+        public bool deleteEntity(int id)
         {
             try {
                 using (var db = new ColumbusDbContext()) {
-                    return DeleteEntity(db.Set<T>().Find(id));
+                    return deleteEntity(db.Set<T>().Find(id));
                 }
             }
             catch(Exception ex) {

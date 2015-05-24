@@ -1,26 +1,21 @@
 ﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+using System.Collections;
+using System.Collections.Generic;
 using WebserviceColumbus.Database;
 
 namespace WebserviceColumbus.Models
 {
     public class User : iDbEntity
     {
-        [Key]
         public int ID { get; set; }
 
-        [Required]
-        public string Username { get; set; }
-
-        [Required]
         public string Email { get; set; }
 
-        [Required]
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        [JsonIgnore, Required]
+        [JsonIgnore]
         public string Password { get; set; }
 
         //public ICollection<Travel.Travel> Travels { get; set; }

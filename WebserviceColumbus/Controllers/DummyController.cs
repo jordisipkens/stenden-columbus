@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using WebserviceColumbus.Authorization;
-using WebserviceColumbus.IO;
+using WebserviceColumbus.Classes.IO;
 using WebserviceColumbus.Models;
 using WebserviceColumbus.Models.Travel;
 
@@ -16,7 +16,7 @@ namespace WebserviceColumbus.Controllers
         [HttpGet]
         public HttpResponseMessage Login()
         {
-            string result = TokenManager.CreateToken();
+            string result = TokenManager.CreateToken(HttpContext.Current);
             if (result != null) {
                 return Request.CreateResponse(HttpStatusCode.OK,
                     result
@@ -29,15 +29,19 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired]
         public HttpResponseMessage GetTravel(int id)
         {
-            List<Travel> travels = JsonSerialization.DeserializeFromFile<List<Travel>>("Resources/DummyData/Travel.json");
+            Response response;
+            List<Travel> travels = JsonSerialization.Deserialize<List<Travel>>(IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json")));
             if (id < 0 || id > travels.Count - 1) {
-                return Request.CreateResponse(HttpStatusCode.OK, new Error() {
+                response = new Response() { Error = new Error() {
                     Message = "Index out of bounds"
-                });
+                }};
             } 
             else {
-                return Request.CreateResponse(HttpStatusCode.OK, travels[id]);
+                    response = new Response() {
+                        Information = travels[id]
+                    };
             }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         //GET: api/Dummy/GetAllTravels
@@ -62,12 +66,12 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired]
         public HttpResponseMessage GetUserInfo()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, new Models.User() {
+            return Request.CreateResponse(HttpStatusCode.OK, JsonSerialization.Serialize(new Models.User() {
                 ID = 0,
                 FirstName = "Jan",
                 LastName = "Lange",
                 Email = "lange.jan@email.com"
-            });
+            }));
         }
     }
 }
