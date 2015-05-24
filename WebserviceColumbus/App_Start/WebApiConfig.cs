@@ -2,7 +2,7 @@
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Linq;
-using WebserviceColumbus.Classes.IO;
+using WebserviceColumbus.IO;
 using WebserviceColumbus.Database;
 using WebserviceColumbus.Models.Travel;
 using System.Data.Entity.Validation;
