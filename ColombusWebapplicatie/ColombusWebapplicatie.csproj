@@ -116,7 +116,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Coordinates.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\LocationDetails.cs" />
     <Compile Include="Models\Travel.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
