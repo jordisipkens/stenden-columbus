@@ -1,48 +1,69 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
-using WebserviceColumbus.Classes.Encryption;
+using WebserviceColumbus.Database;
 
 namespace WebserviceColumbus.Authorization
 {
     public class TokenManager
     {
-        public static string REALM = "apiColumbus";
+        private static string REALM = "apiColumbus";
 
-        public static bool IsAuthorized(string token)
+        #region Getters
+        private static string GetToken()
         {
-            return CheckToken(token);
-        }
-
-        private static bool CheckToken(string token)
-        {
+            string token = HttpContext.Current.Request.Headers["Token"];
+            token = token.Replace("\"", "");
             if (token != null) {
                 string value = Hash.Decrypt(token, REALM);
+
                 if (value != null) {
-                    string[] values = value.Split('/');
-                    if (values.Length == 2) {
-                        DateTime parsedDate = DateTime.Parse(values[0], null, DateTimeStyles.RoundtripKind);
-                        if (CheckDate(parsedDate) && IsUser(values[1])) {
-                            return true;
-                        }
-                    }
+                    return value;
+                }
+            }
+            return null;
+        }
+
+        private static string[] GetTokenValues()
+        {
+            string token = GetToken();
+            if (token != null) {
+                return token.Split('/');
+            }
+            return null;
+        }
+
+        public static string GetUsernameFromToken()
+        {
+            return GetTokenValues()[1];
+        }
+        #endregion Getters
+
+        public static bool IsAuthorized()
+        {
+            string[] values= GetTokenValues();
+            if (values != null && values.Length == 2) {
+                DateTime parsedDate = DateTime.Parse(values[0], null, DateTimeStyles.RoundtripKind);
+
+                if (CheckDate(parsedDate) && UserManager.ValidateUser(values[1])) {
+                    return true;
                 }
             }
             return false;
         }
 
-        internal static string CreateToken(HttpContext httpContext)
+        public static string CreateToken()
         {
-            var request = HttpContext.Current.Request;
-            var authHeader = request.Headers["Authorization"];
+            string authHeader = HttpContext.Current.Request.Headers["Authorization"];
             if (authHeader != null) {
-                var authHeaderVal = AuthenticationHeaderValue.Parse(authHeader);
+                AuthenticationHeaderValue authHeaderValue = AuthenticationHeaderValue.Parse(authHeader);
 
-                if (authHeaderVal.Scheme.Equals("Basic", StringComparison.OrdinalIgnoreCase)    // RFC 2617 sec 1.2, "scheme" name is case-insensitive
-                    && authHeaderVal.Parameter != null) {
-                    return AuthenticateUser(authHeaderVal.Parameter);
+                if (authHeaderValue.Scheme.Equals("Basic", StringComparison.OrdinalIgnoreCase)    // RFC 2617 sec 1.2, "scheme" name is case-insensitive
+                    && authHeaderValue.Parameter != null) {
+                    return AuthenticateUser(authHeaderValue.Parameter);
                 }
             }
             return null;
@@ -54,8 +75,9 @@ namespace WebserviceColumbus.Authorization
 
             int separator = credentials.IndexOf(':');
             string username = credentials.Substring(0, separator);
-            string password = Hash.Decrypt(credentials.Substring(separator + 1));
-            if (CheckPassword(username, password)) {
+            string password = credentials.Substring(separator + 1);
+
+            if (UserManager.ValidateUser(username,password)) {
                 string token = string.Format("{0}/{1}", DateTime.Now.ToString("u"), username);
                 token = Hash.Encrypt(token, REALM);
                 return token;
@@ -63,25 +85,10 @@ namespace WebserviceColumbus.Authorization
             return null;
         }
 
-        private static bool CheckPassword(string username, string password)
-        {
-            if (username != null && password != null) {
-                return username.Equals("C0lumbus") && password.Equals("C0lumbus");
-            }
-            return false;
-            //TODO
-        }
-
         private static bool CheckDate(DateTime time)
         {
             TimeSpan diff = DateTime.Now - time;
             return diff.TotalHours <= 3;
-        }
-
-        private static bool IsUser(string username)
-        {
-            return true;
-            //TODO
         }
     }
 }
