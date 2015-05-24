@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
-using WebserviceColumbus.Classes.IO;
+using WebserviceColumbus.IO;
 using WebserviceColumbus.Database;
 using WebserviceColumbus.Models.Travel;
 
@@ -15,8 +15,8 @@ namespace WebserviceColumbus.Migrations
 
         protected override void Seed(ColumbusDbContext context)
         {
-            List<Travel> travels = JsonSerialization.Deserialize<List<Travel>>(IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json")));
-            context.Travels.AddOrUpdate(travels[0], travels[1]);
+            //List<Travel> travels = JsonSerialization.Deserialize<List<Travel>>(IOManager.ReadFile(IOManager.GetProjectFilePath("Resources/DummyData/Travel.json")));
+            //context.Travels.AddOrUpdate(travels[0], travels[1]);
 
             //  This method will be called after migrating to the latest version.
 

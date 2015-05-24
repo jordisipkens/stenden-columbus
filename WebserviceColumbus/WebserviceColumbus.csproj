@@ -94,15 +94,16 @@
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\TravelController.cs" />
     <Compile Include="Controllers\TravelOgueController.cs" />
-    <Compile Include="Classes\Encryption\Hash.cs" />
-    <Compile Include="Classes\ErrorHandler.cs" />
-    <Compile Include="Classes\IO\IOManager.cs" />
-    <Compile Include="Classes\IO\JsonSerialization.cs" />
+    <Compile Include="Authorization\Hash.cs" />
+    <Compile Include="Other\ErrorHandler.cs" />
+    <Compile Include="IO\IOManager.cs" />
+    <Compile Include="IO\JsonSerialization.cs" />
     <Compile Include="Controllers\DummyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Database\BaseManager.cs" />
     <Compile Include="Database\ColumbusContext.cs" />
     <Compile Include="Database\iDbEntity.cs" />
+    <Compile Include="Database\UserManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -114,6 +115,14 @@
     <Compile Include="Migrations\201505221518045_Changed_User.cs" />
     <Compile Include="Migrations\201505221518045_Changed_User.Designer.cs">
       <DependentUpon>201505221518045_Changed_User.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505240029451_added_username.cs" />
+    <Compile Include="Migrations\201505240029451_added_username.Designer.cs">
+      <DependentUpon>201505240029451_added_username.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505240158454_added_attributes_user.cs" />
+    <Compile Include="Migrations\201505240158454_added_attributes_user.Designer.cs">
+      <DependentUpon>201505240158454_added_attributes_user.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Error.cs" />
@@ -150,6 +159,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505221518045_Changed_User.resx">
       <DependentUpon>201505221518045_Changed_User.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505240029451_added_username.resx">
+      <DependentUpon>201505240029451_added_username.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505240158454_added_attributes_user.resx">
+      <DependentUpon>201505240158454_added_attributes_user.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

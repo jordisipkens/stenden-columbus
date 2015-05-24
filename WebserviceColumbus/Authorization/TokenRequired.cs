@@ -11,22 +11,12 @@ namespace WebserviceColumbus.Authorization
     {
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
-            string token = getTokenHeader(actionContext);
-            return TokenManager.IsAuthorized(token);
+            return TokenManager.IsAuthorized();
         }
 
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
         {
             actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-        }
-
-        private string getTokenHeader(HttpActionContext actionContext)
-        {
-            IEnumerable<string> values;
-            if (actionContext.Request.Headers.TryGetValues("Token", out values) && values.Count() > 0) {
-                return values.First().Replace("\"", "");
-            }
-            return null;
         }
     }
 }
