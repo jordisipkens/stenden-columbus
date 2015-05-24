@@ -2,8 +2,9 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using WebserviceColumbus.Other;
 
-namespace WebserviceColumbus.Classes.Encryption
+namespace WebserviceColumbus.Authorization
 {
     public static class Hash
     {

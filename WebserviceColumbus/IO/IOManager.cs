@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace WebserviceColumbus.Classes.IO
+namespace WebserviceColumbus.IO
 {
     public static class IOManager
     {

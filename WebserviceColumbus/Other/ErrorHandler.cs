@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using WebserviceColumbus.Classes.IO;
+using WebserviceColumbus.IO;
 
-namespace WebserviceColumbus.Classes
+namespace WebserviceColumbus.Other
 {
     public class ErrorHandler
     {

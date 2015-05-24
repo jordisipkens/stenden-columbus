@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
+using WebserviceColumbus.Other;
 
-namespace WebserviceColumbus.Classes.IO
+namespace WebserviceColumbus.IO
 {
     public static class JsonSerialization
     {
