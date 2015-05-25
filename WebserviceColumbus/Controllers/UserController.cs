@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using WebserviceColumbus.Authorization;
 using WebserviceColumbus.Database;
-using WebserviceColumbus.Models;
 
 namespace WebserviceColumbus.Controllers
 {
@@ -25,7 +21,7 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Login()
         {
             string result = TokenManager.CreateToken();
-            if (result != null) {
+            if(result != null) {
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             return Request.CreateResponse(HttpStatusCode.Unauthorized);
@@ -35,7 +31,7 @@ namespace WebserviceColumbus.Controllers
         //GET: api/User/Details?userID=..
         public HttpResponseMessage Details(int userID)
         {
-            if (UserManager.ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
+            if(UserManager.ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
                 return Request.CreateResponse(HttpStatusCode.OK, UserManager.GetEntity(userID));
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);

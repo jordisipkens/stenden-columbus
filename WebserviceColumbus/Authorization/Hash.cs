@@ -42,16 +42,16 @@ namespace WebserviceColumbus.Authorization
 
                 ICryptoTransform transform = algorithm.CreateEncryptor(rgbKey, rgbIV);
 
-                using (MemoryStream buffer = new MemoryStream()) {
-                    using (CryptoStream stream = new CryptoStream(buffer, transform, CryptoStreamMode.Write)) {
-                        using (StreamWriter writer = new StreamWriter(stream, Encoding.Unicode)) {
+                using(MemoryStream buffer = new MemoryStream()) {
+                    using(CryptoStream stream = new CryptoStream(buffer, transform, CryptoStreamMode.Write)) {
+                        using(StreamWriter writer = new StreamWriter(stream, Encoding.Unicode)) {
                             writer.Write(value);
                         }
                     }
                     return Convert.ToBase64String(buffer.ToArray());
                 }
             }
-            catch (Exception ex) {
+            catch(Exception ex) {
                 new ErrorHandler(ex, "Error while encrypting", true);
                 return null;
             }
@@ -73,15 +73,15 @@ namespace WebserviceColumbus.Authorization
 
                 ICryptoTransform transform = algorithm.CreateDecryptor(rgbKey, rgbIV);
 
-                using (MemoryStream buffer = new MemoryStream(Convert.FromBase64String(text))) {
-                    using (CryptoStream stream = new CryptoStream(buffer, transform, CryptoStreamMode.Read)) {
-                        using (StreamReader reader = new StreamReader(stream, Encoding.Unicode)) {
+                using(MemoryStream buffer = new MemoryStream(Convert.FromBase64String(text))) {
+                    using(CryptoStream stream = new CryptoStream(buffer, transform, CryptoStreamMode.Read)) {
+                        using(StreamReader reader = new StreamReader(stream, Encoding.Unicode)) {
                             return reader.ReadToEnd();
                         }
                     }
                 }
             }
-            catch (Exception ex) {
+            catch(Exception ex) {
                 new ErrorHandler(ex, "Error while decrypting", true);
                 return null;
             }

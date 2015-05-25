@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using WebserviceColumbus.Database;
+
 namespace WebserviceColumbus.Models.Travel
 {
     public class Coordinates : iDbEntity

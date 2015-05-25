@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 using WebserviceColumbus.Authorization;
 using WebserviceColumbus.IO;
-using WebserviceColumbus.Models;
+using WebserviceColumbus.Models.Other;
 using WebserviceColumbus.Models.Travel;
 
 namespace WebserviceColumbus.Controllers
@@ -17,7 +16,7 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Login()
         {
             string result = TokenManager.CreateToken();
-            if (result != null) {
+            if(result != null) {
                 return Request.CreateResponse(HttpStatusCode.OK,
                     result
                 );
@@ -30,11 +29,11 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage GetTravel(int id)
         {
             List<Travel> travels = JsonSerialization.DeserializeFromFile<List<Travel>>("Resources/DummyData/Travel.json");
-            if (id < 0 || id > travels.Count - 1) {
+            if(id < 0 || id > travels.Count - 1) {
                 return Request.CreateResponse(HttpStatusCode.OK, new Error() {
                     Message = "Index out of bounds"
                 });
-            } 
+            }
             else {
                 return Request.CreateResponse(HttpStatusCode.OK, travels[id]);
             }
@@ -62,7 +61,7 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired]
         public HttpResponseMessage GetUserInfo()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, new Models.User() {
+            return Request.CreateResponse(HttpStatusCode.OK, new User() {
                 ID = 0,
                 FirstName = "Jan",
                 LastName = "Lange",

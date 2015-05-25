@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebserviceColumbus.Other;
 
 namespace WebserviceColumbus.Database
 {
-    public abstract class BaseManager<T> where T : class, iDbEntity 
+    public class BaseManager<T> where T : class, iDbEntity
     {
         #region Getters
+
         public static T GetEntity(int id)
         {
             try {
@@ -28,7 +26,7 @@ namespace WebserviceColumbus.Database
         public static List<T> GetEntities()
         {
             try {
-                using (var db = new ColumbusDbContext()) {
+                using(var db = new ColumbusDbContext()) {
                     return db.Set<T>().ToList();
                 }
             }
@@ -37,13 +35,15 @@ namespace WebserviceColumbus.Database
             }
             return null;
         }
+
         #endregion Getters
 
         #region Setters
+
         public static bool AddEntity(T entity)
         {
             try {
-                using (var db = new ColumbusDbContext()) {
+                using(var db = new ColumbusDbContext()) {
                     db.Set<T>().Add(entity);
                     return db.SaveChanges() == 1;
                 }
@@ -57,7 +57,7 @@ namespace WebserviceColumbus.Database
         public static bool AddEntities(List<T> entities)
         {
             try {
-                using (var db = new ColumbusDbContext()) {
+                using(var db = new ColumbusDbContext()) {
                     foreach(T entity in entities) {
                         db.Set<T>().Add(entity);
                     }
@@ -69,13 +69,15 @@ namespace WebserviceColumbus.Database
             }
             return false;
         }
+
         #endregion Setters
 
         #region Update
+
         public static bool UpdateEntity(T entity)
         {
             try {
-                using (var db = new ColumbusDbContext()) {
+                using(var db = new ColumbusDbContext()) {
                     db.Set<T>().Attach(entity);
                     db.Entry<T>(entity).State = EntityState.Modified;
                     return db.SaveChanges() == 1;
@@ -86,13 +88,15 @@ namespace WebserviceColumbus.Database
             }
             return false;
         }
+
         #endregion Update
 
         #region Delete
+
         public static bool DeleteEntity(T entity)
         {
             try {
-                using (var db = new ColumbusDbContext()) {
+                using(var db = new ColumbusDbContext()) {
                     db.Set<T>().Attach(entity);
                     db.Entry<T>(entity).State = EntityState.Deleted;
                     return db.SaveChanges() == 1;
@@ -107,7 +111,7 @@ namespace WebserviceColumbus.Database
         public static bool DeleteEntity(int id)
         {
             try {
-                using (var db = new ColumbusDbContext()) {
+                using(var db = new ColumbusDbContext()) {
                     return DeleteEntity(db.Set<T>().Find(id));
                 }
             }
@@ -116,6 +120,7 @@ namespace WebserviceColumbus.Database
             }
             return false;
         }
+
         #endregion Delete
     }
 }

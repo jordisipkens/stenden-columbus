@@ -4,6 +4,5 @@ namespace WebserviceColumbus.Controllers
 {
     public class TravelOgueController : ApiController
     {
-        
     }
 }

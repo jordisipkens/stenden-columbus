@@ -14,9 +14,9 @@ namespace WebserviceColumbus.IO
         /// <param name="filePath"></param>
         public static void SerializeToFile(object objectToSerialize, string filePath)
         {
-            if (File.Exists(filePath)) {
+            if(File.Exists(filePath)) {
                 string result = Serialize(objectToSerialize);
-                if (result != null && result.Length > 0) {
+                if(result != null && result.Length > 0) {
                     System.IO.File.WriteAllText(filePath, result);
                 }
             }
@@ -43,7 +43,7 @@ namespace WebserviceColumbus.IO
             try {
                 return JsonConvert.SerializeObject(objectToSerialize);
             }
-            catch (Exception ex) {
+            catch(Exception ex) {
                 new ErrorHandler(ex, "Error during Serialization", true);
                 return null;
             }
@@ -60,7 +60,7 @@ namespace WebserviceColumbus.IO
             try {
                 return JsonConvert.DeserializeObject<T>(value);
             }
-            catch (Exception ex) {
+            catch(Exception ex) {
                 new ErrorHandler(ex, "Error during Deserialization", true);
                 return default(T);
             }

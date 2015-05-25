@@ -1,8 +1,7 @@
 namespace WebserviceColumbus.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class added_attributes_user : DbMigration
     {
         public override void Up()
@@ -14,7 +13,7 @@ namespace WebserviceColumbus.Migrations
             AlterColumn("dbo.Users", "FirstName", c => c.String(nullable: false));
             AlterColumn("dbo.Users", "Password", c => c.String(nullable: false));
         }
-        
+
         public override void Down()
         {
             AlterColumn("dbo.Users", "Password", c => c.String());

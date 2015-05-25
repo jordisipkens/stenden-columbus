@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using WebserviceColumbus.Database;
 
-namespace WebserviceColumbus.Models
+namespace WebserviceColumbus.Models.Other
 {
     public class User : iDbEntity
     {

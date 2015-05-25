@@ -1,8 +1,7 @@
 namespace WebserviceColumbus.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Changed_User : DbMigration
     {
         public override void Up()
@@ -11,7 +10,7 @@ namespace WebserviceColumbus.Migrations
             RenameIndex(table: "dbo.Travels", name: "IX_User_ID", newName: "IX_UserID");
             AddColumn("dbo.Users", "Password", c => c.String());
         }
-        
+
         public override void Down()
         {
             DropColumn("dbo.Users", "Password");

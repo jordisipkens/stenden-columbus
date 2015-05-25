@@ -15,7 +15,7 @@ namespace WebserviceColumbus.IO
             if(File.Exists(filePath)) {
                 string[] lines = File.ReadAllLines(filePath);
                 string result = string.Empty;
-                foreach (string line in lines) {
+                foreach(string line in lines) {
                     result = result + line;
                 }
                 return result;

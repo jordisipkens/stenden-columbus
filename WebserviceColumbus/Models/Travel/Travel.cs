@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebserviceColumbus.Database;
+using WebserviceColumbus.Models.Other;
 
 namespace WebserviceColumbus.Models.Travel
 {
@@ -23,6 +24,7 @@ namespace WebserviceColumbus.Models.Travel
 
         [ForeignKey("UserID"), JsonIgnore]
         public virtual User User { get; set; }
+
         [Required]
         public int UserID { get; set; }
     }

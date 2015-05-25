@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+
 namespace WebserviceColumbus.Models.Travel.Travelogue
 {
     public class Paragraph

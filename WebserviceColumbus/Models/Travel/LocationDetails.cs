@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebserviceColumbus.Database;
+
 namespace WebserviceColumbus.Models.Travel
 {
     public class LocationDetails : iDbEntity
@@ -20,6 +21,7 @@ namespace WebserviceColumbus.Models.Travel
 
         [ForeignKey("CoordinatesID")]
         public virtual Coordinates Coordinates { get; set; }
+
         [Required]
         public int CoordinatesID { get; set; }
     }

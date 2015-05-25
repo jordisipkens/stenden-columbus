@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Validation;
 using System.IO;
 using WebserviceColumbus.IO;
 
@@ -6,17 +7,17 @@ namespace WebserviceColumbus.Other
 {
     public class ErrorHandler
     {
-        Exception ex;
-        string message;
-        DateTime date;
+        private Exception ThrownException;
+        private string Message;
+        private DateTime Date;
 
         public ErrorHandler(Exception ex, string message, bool logError)
         {
-            this.ex = ex;
-            this.message = message;
-            this.date = DateTime.Now;
+            this.ThrownException = ex;
+            this.Message = message;
+            this.Date = DateTime.Now;
 
-            if (logError) {
+            if(logError) {
                 Log();
             }
         }
@@ -27,8 +28,8 @@ namespace WebserviceColumbus.Other
         private void Log()
         {
 #if DEBUG
-            Console.WriteLine(message + " | " + ex.Message);
-            Console.WriteLine(ex.ToString());
+            Console.WriteLine(Message + " | " + ThrownException.Message);
+            Console.WriteLine(ThrownException.ToString());
 #else
             WriteToLog();
 #endif
@@ -39,10 +40,14 @@ namespace WebserviceColumbus.Other
         /// </summary>
         private void WriteToLog()
         {
-            using (StreamWriter sw = File.AppendText(IOManager.GetProjectFilePath("Resources/ErrorLog.txt"))) {
-                sw.WriteLine(date.ToString() + " | " + message);
-                sw.WriteLine(ex.ToString());
-                sw.WriteLine();
+            using(StreamWriter sw = File.AppendText(IOManager.GetProjectFilePath("Resources/ErrorLog.txt"))) {
+                if(ThrownException.GetType() == typeof(DbEntityValidationException)) {
+                }
+                else {
+                    sw.WriteLine(Date.ToString() + " | " + Message);
+                    sw.WriteLine(ThrownException.ToString());
+                    sw.WriteLine();
+                }
             }
         }
     }

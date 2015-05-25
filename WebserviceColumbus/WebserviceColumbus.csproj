@@ -125,18 +125,16 @@
       <DependentUpon>201505240158454_added_attributes_user.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Error.cs" />
-    <Compile Include="Models\Photo.cs" />
-    <Compile Include="Models\Reference.cs" />
+    <Compile Include="Models\Other\Error.cs" />
+    <Compile Include="Models\Other\Photo.cs" />
     <Compile Include="Models\Google\Root.cs" />
-    <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Travel\Coordinates.cs" />
     <Compile Include="Models\Travel\Location.cs" />
     <Compile Include="Models\Travel\LocationDetails.cs" />
     <Compile Include="Models\Travel\Travelogue\Paragraph.cs" />
     <Compile Include="Models\Travel\Travel.cs" />
     <Compile Include="Models\Travel\Travelogue\Travelogue.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Other\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

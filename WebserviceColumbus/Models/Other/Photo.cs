@@ -1,5 +1,6 @@
 ﻿using WebserviceColumbus.Database;
-namespace WebserviceColumbus.Models
+
+namespace WebserviceColumbus.Models.Other
 {
     public class Photo : iDbEntity
     {
