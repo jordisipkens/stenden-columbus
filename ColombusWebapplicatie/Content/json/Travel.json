@@ -12,12 +12,12 @@
             "LocationDetails":{  
                "ID":0,
                "Name":"Vrijheidsbeeld",
-               "Adres":"Liberty Island",
+               "Address":"Liberty Island",
                "PhoneNumber":"555-1234",
                "PlaceID":"ABC123",
                "Coordinates":{  
-                  "Latitude":123.0,
-                  "Longitude":123.0
+                  "Latitude":40.689247,
+                  "Longitude":-74.044502
                }
             }
          },
@@ -28,12 +28,12 @@
             "LocationDetails":{  
                "ID":0,
                "Name":"Domino's Pizza",
-               "Adres":"West Upper Side, Manhattan",
+               "Address":"West Upper Side, Manhattan",
                "PhoneNumber":"555-4321",
                "PlaceID":"XYZ987",
                "Coordinates":{  
-                  "Latitude":200.0,
-                  "Longitude":200.0
+                  "Latitude":40.778099,
+                  "Longitude":-73.985303
                }
             }
          }
