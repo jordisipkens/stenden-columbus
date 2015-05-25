@@ -95,15 +95,16 @@
     <Compile Include="Controllers\TravelController.cs" />
     <Compile Include="Controllers\TravelOgueController.cs" />
     <Compile Include="Authorization\Hash.cs" />
+    <Compile Include="Database\TravelDbManager.cs" />
     <Compile Include="Other\ErrorHandler.cs" />
     <Compile Include="IO\IOManager.cs" />
     <Compile Include="IO\JsonSerialization.cs" />
     <Compile Include="Controllers\DummyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Database\BaseManager.cs" />
+    <Compile Include="Database\DbManager.cs" />
     <Compile Include="Database\ColumbusContext.cs" />
     <Compile Include="Database\iDbEntity.cs" />
-    <Compile Include="Database\UserManager.cs" />
+    <Compile Include="Database\UserDbManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

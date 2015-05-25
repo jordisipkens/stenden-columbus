@@ -22,7 +22,7 @@ namespace WebserviceColumbus.Models.Travel
 
         public virtual ICollection<Location> Locations { get; set; }
 
-        [ForeignKey("UserID"), JsonIgnore]
+        [ForeignKey("UserID")]
         public virtual User User { get; set; }
 
         [Required, JsonIgnore]

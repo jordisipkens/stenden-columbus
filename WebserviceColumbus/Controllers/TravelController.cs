@@ -1,10 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Web.Http;
 using WebserviceColumbus.Authorization;
+using WebserviceColumbus.Database;
+using WebserviceColumbus.Models.Travel;
 
 namespace WebserviceColumbus.Controllers
 {
@@ -14,37 +13,66 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired]
         public HttpResponseMessage Get(int travelID)
         {
-            return null;
+            Travel travel = DbManager<Travel>.GetEntity(travelID);
+            if(travel != null) {
+                if(travel.User.Username.Equals(TokenManager.GetUsernameFromToken())) {
+                    return Request.CreateResponse(HttpStatusCode.OK, travel);
+                }
+                return Request.CreateResponse(HttpStatusCode.Forbidden);
+            }
+            return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }
 
         // GET: api/Travel?userID=..&offset=..&limit=..
         [HttpGet, TokenRequired]
         public HttpResponseMessage GetAll(int userID, int offset = 0, int limit = 20)
         {
-            if (offset > 100) {
-                offset = 100;
+            if(UserDbManager.ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
+                return Request.CreateResponse(HttpStatusCode.OK, TravelDbManager.GetAllTravels(userID, offset, limit));
             }
-            return null;
+            return Request.CreateResponse(HttpStatusCode.Forbidden);
         }
 
         // POST: api/Travel/Update
         [HttpPost, TokenRequired]
-        public HttpResponseMessage Update([FromBody]string value)
+        public HttpResponseMessage Update([FromBody]Travel travel)
         {
-            return null;
+            if(travel != null) {
+                if(DbManager<Travel>.UpdateEntity(travel)) {
+                    return Request.CreateResponse(HttpStatusCode.Accepted);
+                }
+            }
+            return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+        }
+
+        // GET: api/Travel/Create
+        [HttpGet, TokenRequired]
+        public HttpResponseMessage Create([FromBody]Travel travel, int userID)
+        {
+            if(UserDbManager.ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
+                if(TravelDbManager.AddEntity(travel)) {
+                    return Request.CreateResponse(HttpStatusCode.OK, travel);
+                }
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+            }
+            return Request.CreateResponse(HttpStatusCode.Forbidden);
         }
 
         // GET: api/Travel/Delete
         [HttpGet, TokenRequired]
         public HttpResponseMessage Delete(int travelID)
         {
-            return null;
-        }
-
-        [HttpGet, TokenRequired]
-        public HttpResponseMessage Create(int userID)
-        {
-            return null;
+            Travel travel = TravelDbManager.GetEntity(travelID);
+            if(travel != null) {
+                if(travel.User.Username.Equals(TokenManager.GetUsernameFromToken())) {
+                    if(TravelDbManager.DeleteEntity(travelID)) {
+                        return Request.CreateResponse(HttpStatusCode.Accepted);
+                    }
+                    return Request.CreateResponse(HttpStatusCode.Conflict);
+                }
+                return Request.CreateResponse(HttpStatusCode.Forbidden);
+            }
+            return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }
     }
 }
