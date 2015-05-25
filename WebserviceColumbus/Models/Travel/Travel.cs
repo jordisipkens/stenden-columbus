@@ -25,7 +25,7 @@ namespace WebserviceColumbus.Models.Travel
         [ForeignKey("UserID"), JsonIgnore]
         public virtual User User { get; set; }
 
-        [Required]
+        [Required, JsonIgnore]
         public int UserID { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebserviceColumbus.Database;
 
@@ -22,7 +23,7 @@ namespace WebserviceColumbus.Models.Travel
         [ForeignKey("CoordinatesID")]
         public virtual Coordinates Coordinates { get; set; }
 
-        [Required]
+        [Required, JsonIgnore]
         public int CoordinatesID { get; set; }
     }
 }
