@@ -49,7 +49,7 @@ namespace WebserviceColumbus.Authorization
             if(values != null && values.Length == 2) {
                 DateTime parsedDate = DateTime.Parse(values[0], null, DateTimeStyles.RoundtripKind);
 
-                if(CheckDate(parsedDate) && UserManager.ValidateUser(values[1])) {
+                if(CheckDate(parsedDate) && UserDbManager.ValidateUser(values[1])) {
                     return true;
                 }
             }
@@ -78,7 +78,7 @@ namespace WebserviceColumbus.Authorization
             string username = credentials.Substring(0, separator);
             string password = credentials.Substring(separator + 1);
 
-            if(UserManager.ValidateUser(username, password)) {
+            if(UserDbManager.ValidateUser(username, password)) {
                 string token = string.Format("{0}/{1}", DateTime.Now.ToString("u"), username);
                 token = Hash.Encrypt(token, REALM);
                 return token;

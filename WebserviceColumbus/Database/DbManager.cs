@@ -6,7 +6,7 @@ using WebserviceColumbus.Other;
 
 namespace WebserviceColumbus.Database
 {
-    public class BaseManager<T> where T : class, iDbEntity
+    public class DbManager<T> where T : class, iDbEntity
     {
         #region Getters
 

@@ -5,7 +5,7 @@ using WebserviceColumbus.Other;
 
 namespace WebserviceColumbus.Database
 {
-    public class UserManager : BaseManager<User>
+    public class UserDbManager : DbManager<User>
     {
         public static bool ValidateUser(string username)
         {
