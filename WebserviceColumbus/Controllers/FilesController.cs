@@ -10,20 +10,8 @@ namespace WebserviceColumbus.Controllers
 {
     public class FilesController : ApiController
     {
-        // GET: api/Files
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/Files/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Files
-        [Route("api/Files/Images"), TokenRequired]
+        // POST: api/Files/Images
+        [HttpPost, TokenRequired, Route("api/Files/Images")]
         public HttpResponseMessage Post([FromBody]string value)
         {
             HttpFileCollection httpRequestFiles = HttpContext.Current.Request.Files;
@@ -37,11 +25,6 @@ namespace WebserviceColumbus.Controllers
                 return Request.CreateResponse(HttpStatusCode.Created);
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);
-        }
-
-        // DELETE: api/Files/5
-        public void Delete(int id)
-        {
         }
     }
 }
