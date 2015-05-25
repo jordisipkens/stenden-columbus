@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Http;
 using WebserviceColumbus.Authorization;
 using WebserviceColumbus.Database;
+using WebserviceColumbus.Models.Other;
 
 namespace WebserviceColumbus.Controllers
 {
@@ -11,7 +12,7 @@ namespace WebserviceColumbus.Controllers
     {
         //POST: api/User/Register
         [HttpPost]
-        public HttpResponse Register([FromBody]string value)
+        public HttpResponse Register([FromBody]User user)
         {
             return null;
         }
@@ -31,15 +32,15 @@ namespace WebserviceColumbus.Controllers
         //GET: api/User/Details?userID=..
         public HttpResponseMessage Details(int userID)
         {
-            if(UserManager.ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
-                return Request.CreateResponse(HttpStatusCode.OK, UserManager.GetEntity(userID));
+            if(UserDbManager.ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
+                return Request.CreateResponse(HttpStatusCode.OK, UserDbManager.GetEntity(userID));
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         //POST :api/User/Update
         [HttpPost, TokenRequired]
-        public HttpResponse Update([FromBody]string value)
+        public HttpResponse Update([FromBody]User user)
         {
             return null;
         }
