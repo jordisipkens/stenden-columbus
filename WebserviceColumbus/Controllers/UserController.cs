@@ -28,7 +28,7 @@ namespace WebserviceColumbus.Controllers
             return Request.CreateResponse(HttpStatusCode.Unauthorized);
         }
 
-        [HttpGet, TokenRequired]
+        [HttpGet, TokenRequired, Route("api/User/Details/{userID}")]
         //GET: api/User/Details?userID=..
         public HttpResponseMessage Details(int userID)
         {

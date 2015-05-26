@@ -9,11 +9,11 @@ namespace WebserviceColumbus.Controllers
 {
     public class TravelController : ApiController
     {
-        // GET: api/Travel/Get?userID=..&travelID=..
-        [HttpGet, TokenRequired]
+        // GET: api/Travel/..
+        [HttpGet, TokenRequired, Route("api/Travel/{travelID}")]
         public HttpResponseMessage Get(int travelID)
         {
-            Travel travel = DbManager<Travel>.GetEntity(travelID);
+            Travel travel = TravelDbManager.GetEntity(travelID);
             if(travel != null) {
                 if(travel.User.Username.Equals(TokenManager.GetUsernameFromToken())) {
                     return Request.CreateResponse(HttpStatusCode.OK, travel);
@@ -33,33 +33,21 @@ namespace WebserviceColumbus.Controllers
             return Request.CreateResponse(HttpStatusCode.Forbidden);
         }
 
-        // POST: api/Travel/Update
-        [HttpPost, TokenRequired]
+        // POST: api/Travel
+        [HttpPost, TokenRequired, Route("api/Travel")]
         public HttpResponseMessage Update([FromBody]Travel travel)
         {
             if(travel != null) {
-                if(DbManager<Travel>.UpdateEntity(travel)) {
-                    return Request.CreateResponse(HttpStatusCode.Accepted);
+                Travel newTravel = TravelDbManager.UpdateOrAdd(travel);
+                if(newTravel != null) {
+                    return Request.CreateResponse(HttpStatusCode.Accepted, newTravel);
                 }
             }
             return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }
 
-        // GET: api/Travel/Create
-        [HttpGet, TokenRequired]
-        public HttpResponseMessage Create([FromBody]Travel travel, int userID)
-        {
-            if(UserDbManager.ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
-                if(TravelDbManager.AddEntity(travel)) {
-                    return Request.CreateResponse(HttpStatusCode.OK, travel);
-                }
-                return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
-            }
-            return Request.CreateResponse(HttpStatusCode.Forbidden);
-        }
-
-        // GET: api/Travel/Delete
-        [HttpGet, TokenRequired]
+        // GET: api/Travel/Delete/..
+        [HttpGet, TokenRequired, Route("api/Travel/Delete/{travelID}")]
         public HttpResponseMessage Delete(int travelID)
         {
             Travel travel = TravelDbManager.GetEntity(travelID);
