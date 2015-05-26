@@ -122,5 +122,25 @@ namespace WebserviceColumbus.Database
         }
 
         #endregion Delete
+
+        public static T UpdateOrAdd(T entity)
+        {
+            try {
+                using(var db = new ColumbusDbContext()) {
+                    db.Set<T>().Attach(entity);
+                    if(entity.ID == 0) {
+                        db.Entry<T>(entity).State = EntityState.Added;
+                    }
+                    else {
+                        db.Entry<T>(entity).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex) {
+                new ErrorHandler(ex, "Failed to GET all " + typeof(T) + "s in database", true);
+            }
+            return default(T);
+        }
     }
 }

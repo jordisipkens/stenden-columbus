@@ -17,6 +17,8 @@ namespace WebserviceColumbus.Database
 
         public DbSet<Travelogue> Travelogues { get; set; }
 
+        public DbSet<Paragraph> Paragraphs { get; set; }
+
         public DbSet<Photo> Photos { get; set; }
 
         public DbSet<User> Users { get; set; }
