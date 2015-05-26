@@ -17,7 +17,7 @@ namespace WebserviceColumbus.Controllers
         }
 
         //POST: api/Travelogue
-        [HttpPost, TokenRequired, Route("api/Travelogue")]
+        [HttpPost, TokenRequired]
         public HttpResponseMessage Update([FromBody]Travelogue travelogue)
         {
             if(travelogue != null) {

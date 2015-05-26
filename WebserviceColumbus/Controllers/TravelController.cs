@@ -20,7 +20,7 @@ namespace WebserviceColumbus.Controllers
             return Request.CreateResponse(HttpStatusCode.Forbidden);
         }
 
-        // GET: api/Travel?userID=..&offset=..&limit=..
+        // GET: api/Travel/GetAll?userID=..&offset=..&limit=..
         [HttpGet, TokenRequired]
         public HttpResponseMessage GetAll(int userID, int offset = 0, int limit = 20)
         {
@@ -31,7 +31,7 @@ namespace WebserviceColumbus.Controllers
         }
 
         // POST: api/Travel
-        [HttpPost, TokenRequired, Route("api/Travel")]
+        [HttpPost, TokenRequired]
         public HttpResponseMessage Update([FromBody]Travel travel)
         {
             if(travel != null) {
