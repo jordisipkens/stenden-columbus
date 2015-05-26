@@ -12,6 +12,6 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
         [Required]
         public int TravelID { get; set; }
 
-        public ICollection<Paragraph> Paragraphs { get; set; }
+        public virtual ICollection<Paragraph> Paragraphs { get; set; }
     }
 }

@@ -96,6 +96,19 @@
     <Compile Include="Controllers\TravelOgueController.cs" />
     <Compile Include="Authorization\Hash.cs" />
     <Compile Include="Database\TravelDbManager.cs" />
+    <Compile Include="Database\TravelogueDbManager.cs" />
+    <Compile Include="Migrations\201505261236112_added_paragraps.cs" />
+    <Compile Include="Migrations\201505261236112_added_paragraps.Designer.cs">
+      <DependentUpon>201505261236112_added_paragraps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505261343142_added_paragraps_ids.cs" />
+    <Compile Include="Migrations\201505261343142_added_paragraps_ids.Designer.cs">
+      <DependentUpon>201505261343142_added_paragraps_ids.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505261351450_removed_paragraps_ids.cs" />
+    <Compile Include="Migrations\201505261351450_removed_paragraps_ids.Designer.cs">
+      <DependentUpon>201505261351450_removed_paragraps_ids.cs</DependentUpon>
+    </Compile>
     <Compile Include="Other\ErrorHandler.cs" />
     <Compile Include="IO\IOManager.cs" />
     <Compile Include="IO\JsonSerialization.cs" />
@@ -164,6 +177,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505240158454_added_attributes_user.resx">
       <DependentUpon>201505240158454_added_attributes_user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505261236112_added_paragraps.resx">
+      <DependentUpon>201505261236112_added_paragraps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505261343142_added_paragraps_ids.resx">
+      <DependentUpon>201505261343142_added_paragraps_ids.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505261351450_removed_paragraps_ids.resx">
+      <DependentUpon>201505261351450_removed_paragraps_ids.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

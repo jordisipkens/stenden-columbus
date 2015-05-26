@@ -16,7 +16,7 @@ namespace WebserviceColumbus.Models.Travel
         public string Note { get; set; }
 
         [ForeignKey("LocationDetailsID")]
-        public LocationDetails LocationDetails { get; set; }
+        public virtual LocationDetails LocationDetails { get; set; }
 
         [Required, JsonIgnore]
         public int LocationDetailsID { get; set; }
