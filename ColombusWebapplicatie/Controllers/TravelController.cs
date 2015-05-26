@@ -26,7 +26,6 @@ namespace ColombusWebapplicatie.Controllers
             return View(travels);
         }
 
-        // View one travel.
         public ActionResult ViewTravel(int? id)
         {
             // !!! Important: Not finished, just for testing !!! Supposed to check if the travel with the regarding id exists.

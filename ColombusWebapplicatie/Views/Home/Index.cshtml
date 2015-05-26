@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ColombusWebapplicatie.Models.User
+
+@{
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -10,11 +12,11 @@
     </div>
     <div class="white-block login">
         <div class="container">
-            <form method="post" action="index.html">
-                <input class="login input" type="text" name="login" value="" placeholder="Email-adres">
-                <input class="login input" type="password" name="password" value="" placeholder="Wachtwoord">
-                <input class="button orange"type="submit" name="commit" value="Login">
-            </form>
+            @using(Html.BeginForm("Login", "Account", FormMethod.Post)) {
+                @Html.TextBoxFor(user => user.Username, new { @placeholder = "Gebruikersnaam", @class="login input" })
+                @Html.PasswordFor(user => user.Password, new { @placeholder = "Wachtwoord", @class="login input"})
+                <input class="button orange"type="submit" name="submit" value="Inloggen">
+            }
         </div>
     </div>
 </div>
