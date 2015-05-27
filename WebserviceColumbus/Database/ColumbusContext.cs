@@ -7,6 +7,11 @@ namespace WebserviceColumbus.Database
 {
     public class ColumbusDbContext : DbContext
     {
+        /*public ColumbusDbContext()
+            : base(connectionString)
+        {
+        }*/
+
         public DbSet<Travel> Travels { get; set; }
 
         public DbSet<Location> Locations { get; set; }
