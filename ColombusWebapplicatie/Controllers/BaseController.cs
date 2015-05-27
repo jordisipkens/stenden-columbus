@@ -30,7 +30,7 @@ namespace ColombusWebapplicatie.Controllers
         {
             try
             {
-                DeriveBytes rgb = new Rfc2898DeriveBytes(API_KEY, Encoding.Unicode.GetBytes(API_KEY));
+                DeriveBytes rgb = new Rfc2898DeriveBytes("C0lumbu5", Encoding.Unicode.GetBytes("C0lumbu5"));
                 SymmetricAlgorithm algorithm = new AesManaged();
                 byte[] rgbKey = rgb.GetBytes(algorithm.KeySize >> 3);
                 byte[] rgbIV = rgb.GetBytes(algorithm.BlockSize >> 3);

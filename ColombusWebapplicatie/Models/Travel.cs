@@ -12,7 +12,7 @@ namespace ColombusWebapplicatie.Models
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-       // public List<Location> Locations { get; set; }
-       // public User User { get; set; }
+        public List<Location> Locations { get; set; }
+        public User User { get; set; }
     }
 }
