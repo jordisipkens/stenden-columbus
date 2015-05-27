@@ -13,7 +13,7 @@ namespace ColombusWebapplicatie.Controllers
     public class BaseController : Controller
     {
         private string apiUrl = "http://columbusstenden-001-site1.myasp.net/";
-        private string apiKey = "";
+        private const string API_KEY = "C0lumbu5";
 
         public ActionResult Error(string errorMessage, ActionResult result)
         {
@@ -26,31 +26,78 @@ namespace ColombusWebapplicatie.Controllers
             return Error(errorMessage, RedirectToAction("Index"));
         }
 
-        public static string Encrypt(string value)
+        /// <summary>
+        /// Encrpyts the string with RijndaelManaged encrpytion. API key is used for salt.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string Encrypt(string value, string salt = API_KEY)
         {
-            try
+            return EncryptDecrypt(value, GetHashSha256(salt, 32));
+        }
+
+        private static string EncryptDecrypt(string inputText, string encryptionKey)
+        {
+            RijndaelManaged cipher = GetCipher();
+            byte[] rgbIV = new byte[cipher.BlockSize / 8];
+            byte[] rgbKey = new byte[32];
+            byte[] rgbIVBytes = new byte[16];
+
+            byte[] encrpytedPassword = Encoding.UTF8.GetBytes(encryptionKey);
+            rgbIVBytes = Encoding.UTF8.GetBytes("");
+
+            int length = encrpytedPassword.Length;
+            if (length > rgbKey.Length)
             {
-                DeriveBytes rgb = new Rfc2898DeriveBytes("C0lumbu5", Encoding.Unicode.GetBytes("C0lumbu5"));
-                SymmetricAlgorithm algorithm = new AesManaged();
-                byte[] rgbKey = rgb.GetBytes(algorithm.KeySize >> 3);
-                byte[] rgbIV = rgb.GetBytes(algorithm.BlockSize >> 3);
-                ICryptoTransform transform = algorithm.CreateEncryptor(rgbKey, rgbIV);
-                using (MemoryStream buffer = new MemoryStream())
-                {
-                    using (CryptoStream stream = new CryptoStream(buffer, transform, CryptoStreamMode.Write))
-                    {
-                        using (StreamWriter writer = new StreamWriter(stream, Encoding.Unicode))
-                        {
-                            writer.Write(value);
-                        }
-                    }
-                    return Convert.ToBase64String(buffer.ToArray());
-                }
+                length = rgbKey.Length;
             }
-            catch (Exception ex)
+            int ivLenth = rgbIVBytes.Length;
+            if (ivLenth > rgbIV.Length)
             {
-                return null;
+                ivLenth = rgbIV.Length;
             }
+
+            Array.Copy(encrpytedPassword, rgbKey, length);
+            Array.Copy(rgbIVBytes, rgbIV, ivLenth);
+            cipher.Key = rgbKey;
+            cipher.IV = rgbIV;
+
+            UTF8Encoding encoding = new UTF8Encoding();
+
+            byte[] plainText = cipher.CreateEncryptor().TransformFinalBlock(encoding.GetBytes(inputText), 0, inputText.Length);
+            string result = Convert.ToBase64String(plainText);
+            cipher.Dispose();
+            return result;
+        }
+
+        public static string GetHashSha256(string text, int length)
+        {
+            byte[] hash = new SHA256Managed().ComputeHash(Encoding.UTF8.GetBytes(text));
+            string hashString = string.Empty;
+            foreach (byte x in hash)
+            {
+                hashString += string.Format("{0:x2}", x);
+            }
+
+            if (length > hashString.Length)
+            {
+                return hashString;
+            }
+            else
+            {
+                return hashString.Substring(0, length);
+            }
+        }
+
+        private static RijndaelManaged GetCipher()
+        {
+            RijndaelManaged cipher = new RijndaelManaged();
+            cipher.Mode = CipherMode.CBC;
+            cipher.Padding = PaddingMode.PKCS7;
+            cipher.KeySize = 256;
+            cipher.BlockSize = 128;
+            return cipher;
         }
 
         public string GetFullName (User user)

@@ -13,5 +13,7 @@ namespace ColombusWebapplicatie.Models
         public string ImagePath { get; set; }
 
         public bool AlignImageLeft { get; set; }
+
+        public bool FullpageImage { get; set; }
     }
 }
