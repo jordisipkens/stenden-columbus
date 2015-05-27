@@ -23,7 +23,7 @@ namespace WebserviceColumbus.Controllers
         {
             string result = TokenManager.CreateToken();
             if(result != null) {
-                return Request.CreateResponse(HttpStatusCode.OK, result);
+                return Request.CreateResponse(HttpStatusCode.OK, new Token() { TokenString = result } );
             }
             return Request.CreateResponse(HttpStatusCode.Unauthorized);
         }
