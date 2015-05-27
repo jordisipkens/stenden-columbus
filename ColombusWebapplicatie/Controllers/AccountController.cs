@@ -31,8 +31,7 @@ namespace ColombusWebapplicatie.Controllers
             request.Headers["Authorization"] = credentials;
             WebResponse response = request.GetResponse();
             StreamReader streamReader = new StreamReader(response.GetResponseStream());
-            string token = streamReader.ReadToEnd();
-            return token;
+            return streamReader.ReadToEnd();
         }
 
     }

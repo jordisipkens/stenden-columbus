@@ -119,7 +119,9 @@
     <Compile Include="Models\Coordinates.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationDetails.cs" />
+    <Compile Include="Models\Paragraph.cs" />
     <Compile Include="Models\Travel.cs" />
+    <Compile Include="Models\Travelogue.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
