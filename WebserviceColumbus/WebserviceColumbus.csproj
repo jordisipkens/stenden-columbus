@@ -97,6 +97,7 @@
     <Compile Include="Authorization\Hash.cs" />
     <Compile Include="Database\TravelDbManager.cs" />
     <Compile Include="Database\TravelogueDbManager.cs" />
+    <Compile Include="Models\Other\Token.cs" />
     <Compile Include="Other\ErrorHandler.cs" />
     <Compile Include="IO\IOManager.cs" />
     <Compile Include="IO\JsonSerialization.cs" />
