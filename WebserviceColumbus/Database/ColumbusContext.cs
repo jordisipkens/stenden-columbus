@@ -7,6 +7,10 @@ namespace WebserviceColumbus.Database
 {
     public class ColumbusDbContext : DbContext
     {
+        /*public ColumbusDbContext() : 
+            base("workstation id=Stenden-Columbus.mssql.somee.com;packet size=4096;user id=RoyB_SQLLogin_1;pwd=2hqlc93kkr;data source=Stenden-Columbus.mssql.somee.com;persist security info=False;initial catalog=Stenden-Columbus")
+        { }*/
+
         public DbSet<Travel> Travels { get; set; }
 
         public DbSet<Location> Locations { get; set; }

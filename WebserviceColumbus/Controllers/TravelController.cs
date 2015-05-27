@@ -14,10 +14,10 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Get(int travelID)
         {
             Travel travel = TravelDbManager.GetTravel(travelID);
-            if(travel != null && travel.User.Username.Equals(TokenManager.GetUsernameFromToken())) {
-                return Request.CreateResponse(HttpStatusCode.OK, travel);
+            if(travel != null && !travel.User.Username.Equals(TokenManager.GetUsernameFromToken())) {
+                return Request.CreateResponse(HttpStatusCode.Forbidden);
             }
-            return Request.CreateResponse(HttpStatusCode.Forbidden);
+            return Request.CreateResponse(HttpStatusCode.OK, travel);
         }
 
         // GET: api/Travel/GetAll?userID=..&offset=..&limit=..
