@@ -76,7 +76,7 @@ namespace WebserviceColumbus.Authorization
             string username = credentials.Substring(0, separator);
             string password = credentials.Substring(separator + 1);
 
-            if(username.Equals("C0lumbus") && password.Equals("cxTt7qICqqZWQzG1uTTgbw==")) {    //TODO Change: UserDbManager.ValidateUser(username, password)
+            if (username.Equals("C0lumbus") && password.Equals("3b2k77GHcx9aBCw2qKwB7b287/fQ+fxUohpti+2eLeA=")) {    //TODO Change: UserDbManager.ValidateUser(username, password)
                 string token = string.Format("{0}/{1}", DateTime.Now.ToString("u"), username);
                 token = Hash.Encrypt(token);
                 return token;

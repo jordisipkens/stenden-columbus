@@ -55,14 +55,19 @@ namespace WebserviceColumbus.Authorization
                 cipher.Key = rgbKey;
                 cipher.IV = rgbIV;
 
-                UTF8Encoding encoding = new UTF8Encoding();
-                if(mode.Equals(EncryptMode.ENCRYPT)) {
-                    byte[] plainText = cipher.CreateEncryptor().TransformFinalBlock(encoding.GetBytes(inputText), 0, inputText.Length);
-                    return Convert.ToBase64String(plainText);
+                try {
+                    UTF8Encoding encoding = new UTF8Encoding();
+                    if (mode.Equals(EncryptMode.ENCRYPT)) {
+                        byte[] plainText = cipher.CreateEncryptor().TransformFinalBlock(encoding.GetBytes(inputText), 0, inputText.Length);
+                        return Convert.ToBase64String(plainText);
+                    }
+                    else if (mode.Equals(EncryptMode.DECRYPT)) {
+                        byte[] plainText = cipher.CreateDecryptor().TransformFinalBlock(Convert.FromBase64String(inputText), 0, Convert.FromBase64String(inputText).Length);
+                        return encoding.GetString(plainText);
+                    }
                 }
-                else if(mode.Equals(EncryptMode.DECRYPT)) {
-                    byte[] plainText = cipher.CreateDecryptor().TransformFinalBlock(Convert.FromBase64String(inputText), 0, Convert.FromBase64String(inputText).Length);
-                    return encoding.GetString(plainText);
+                catch (Exception ex) {
+                    new ErrorHandler(ex, "Error while " + mode.ToString(), true);
                 }
             }
             return null;
