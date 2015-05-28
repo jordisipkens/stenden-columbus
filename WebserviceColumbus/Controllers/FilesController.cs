@@ -20,7 +20,7 @@ namespace WebserviceColumbus.Controllers
                     var postedFile = httpRequestFiles[file];
                     var filePath = HttpContext.Current.Server.MapPath("~/" + postedFile.FileName);
                     Console.WriteLine(string.Format("SIMULATED UPLOAD FILE: {0}", filePath));
-                    //TODO postedFile.SaveAs(filePath);
+                    //TODO Change: postedFile.SaveAs(filePath);
                 }
                 return Request.CreateResponse(HttpStatusCode.Created);
             }

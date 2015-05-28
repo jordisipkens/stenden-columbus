@@ -9,8 +9,6 @@ namespace WebserviceColumbus.Authorization
 {
     public class TokenManager
     {
-        private static string REALM = "apiColumbus";
-
         #region Getters
 
         private static string GetToken()
@@ -18,7 +16,7 @@ namespace WebserviceColumbus.Authorization
             string token = HttpContext.Current.Request.Headers["Token"];
             token = token.Replace("\"", "");
             if(token != null) {
-                string value = Hash.Decrypt(token, REALM);
+                string value = Hash.Decrypt(token);
 
                 if(value != null) {
                     return value;
@@ -49,7 +47,7 @@ namespace WebserviceColumbus.Authorization
             if(values != null && values.Length == 2) {
                 DateTime parsedDate = DateTime.Parse(values[0], null, DateTimeStyles.RoundtripKind);
 
-                if(CheckDate(parsedDate) && UserDbManager.ValidateUser(values[1])) {
+                if(CheckDate(parsedDate) && values[1].Equals("C0lumbus")) {    //TODO Change: UserDbManager.ValidateUser(values[1])
                     return true;
                 }
             }
@@ -62,7 +60,7 @@ namespace WebserviceColumbus.Authorization
             if(authHeader != null) {
                 AuthenticationHeaderValue authHeaderValue = AuthenticationHeaderValue.Parse(authHeader);
 
-                if(authHeaderValue.Scheme.Equals("Basic", StringComparison.OrdinalIgnoreCase)    // RFC 2617 sec 1.2, "scheme" name is case-insensitive
+                if(authHeaderValue.Scheme.Equals("Basic", StringComparison.OrdinalIgnoreCase)
                     && authHeaderValue.Parameter != null) {
                     return AuthenticateUser(authHeaderValue.Parameter);
                 }
@@ -78,9 +76,9 @@ namespace WebserviceColumbus.Authorization
             string username = credentials.Substring(0, separator);
             string password = credentials.Substring(separator + 1);
 
-            if(UserDbManager.ValidateUser(username, password)) {
+            if(username.Equals("C0lumbus") && password.Equals("cxTt7qICqqZWQzG1uTTgbw==")) {    //TODO Change: UserDbManager.ValidateUser(username, password)
                 string token = string.Format("{0}/{1}", DateTime.Now.ToString("u"), username);
-                token = Hash.Encrypt(token, REALM);
+                token = Hash.Encrypt(token);
                 return token;
             }
             return null;

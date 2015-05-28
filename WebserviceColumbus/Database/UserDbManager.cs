@@ -18,7 +18,7 @@ namespace WebserviceColumbus.Database
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to FIND User in database with corresponding username", true);
             }
-            return true;    //TODO false
+            return false;    
         }
 
         public static bool ValidateUser(string username, int userID)
@@ -27,7 +27,7 @@ namespace WebserviceColumbus.Database
             if(user != null && user.Username != null) {
                 return user.Username.Equals(username);
             }
-            return true;    //TODO false
+            return false; 
         }
 
         public static bool ValidateUser(string username, string password)
@@ -41,7 +41,7 @@ namespace WebserviceColumbus.Database
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to FIND User in database with corresponding username", true);
             }
-            return true;    //TODO false
+            return false;
         }
     }
 }
