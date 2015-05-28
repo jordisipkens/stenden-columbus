@@ -60,6 +60,32 @@ h2, h3 {
 
 table {
     width: 100%;
+    color: @font_color;
+    text-align: center;
+    border-width:0px;
+
+    a{
+        color:@font_color_light;
+        display: block;
+        padding: 1em;
+        background-color: @orange;
+        margin:0px;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    th{
+        background-color: @orange;
+        color: @font_color_light;
+    }
+
+    td{
+        background-color:darken(@white,5%);
+    }
+
+    a:hover{
+        background-color:lighten(@orange,10%);
+    }
 }
 
 
@@ -208,10 +234,8 @@ input:-webkit-autofill {
     a {
         display: block;
         padding: 2em;
-        /*border-right: 1px solid darken(@white, 1%);
-    border-left: 1px solid darken(@white, 1%);*/
-        background-color: @white;
-        color: @orange;
+        background-color: @orange;
+        color: @white;
         text-decoration: none;
         text-transform: uppercase;
     }
@@ -219,7 +243,7 @@ input:-webkit-autofill {
     a:hover {
         display: block;
         padding: 2em;
-        background-color: rgba(255,255,255, 0.95);
+        background-color: @white;
         color: @orange;
         text-decoration: none;
         text-transform: uppercase;
