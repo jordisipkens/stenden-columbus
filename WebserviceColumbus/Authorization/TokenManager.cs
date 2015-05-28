@@ -64,8 +64,9 @@ namespace WebserviceColumbus.Authorization
                     && authHeaderValue.Parameter != null) {
                     return AuthenticateUser(authHeaderValue.Parameter);
                 }
+                return "authHeader voldoet niet aan schema";
             }
-            return null;
+            return "authHeader == null";
         }
 
         private static string AuthenticateUser(string credentials)
@@ -76,12 +77,15 @@ namespace WebserviceColumbus.Authorization
             string username = credentials.Substring(0, separator);
             string password = credentials.Substring(separator + 1);
 
-            if(username.Equals("C0lumbus") && password.Equals("cxTt7qICqqZWQzG1uTTgbw==")) {    //TODO Change: UserDbManager.ValidateUser(username, password)
-                string token = string.Format("{0}/{1}", DateTime.Now.ToString("u"), username);
-                token = Hash.Encrypt(token);
-                return token;
+            if(username.Equals("C0lumbus")) {
+                if (password.Equals("cxTt7qICqqZWQzG1uTTgbw==")) {    //TODO Change: UserDbManager.ValidateUser(username, password)
+                    string token = string.Format("{0}/{1}", DateTime.Now.ToString("u"), username);
+                    token = Hash.Encrypt(token);
+                    return token;
+                }
+                return "password is niet goed";
             }
-            return null;
+            return "username is niet goed";
         }
 
         private static bool CheckDate(DateTime time)

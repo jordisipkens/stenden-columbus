@@ -25,7 +25,7 @@ namespace WebserviceColumbus.Controllers
             if(result != null) {
                 return Request.CreateResponse(HttpStatusCode.OK, new Token() { TokenString = result } );
             }
-            return Request.CreateResponse(HttpStatusCode.Unauthorized);
+            return Request.CreateResponse(HttpStatusCode.OK, new Token() { TokenString = result });
         }
 
         [HttpGet, TokenRequired, Route("api/User/Details/{userID}")]
