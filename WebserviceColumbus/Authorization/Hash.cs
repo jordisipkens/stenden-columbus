@@ -69,7 +69,7 @@ namespace WebserviceColumbus.Authorization
             return null;
         }
 
-        public static string GetHashSha256(string text, int length)
+        public static string GetHashSha256(string text, int length = 32)
         {
             byte[] hash = new SHA256Managed().ComputeHash(Encoding.UTF8.GetBytes(text));
             string hashString = string.Empty;

@@ -72,7 +72,7 @@ namespace WebserviceColumbus.Authorization
 
         private static string AuthenticateUser(string credentials)
         {
-            credentials = Encoding.GetEncoding("iso-8859-1").GetString(Convert.FromBase64String(credentials));
+            credentials = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(credentials));
 
             int separator = credentials.IndexOf(':');
             string username = credentials.Substring(0, separator);
