@@ -62,29 +62,29 @@ table {
     width: 100%;
     color: @font_color;
     text-align: center;
-    border-width:0px;
+    border-width: 0px;
 
-    a{
-        color:@font_color_light;
+    a {
+        color: @font_color_light;
         display: block;
         padding: 1em;
         background-color: @orange;
-        margin:0px;
+        margin: 0px;
         text-decoration: none;
         text-transform: uppercase;
     }
 
-    th{
+    th {
         background-color: @orange;
         color: @font_color_light;
     }
 
-    td{
-        background-color:darken(@white,5%);
+    td {
+        background-color: darken(@white,5%);
     }
 
-    a:hover{
-        background-color:lighten(@orange,10%);
+    a:hover {
+        background-color: lighten(@orange,10%);
     }
 }
 
@@ -305,14 +305,15 @@ footer {
 
 .TL_image {
     width: 40%;
-    max-width: 30em;
 
     &.left {
         float: left;
+        max-width: 30em;
     }
 
     &.right {
         float: right;
+        max-width: 30em;
     }
 
     &.full {
@@ -324,4 +325,16 @@ footer {
         background-position-y: 100%;
         background-size: 100%;
     }
+
+    width: 100%;
+    color: @font_color_light;
+    text-align: center;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    float: left;
+    background: linear-gradient( rgba(0, 0, 0, @transparency), rgba(0, 0, 0, @transparency) ), url(/Content/Images/Background/bridge.jpg) no-repeat;
+    background-position-y: 100%;
+    background-size: 100%;
+
+
 }

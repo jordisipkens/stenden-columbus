@@ -25,7 +25,7 @@ namespace ColombusWebapplicatie.Controllers
         [HttpPost]
         public string Login(User user)
         {
-            WebRequest request = WebRequest.Create("http://columbus.somee.com/webservicecolumbus/api/User/Login");
+            WebRequest request = WebRequest.Create(apiUrl + "/api/User/Login");
             string userInfo = string.Format("{0}:{1}", user.Username, Encrypt(user.Password));
             string encodedUserInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(userInfo));
             string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);

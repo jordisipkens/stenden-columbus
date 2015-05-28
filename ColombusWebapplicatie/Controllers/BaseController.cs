@@ -12,7 +12,7 @@ namespace ColombusWebapplicatie.Controllers
 {
     public class BaseController : Controller
     {
-        private string apiUrl = "http://columbusstenden-001-site1.myasp.net/";
+        public string apiUrl = "http://columbus-webservice.azurewebsites.net/";
         private const string API_KEY = "C0lumbu5";
 
         public ActionResult Error(string errorMessage, ActionResult result)
