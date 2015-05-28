@@ -1,7 +1,35 @@
-﻿@{
+﻿@model ColombusWebapplicatie.Models.Travelogue
+@{
     ViewBag.Title = "Reisverslagen";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container">
-    <h2>Reisverslagen</h2>
+    <h2>@Model.Title</h2>
+
+    @{foreach (var par in Model.Paragraphs)
+    {
+        if (par.FullpageImage == true)
+        {
+            <img src="@par.ImagePath" class="TL_image full" />
+        }
+        else
+        {
+            if (@par.AlignImageLeft == true)
+            {
+                <img src="@par.ImagePath" class="TL_image left" />
+            }
+            else
+            {
+                <img src="@par.ImagePath" class="TL_image right" />
+            }
+        }
+
+        if (!String.IsNullOrWhiteSpace(par.Text))
+        {
+            <p>
+                @par.Text
+            </p>
+        }
+    }
+    }
 </div>
