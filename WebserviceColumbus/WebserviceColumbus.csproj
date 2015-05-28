@@ -83,7 +83,6 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Resources\ErrorLog.txt" />
-    <Content Include="Resources\TestStuff.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
