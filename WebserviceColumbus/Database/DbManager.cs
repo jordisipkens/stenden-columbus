@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using WebserviceColumbus.Model;
 using WebserviceColumbus.Other;
 
 namespace WebserviceColumbus.Database
@@ -10,6 +11,11 @@ namespace WebserviceColumbus.Database
     {
         #region Getters
 
+        /// <summary>
+        /// Gets an Entity by ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static T GetEntity(int id)
         {
             try {
@@ -23,6 +29,10 @@ namespace WebserviceColumbus.Database
             return null;
         }
 
+        /// <summary>
+        /// Gets all Entities of the given Type.
+        /// </summary>
+        /// <returns></returns>
         public static List<T> GetEntities()
         {
             try {
@@ -40,6 +50,11 @@ namespace WebserviceColumbus.Database
 
         #region Setters
 
+        /// <summary>
+        /// Adds a new entity to its corresponding table.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns>Value if insert was succesfull</returns>
         public static bool AddEntity(T entity)
         {
             try {
@@ -54,7 +69,12 @@ namespace WebserviceColumbus.Database
             return false;
         }
 
-        public static bool AddEntities(List<T> entities)
+        /// <summary>
+        /// Adds a collection of entities to its corresponding table.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns>Value if inserts were succesfull</returns>
+        public static bool AddEntities(ICollection<T> entities)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -74,6 +94,11 @@ namespace WebserviceColumbus.Database
 
         #region Update
 
+        /// <summary>
+        /// Updates the given entity. Tries to update related entities(childs) aswell.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public static bool UpdateEntity(T entity)
         {
             try {
@@ -93,6 +118,11 @@ namespace WebserviceColumbus.Database
 
         #region Delete
 
+        /// <summary>
+        /// Deletes the given entity.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public static bool DeleteEntity(T entity)
         {
             try {
@@ -108,6 +138,11 @@ namespace WebserviceColumbus.Database
             return false;
         }
 
+        /// <summary>
+        /// Deletes the given entity.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public static bool DeleteEntity(int id)
         {
             try {
@@ -123,7 +158,12 @@ namespace WebserviceColumbus.Database
 
         #endregion Delete
 
-        public static T UpdateOrAdd(T entity)
+        /// <summary>
+        /// Tries to update or insert an entity. The action is determined by the value of the ID.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns>The new object with the new ID</returns>
+        public static T UpdateOrInsertEntity(T entity)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -135,6 +175,7 @@ namespace WebserviceColumbus.Database
                         db.Entry<T>(entity).State = EntityState.Modified;
                     }
                     db.SaveChanges();
+                    return entity;
                 }
             }
             catch(Exception ex) {

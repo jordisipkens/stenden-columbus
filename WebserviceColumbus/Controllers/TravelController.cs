@@ -31,11 +31,11 @@ namespace WebserviceColumbus.Controllers
         }
 
         // POST: api/Travel
-        [HttpPost, TokenRequired]
+        [HttpPost, TokenRequired, Route("api/Travel")]
         public HttpResponseMessage Update([FromBody]Travel travel)
         {
             if(travel != null) {
-                return Request.CreateResponse(HttpStatusCode.Accepted, TravelDbManager.UpdateOrAdd(travel));
+                return Request.CreateResponse(HttpStatusCode.Accepted, TravelDbManager.UpdateOrInsert(travel));
             }
             return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }

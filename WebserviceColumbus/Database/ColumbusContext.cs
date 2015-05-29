@@ -23,6 +23,8 @@ namespace WebserviceColumbus.Database
 
         public DbSet<Paragraph> Paragraphs { get; set; }
 
+        public DbSet<Rating> Ratings { get; set; }
+
         public DbSet<Photo> Photos { get; set; }
 
         public DbSet<User> Users { get; set; }

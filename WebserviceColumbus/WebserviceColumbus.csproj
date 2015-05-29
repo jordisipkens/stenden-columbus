@@ -94,9 +94,19 @@
     <Compile Include="Controllers\TravelController.cs" />
     <Compile Include="Controllers\TravelOgueController.cs" />
     <Compile Include="Authorization\Encryption.cs" />
+    <Compile Include="Database\iDatabaseManager.cs" />
     <Compile Include="Database\TravelDbManager.cs" />
     <Compile Include="Database\TravelogueDbManager.cs" />
+    <Compile Include="Migrations\201505291347388_Travelogue_published.cs" />
+    <Compile Include="Migrations\201505291347388_Travelogue_published.Designer.cs">
+      <DependentUpon>201505291347388_Travelogue_published.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505291503213_Travelogue_Publish_Rating.cs" />
+    <Compile Include="Migrations\201505291503213_Travelogue_Publish_Rating.Designer.cs">
+      <DependentUpon>201505291503213_Travelogue_Publish_Rating.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Other\Token.cs" />
+    <Compile Include="Models\Travel\Travelogue\Rating.cs" />
     <Compile Include="Other\ErrorHandler.cs" />
     <Compile Include="IO\IOManager.cs" />
     <Compile Include="IO\JsonSerialization.cs" />
@@ -104,7 +114,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Database\ColumbusContext.cs" />
-    <Compile Include="Database\iDbEntity.cs" />
+    <Compile Include="Models\iDbEntity.cs" />
     <Compile Include="Database\UserDbManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -165,6 +175,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505240158454_added_attributes_user.resx">
       <DependentUpon>201505240158454_added_attributes_user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505291347388_Travelogue_published.resx">
+      <DependentUpon>201505291347388_Travelogue_published.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505291503213_Travelogue_Publish_Rating.resx">
+      <DependentUpon>201505291503213_Travelogue_Publish_Rating.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
