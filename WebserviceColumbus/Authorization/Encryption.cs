@@ -1,12 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using WebserviceColumbus.Other;
 
 namespace WebserviceColumbus.Authorization
 {
-    public static class Hash
+    public static class Encryption
     {
         private const string API_KEY = "C0lumbu5";
 
@@ -31,7 +29,14 @@ namespace WebserviceColumbus.Authorization
             return EncryptDecrypt(value, GetHashSha256(salt, 32), EncryptMode.DECRYPT);
         }
 
-        private static string EncryptDecrypt(string inputText, string encryptionKey, EncryptMode mode)
+        /// <summary>
+        /// Encrpytion and decrpytion is performed
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="encryptionKey"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        private static string EncryptDecrypt(string value, string encryptionKey, EncryptMode mode)
         {
             using(RijndaelManaged cipher = GetCipher()) {
                 byte[] rgbIV = new byte[cipher.BlockSize / 8];
@@ -57,26 +62,32 @@ namespace WebserviceColumbus.Authorization
 
                 UTF8Encoding encoding = new UTF8Encoding();
                 if(mode.Equals(EncryptMode.ENCRYPT)) {
-                    byte[] plainText = cipher.CreateEncryptor().TransformFinalBlock(encoding.GetBytes(inputText), 0, inputText.Length);
+                    byte[] plainText = cipher.CreateEncryptor().TransformFinalBlock(encoding.GetBytes(value), 0, value.Length);
                     return Convert.ToBase64String(plainText);
                 }
                 else if(mode.Equals(EncryptMode.DECRYPT)) {
-                    byte[] plainText = cipher.CreateDecryptor().TransformFinalBlock(Convert.FromBase64String(inputText), 0, Convert.FromBase64String(inputText).Length);
+                    byte[] plainText = cipher.CreateDecryptor().TransformFinalBlock(Convert.FromBase64String(value), 0, Convert.FromBase64String(value).Length);
                     return encoding.GetString(plainText);
                 }
             }
             return null;
         }
 
-        public static string GetHashSha256(string text, int length = 32)
+        /// <summary>
+        /// Gets the SHA256 value of the given string. default is 32 bits.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static string GetHashSha256(string value, int length = 32)
         {
-            byte[] hash = new SHA256Managed().ComputeHash(Encoding.UTF8.GetBytes(text));
+            byte[] hash = new SHA256Managed().ComputeHash(Encoding.UTF8.GetBytes(value));
             string hashString = string.Empty;
-            foreach (byte x in hash) {
+            foreach(byte x in hash) {
                 hashString += string.Format("{0:x2}", x);
             }
 
-            if (length > hashString.Length) {
+            if(length > hashString.Length) {
                 return hashString;
             }
             else {
@@ -84,6 +95,20 @@ namespace WebserviceColumbus.Authorization
             }
         }
 
+        /// <summary>
+        /// Decrpyts a simple UTF8 and base-64 encryption
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string DecryptUTF8(string value)
+        {
+            return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(value));
+        }
+
+        /// <summary>
+        /// Creates the Cipher object of RijndaelManaged encrpytion.
+        /// </summary>
+        /// <returns></returns>
         private static RijndaelManaged GetCipher()
         {
             RijndaelManaged cipher = new RijndaelManaged();
@@ -95,7 +120,7 @@ namespace WebserviceColumbus.Authorization
         }
     }
 
-    enum EncryptMode
+    internal enum EncryptMode
     {
         ENCRYPT,
         DECRYPT

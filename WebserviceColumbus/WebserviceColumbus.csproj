@@ -93,7 +93,7 @@
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\TravelController.cs" />
     <Compile Include="Controllers\TravelOgueController.cs" />
-    <Compile Include="Authorization\Hash.cs" />
+    <Compile Include="Authorization\Encryption.cs" />
     <Compile Include="Database\TravelDbManager.cs" />
     <Compile Include="Database\TravelogueDbManager.cs" />
     <Compile Include="Models\Other\Token.cs" />
