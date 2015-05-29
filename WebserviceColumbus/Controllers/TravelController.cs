@@ -13,7 +13,7 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired, Route("api/Travel/{travelID}")]
         public HttpResponseMessage Get(int travelID)
         {
-            Travel travel = TravelDbManager.GetTravel(travelID);
+            Travel travel = new TravelDbManager().GetEntity(travelID);
             if(travel != null && !travel.User.Username.Equals(TokenManager.GetUsernameFromToken())) {
                 return Request.CreateResponse(HttpStatusCode.Forbidden);
             }
@@ -24,8 +24,8 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired]
         public HttpResponseMessage GetAll(int userID, int offset = 0, int limit = 20)
         {
-            if(UserDbManager.ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
-                return Request.CreateResponse(HttpStatusCode.OK, TravelDbManager.GetAllTravels(userID, offset, limit));
+            if(new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
+                return Request.CreateResponse(HttpStatusCode.OK, new TravelDbManager().GetEntities(userID, offset, limit));
             }
             return Request.CreateResponse(HttpStatusCode.Forbidden);
         }
@@ -35,7 +35,7 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Update([FromBody]Travel travel)
         {
             if(travel != null) {
-                return Request.CreateResponse(HttpStatusCode.Accepted, TravelDbManager.UpdateOrInsert(travel));
+                return Request.CreateResponse(HttpStatusCode.Accepted, new TravelDbManager().UpdateOrInsertEntity(travel));
             }
             return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }
@@ -44,10 +44,11 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired, Route("api/Travel/Delete/{travelID}")]
         public HttpResponseMessage Delete(int travelID)
         {
-            Travel travel = TravelDbManager.GetTravel(travelID);
+            TravelDbManager dbManager = new TravelDbManager();
+            Travel travel = dbManager.GetEntity(travelID);
             if(travel != null) {
                 if(travel.User.Username.Equals(TokenManager.GetUsernameFromToken())) {
-                    if(TravelDbManager.DeleteEntity(travelID)) {
+                    if(dbManager.DeleteEntity(travelID)) {
                         return Request.CreateResponse(HttpStatusCode.Accepted);
                     }
                     return Request.CreateResponse(HttpStatusCode.Conflict);

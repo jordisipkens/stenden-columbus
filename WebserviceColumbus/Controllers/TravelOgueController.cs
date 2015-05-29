@@ -14,7 +14,7 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired, Route("api/Travelogue/{travelogueID}")]
         public HttpResponseMessage Get(int travelogueID)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, TravelogueDbManager.GetTravelogue(travelogueID));
+            return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().GetEntity(travelogueID));
             //TODO Add security check if the travelogue has been published. If not check user
         }
 
@@ -23,7 +23,7 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Update([FromBody]Travelogue travelogue)
         {
             if(travelogue != null) {
-                return Request.CreateResponse(HttpStatusCode.Accepted, TravelogueDbManager.UpdateOrInsert(travelogue));
+                return Request.CreateResponse(HttpStatusCode.Accepted, new TravelogueDbManager().UpdateOrInsertEntity(travelogue));
             }
             return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }
@@ -32,21 +32,21 @@ namespace WebserviceColumbus.Controllers
         [HttpGet]
         public HttpResponseMessage Display(SearchType filter = SearchType.Latest, int offset = 0, int limit = 20)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, TravelogueDbManager.Display(filter, offset, limit));
+            return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().Display(filter, offset, limit));
         }
 
         //GET: api/Travelogue/Search?value=..&limit=..
         [HttpGet]
         public HttpResponseMessage Search(string value, int limit = 20)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, TravelogueDbManager.Search(value, limit));
+            return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().Search(value, limit));
         }
 
         //GET: api/Travelogue?travelogueID=..&isPublic=..
         [HttpGet, TokenRequired]
         public HttpResponseMessage Publish(int travelogueID, bool isPublic = true)
         {
-            if(TravelogueDbManager.Publish(travelogueID, isPublic)) {
+            if(new TravelogueDbManager().Publish(travelogueID, isPublic)) {
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             return Request.CreateResponse(HttpStatusCode.Conflict);

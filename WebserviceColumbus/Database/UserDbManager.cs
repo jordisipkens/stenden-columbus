@@ -7,7 +7,7 @@ namespace WebserviceColumbus.Database
 {
     public class UserDbManager : DbManager<User>
     {
-        public static bool ValidateUser(string username)
+        public bool ValidateUser(string username)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -21,7 +21,7 @@ namespace WebserviceColumbus.Database
             }
         }
 
-        public static bool ValidateUser(string username, int userID)
+        public bool ValidateUser(string username, int userID)
         {
             User user = GetEntity(userID);
             if(user != null && user.Username != null) {
@@ -30,7 +30,7 @@ namespace WebserviceColumbus.Database
             return false;
         }
 
-        public static bool ValidateUser(string username, string password)
+        public bool ValidateUser(string username, string password)
         {
             try {
                 using(var db = new ColumbusDbContext()) {

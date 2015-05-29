@@ -14,7 +14,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static Travel GetTravel(int id)
+        public override Travel GetEntity(int id)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -34,7 +34,7 @@ namespace WebserviceColumbus.Database
         /// <param name="offset"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public static List<Travel> GetAllTravels(int userID, int offset = 0, int limit = 20)
+        public List<Travel> GetEntities(int userID, int offset = 0, int limit = 20)
         {
             if(limit > 100) {
                 limit = 100;
@@ -60,7 +60,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>The new object with the new ID</returns>
-        public static Travel UpdateOrInsert(Travel travel)
+        public override Travel UpdateOrInsertEntity(Travel travel)
         {
             try {
                 using(var db = new ColumbusDbContext()) {

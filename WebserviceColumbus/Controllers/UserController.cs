@@ -14,7 +14,7 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Register([FromBody]User user)
         {
             if(user != null) {
-                if(UserDbManager.AddEntity(user)) {
+                if(new UserDbManager().AddEntity(user)) {
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
             }
@@ -36,8 +36,9 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired, Route("api/User/Details/{userID}")]
         public HttpResponseMessage Details(int userID)
         {
-            if(UserDbManager.ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
-                return Request.CreateResponse(HttpStatusCode.OK, UserDbManager.GetEntity(userID));
+            UserDbManager dbManager = new UserDbManager();
+            if(dbManager.ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
+                return Request.CreateResponse(HttpStatusCode.OK, dbManager.GetEntity(userID));
             }
             return Request.CreateResponse(HttpStatusCode.Unauthorized);
         }
@@ -47,7 +48,7 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Update([FromBody]User user)
         {
             if(user != null) {
-                return Request.CreateResponse(HttpStatusCode.Accepted, UserDbManager.UpdateOrInsertEntity(user));
+                return Request.CreateResponse(HttpStatusCode.Accepted, new UserDbManager().UpdateOrInsertEntity(user));
             }
             return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }

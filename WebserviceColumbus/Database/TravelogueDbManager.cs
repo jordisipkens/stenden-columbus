@@ -16,7 +16,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static Travelogue GetTravelogue(int id)
+        public override Travelogue GetEntity(int id)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -34,7 +34,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static List<Travelogue> GetTravelogues()
+        public override List<Travelogue> GetEntities()
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -54,7 +54,7 @@ namespace WebserviceColumbus.Database
         /// <param name="offset"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public static List<Travelogue> Display(SearchType filter = SearchType.Latest, int offset = 0, int limit = 20)
+        public List<Travelogue> Display(SearchType filter = SearchType.Latest, int offset = 0, int limit = 20)
         {
             if(limit < 0 || limit > 100) {
                 limit = 100;
@@ -76,9 +76,9 @@ namespace WebserviceColumbus.Database
         /// <param name="offset"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        private static List<Travelogue> GetLatest(int offset, int limit)
+        private List<Travelogue> GetLatest(int offset, int limit)
         {
-            List<Travelogue> travelogues = GetTravelogues().OrderBy(t => t.PublishedTime).ToList();
+            List<Travelogue> travelogues = GetEntities().OrderBy(t => t.PublishedTime).ToList();
             if(offset + limit > travelogues.Count) {
                 limit = travelogues.Count - offset;
             }
@@ -91,9 +91,9 @@ namespace WebserviceColumbus.Database
         /// <param name="offset"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        private static List<Travelogue> GetBest(int offset, int limit)
+        private List<Travelogue> GetBest(int offset, int limit)
         {
-            List<Travelogue> travelogues = GetTravelogues();    //TODO
+            List<Travelogue> travelogues = GetEntities();    //TODO
             if(offset + limit > travelogues.Count) {
                 limit = travelogues.Count - offset;
             }
@@ -108,7 +108,7 @@ namespace WebserviceColumbus.Database
         /// <param name="value"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public static List<Travelogue> Search(string value, int limit = 20)
+        public List<Travelogue> Search(string value, int limit = 20)
         {
             if(limit < 0 || limit > 100) {
                 limit = 100;
@@ -135,7 +135,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>The new object with the new ID</returns>
-        public static Travelogue UpdateOrInsert(Travelogue travelogue)
+        public override Travelogue UpdateOrInsertEntity(Travelogue travelogue)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -166,12 +166,12 @@ namespace WebserviceColumbus.Database
         /// <param name="travelOgueID"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool Publish(int travelOgueID, bool value = true)
+        public bool Publish(int travelOgueID, bool value = true)
         {
-            Travelogue travelogue = TravelogueDbManager.GetTravelogue(travelOgueID);
-            Travel correspondingTravel = TravelDbManager.GetTravel(travelogue.TravelID);
-            if(travelogue != null && correspondingTravel != null && UserDbManager.ValidateUser(TokenManager.GetUsernameFromToken(), correspondingTravel.UserID)) {
-                return TravelogueDbManager.SetPublish(travelOgueID, value);
+            Travelogue travelogue = GetEntity(travelOgueID);
+            Travel correspondingTravel = new TravelDbManager().GetEntity(travelogue.TravelID);
+            if(travelogue != null && correspondingTravel != null && new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), correspondingTravel.UserID)) {
+                return SetPublish(travelOgueID, value);
             }
             return false;
         }
@@ -181,7 +181,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="travelogue"></param>
         /// <returns></returns>
-        private static bool SetPublish(Travelogue travelOgue, bool value)
+        private bool SetPublish(Travelogue travelOgue, bool value)
         {
             return SetPublish(travelOgue.ID, value);
         }
@@ -191,7 +191,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="travelogue"></param>
         /// <returns></returns>
-        private static bool SetPublish(int id, bool value)
+        private bool SetPublish(int id, bool value)
         {
             try {
                 using(var db = new ColumbusDbContext()) {

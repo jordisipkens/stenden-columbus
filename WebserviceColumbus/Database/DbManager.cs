@@ -16,7 +16,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static T GetEntity(int id)
+        public virtual T GetEntity(int id)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -33,7 +33,7 @@ namespace WebserviceColumbus.Database
         /// Gets all Entities of the given Type.
         /// </summary>
         /// <returns></returns>
-        public static List<T> GetEntities()
+        public virtual List<T> GetEntities()
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -55,7 +55,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>Value if insert was succesfull</returns>
-        public static bool AddEntity(T entity)
+        public virtual bool AddEntity(T entity)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -74,7 +74,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>Value if inserts were succesfull</returns>
-        public static bool AddEntities(ICollection<T> entities)
+        public virtual bool AddEntities(ICollection<T> entities)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -99,7 +99,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public static bool UpdateEntity(T entity)
+        public virtual bool UpdateEntity(T entity)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -123,7 +123,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public static bool DeleteEntity(T entity)
+        public virtual bool DeleteEntity(T entity)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -143,7 +143,7 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static bool DeleteEntity(int id)
+        public virtual bool DeleteEntity(int id)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
@@ -163,11 +163,10 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>The new object with the new ID</returns>
-        public static T UpdateOrInsertEntity(T entity)
+        public virtual T UpdateOrInsertEntity(T entity)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
-                    db.Set<T>().Attach(entity);
                     if(entity.ID == 0) {
                         db.Entry<T>(entity).State = EntityState.Added;
                     }
