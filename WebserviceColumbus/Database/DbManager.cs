@@ -14,19 +14,19 @@ namespace WebserviceColumbus.Database
         /// <summary>
         /// Gets an Entity by ID.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="ID"></param>
         /// <returns></returns>
-        public virtual T GetEntity(int id)
+        public virtual T GetEntity(int ID)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
-                    return db.Set<T>().Find(id);
+                    return db.Set<T>().Find(ID);
                 }
             }
             catch(Exception ex) {
-                new ErrorHandler(ex, "Failed to GET " + typeof(T) + " in database with ID #" + id, true);
+                new ErrorHandler(ex, "Failed to GET " + typeof(T) + " in database with ID #" + ID, true);
+                return null;
             }
-            return null;
         }
 
         /// <summary>
@@ -42,8 +42,8 @@ namespace WebserviceColumbus.Database
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to GET all " + typeof(T) + "s in database", true);
+                return null;
             }
-            return null;
         }
 
         #endregion Getters
@@ -65,8 +65,8 @@ namespace WebserviceColumbus.Database
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to CREATE " + typeof(T) + " in database", true);
+                return false;
             }
-            return false;
         }
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace WebserviceColumbus.Database
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to CREATE list of " + typeof(T) + "s in database", true);
+                return false;
             }
-            return false;
         }
 
         #endregion Setters
@@ -110,8 +110,8 @@ namespace WebserviceColumbus.Database
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to UPDATE " + typeof(T) + " in database with ID #" + entity.ID, true);
+                return false;
             }
-            return false;
         }
 
         #endregion Update
@@ -134,26 +134,26 @@ namespace WebserviceColumbus.Database
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to DELETE " + typeof(T) + " in database with ID #" + entity.ID, true);
+                return false;
             }
-            return false;
         }
 
         /// <summary>
         /// Deletes the given entity.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="ID"></param>
         /// <returns></returns>
-        public virtual bool DeleteEntity(int id)
+        public virtual bool DeleteEntity(int ID)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
-                    return DeleteEntity(db.Set<T>().Find(id));
+                    return DeleteEntity(db.Set<T>().Find(ID));
                 }
             }
             catch(Exception ex) {
-                new ErrorHandler(ex, "Failed to FIND " + typeof(T) + " in database with ID #" + id, true);
+                new ErrorHandler(ex, "Failed to FIND " + typeof(T) + " in database with ID #" + ID, true);
+                return false;
             }
-            return false;
         }
 
         #endregion Delete
@@ -179,8 +179,8 @@ namespace WebserviceColumbus.Database
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to GET all " + typeof(T) + "s in database", true);
+                return default(T);
             }
-            return default(T);
         }
     }
 }
