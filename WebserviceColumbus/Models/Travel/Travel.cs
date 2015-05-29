@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using WebserviceColumbus.Database;
+using WebserviceColumbus.Model;
 using WebserviceColumbus.Models.Other;
 
 namespace WebserviceColumbus.Models.Travel

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebserviceColumbus.Database;
+using WebserviceColumbus.Model;
 
 namespace WebserviceColumbus.Models.Travel
 {

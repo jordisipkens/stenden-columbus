@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using WebserviceColumbus.Database;
+using WebserviceColumbus.Model;
 
 namespace WebserviceColumbus.Models.Other
 {

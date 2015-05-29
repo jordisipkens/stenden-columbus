@@ -1,4 +1,4 @@
-﻿namespace WebserviceColumbus.Database
+﻿namespace WebserviceColumbus.Model
 {
     public interface iDbEntity
     {
