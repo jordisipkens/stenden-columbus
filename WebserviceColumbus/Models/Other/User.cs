@@ -20,7 +20,7 @@ namespace WebserviceColumbus.Models.Other
 
         public string LastName { get; set; }
 
-        [JsonIgnore, Required]
+        [Required]
         public string Password { get; set; }
 
         //public ICollection<Travel.Travel> Travels { get; set; }
