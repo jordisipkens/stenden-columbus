@@ -55,6 +55,26 @@ namespace WebserviceColumbus.Database
             }
         }
 
+        public override bool UpdateEntity(Travel entity)
+        {
+            try {
+                using(var db = new ColumbusDbContext()) {
+                    db.Entry(entity).State = EntityState.Modified;
+                    foreach(Location location in entity.Locations) {
+                        db.Entry(location).State = EntityState.Modified;
+                        db.Entry(location.LocationDetails).State = EntityState.Modified;
+                        db.Entry(location.LocationDetails.Coordinates).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch(Exception ex) {
+                new ErrorHandler(ex, "Failed to UPDATE Travel in database with ID #" + entity.ID, true);
+                return false;
+            }
+        }
+
         /// <summary>
         /// Tries to update or insert the travel. The action is determined by the value of the ID.
         /// </summary>
@@ -68,19 +88,14 @@ namespace WebserviceColumbus.Database
                         db.Entry(travel).State = EntityState.Added;
                     }
                     else {
-                        db.Entry(travel).State = EntityState.Modified;
-                        foreach(Location location in travel.Locations) {
-                            db.Entry(location).State = EntityState.Modified;
-                            db.Entry(location.LocationDetails).State = EntityState.Modified;
-                            db.Entry(location.LocationDetails.Coordinates).State = EntityState.Modified;
-                        }
+                        UpdateEntity(travel);
                     }
                     db.SaveChanges();
                     return travel;
                 }
             }
             catch(Exception ex) {
-                new ErrorHandler(ex, "Failed to Insert or Add travel in database", true);
+                new ErrorHandler(ex, "Failed to INSERT or UPDATE Travel in database", true);
                 return null;
             }
         }

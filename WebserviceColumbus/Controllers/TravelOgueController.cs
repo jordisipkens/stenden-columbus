@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Web.Http;
 using WebserviceColumbus.Authorization;
 using WebserviceColumbus.Database;
-using WebserviceColumbus.Models.Other;
 using WebserviceColumbus.Models.Travel.Travelogue;
 
 namespace WebserviceColumbus.Controllers
@@ -14,8 +13,11 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired, Route("api/Travelogue/{travelogueID}")]
         public HttpResponseMessage Get(int travelogueID)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().GetEntity(travelogueID));
-            //TODO Add security check if the travelogue has been published. If not check user
+            Travelogue travelogue = new TravelogueDbManager().GetEntity(travelogueID);
+            if(new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), new TravelDbManager().GetEntity(travelogue.TravelID).UserID)) {
+                return Request.CreateResponse(HttpStatusCode.OK, travelogue);
+            }
+            return Request.CreateResponse(HttpStatusCode.Forbidden);
         }
 
         //POST: api/Travelogue
@@ -56,7 +58,7 @@ namespace WebserviceColumbus.Controllers
         [HttpGet]
         public HttpResponseMessage Rate(int travelogueID, double rating)
         {
-            return Request.CreateResponse(HttpStatusCode.NotImplemented);
+            return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().Rate(travelogueID, rating));
         }
     }
 }
