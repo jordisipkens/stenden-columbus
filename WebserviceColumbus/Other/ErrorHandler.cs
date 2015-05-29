@@ -40,7 +40,7 @@ namespace WebserviceColumbus.Other
         /// </summary>
         private void WriteToLog()
         {
-            using(StreamWriter sw = File.AppendText(IOManager.GetProjectFilePath("Resources/ErrorLog.txt"))) {
+            using(StreamWriter sw = File.AppendText(GetProjectFilePath("ErrorLog.txt"))) {
                 if(ThrownException.GetType() == typeof(DbEntityValidationException)) {
                 }
                 else {
@@ -49,6 +49,16 @@ namespace WebserviceColumbus.Other
                     sw.WriteLine();
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the path to a file in the current project folder.
+        /// </summary>
+        /// <param name="projectPath"></param>
+        /// <returns></returns>
+        private string GetProjectFilePath(string projectPath)
+        {
+            return Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), projectPath);
         }
     }
 }

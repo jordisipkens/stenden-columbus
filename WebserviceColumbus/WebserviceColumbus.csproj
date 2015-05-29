@@ -81,8 +81,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Default.html" />
     <Content Include="Global.asax" />
-    <Content Include="Resources\ErrorLog.txt" />
+    <Content Include="ErrorLog.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -108,9 +109,6 @@
     <Compile Include="Models\Other\Token.cs" />
     <Compile Include="Models\Travel\Travelogue\Rating.cs" />
     <Compile Include="Other\ErrorHandler.cs" />
-    <Compile Include="IO\IOManager.cs" />
-    <Compile Include="IO\JsonSerialization.cs" />
-    <Compile Include="Controllers\DummyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Database\ColumbusContext.cs" />
@@ -151,8 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="Resources\DummyData\Travel.json" />
-    <Content Include="Resources\DummyData\TravelOgue.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
