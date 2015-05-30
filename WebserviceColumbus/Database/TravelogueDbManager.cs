@@ -14,25 +14,24 @@ namespace WebserviceColumbus.Database
         /// <summary>
         /// Gets the travelogue by ID and icludes the necessary files.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="ID"></param>
         /// <returns></returns>
-        public override Travelogue GetEntity(int id)
+        public override Travelogue GetEntity(int ID)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
-                    return db.Travelogues.Include("Paragraphs").Include("Ratings").Where(a => a.ID == id).First();
+                    return db.Travelogues.Include("Paragraphs").Include("Ratings").Where(a => a.ID == ID).First();
                 }
             }
             catch(Exception ex) {
-                new ErrorHandler(ex, "Failed to GET Travelogue in database with ID #" + id, true);
+                new ErrorHandler(ex, "Failed to GET Travelogue in database with ID #" + ID, true);
                 return null;
             }
         }
 
         /// <summary>
-        /// Gets the travelogue by ID and icludes the necessary files.
+        /// Gets a collectio of all travelogues
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         public override List<Travelogue> GetEntities()
         {
@@ -47,6 +46,30 @@ namespace WebserviceColumbus.Database
             }
         }
 
+        /// <summary>
+        /// Gets all travelogues from the User.
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public List<Travelogue> GetEntities(int userID)
+        {
+            try {
+                using(var db = new ColumbusDbContext()) {
+                    List<int> travelIDs = db.Travels.Where(t => t.UserID == userID).Select(t => t.ID).ToList();
+                    return db.Travelogues.Where(t => travelIDs.Contains(t.TravelID)).ToList();
+                }
+            }
+            catch(Exception ex) {
+                new ErrorHandler(ex, "Error while retrieving all Travelogues by userID", true);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Updates the given entity. Tries to update related entities(childs) aswell.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public override bool UpdateEntity(Travelogue entity)
         {
             try {

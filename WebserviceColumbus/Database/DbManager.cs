@@ -103,7 +103,6 @@ namespace WebserviceColumbus.Database
         {
             try {
                 using(var db = new ColumbusDbContext()) {
-                    db.Set<T>().Attach(entity);
                     db.Entry<T>(entity).State = EntityState.Modified;
                     return db.SaveChanges() == 1;
                 }
@@ -127,7 +126,6 @@ namespace WebserviceColumbus.Database
         {
             try {
                 using(var db = new ColumbusDbContext()) {
-                    db.Set<T>().Attach(entity);
                     db.Entry<T>(entity).State = EntityState.Deleted;
                     return db.SaveChanges() == 1;
                 }

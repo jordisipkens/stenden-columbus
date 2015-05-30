@@ -12,17 +12,17 @@ namespace WebserviceColumbus.Database
         /// <summary>
         /// Gets the travel by ID and icludes the necessary files.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="ID"></param>
         /// <returns></returns>
-        public override Travel GetEntity(int id)
+        public override Travel GetEntity(int ID)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
-                    return db.Travels.Include("Locations.LocationDetails.Coordinates").Include("User").Where(a => a.ID == id).First();
+                    return db.Travels.Include("Locations.LocationDetails.Coordinates").Include("User").Where(a => a.ID == ID).First();
                 }
             }
             catch(Exception ex) {
-                new ErrorHandler(ex, "Failed to GET Travel in database with ID #" + id, true);
+                new ErrorHandler(ex, "Failed to GET Travel in database with ID #" + ID, true);
                 return null;
             }
         }

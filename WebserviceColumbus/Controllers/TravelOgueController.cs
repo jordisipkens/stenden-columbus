@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebserviceColumbus.Authorization;
@@ -14,8 +15,25 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Get(int travelogueID)
         {
             Travelogue travelogue = new TravelogueDbManager().GetEntity(travelogueID);
-            if(new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), new TravelDbManager().GetEntity(travelogue.TravelID).UserID)) {
-                return Request.CreateResponse(HttpStatusCode.OK, travelogue);
+            if(travelogue != null) {
+                if(new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), new TravelDbManager().GetEntity(travelogue.TravelID).UserID)) {
+                    return Request.CreateResponse(HttpStatusCode.OK, travelogue);
+                }
+                return Request.CreateResponse(HttpStatusCode.Forbidden);
+            }
+            return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+        }
+
+        //GET: api/Travelogue/GetAll?userID=..
+        [HttpGet, TokenRequired]
+        public HttpResponseMessage GetAll(int userID)
+        {
+            if(new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
+                List<Travelogue> travelogues = new TravelogueDbManager().GetEntities(userID);
+                if(travelogues != null) {
+                    return Request.CreateResponse(HttpStatusCode.OK, travelogues);
+                }
+                return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
             }
             return Request.CreateResponse(HttpStatusCode.Forbidden);
         }
