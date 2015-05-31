@@ -13,8 +13,8 @@
     <div class="white-block form">
         <div class="container">
             @using(Html.BeginForm("Login", "Account", FormMethod.Post)) {
-                @Html.TextBoxFor(user => user.Username, new { @placeholder = "Gebruikersnaam", @class="login input" })
-                @Html.PasswordFor(user => user.Password, new { @placeholder = "Wachtwoord", @class="login input"})
+                @Html.TextBoxFor(user => user.Username, new { @placeholder = "Gebruikersnaam", @class="form input" })
+                @Html.PasswordFor(user => user.Password, new { @placeholder = "Wachtwoord", @class="form input"})
                 <input class="button orange"type="submit" name="submit" value="Inloggen">
             }
         </div>

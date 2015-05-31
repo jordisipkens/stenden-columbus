@@ -28,6 +28,15 @@
          "FullWidth":false,
          "Width":300,
          "Height":300
+      },
+       {  
+         "ID":3,
+         "Header":"",
+         "Text":"",
+         "PhotoID":0,
+         "FullWidth":true,
+         "Width":300,
+         "Height":300
       }
    ]
 }

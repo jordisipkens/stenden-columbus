@@ -1,0 +1,15 @@
+﻿@model ColombusWebapplicatie.Models.Paragraph
+    <table cellspacing="0" cellpadding="0" @*class="form"*@>
+        <tr>
+            <th>Titel</th>
+            <td>@Html.TextBoxFor(x => x.Header, new { @style = "width: 95%; padding: 1em;" })</td>
+        </tr>
+        <tr>
+            <th>Tekst</th>
+            <td>@Html.TextAreaFor(x => x.Text, new { @style = "width: 95%; padding: 1em;" })</td>
+        </tr>
+        <tr>
+            <th>Foto</th>
+            <td>@Html.TextBoxFor(x => x.PhotoID, new { @style = "width: 95%; padding: 1em;" })</td>
+        </tr>
+    </table>
