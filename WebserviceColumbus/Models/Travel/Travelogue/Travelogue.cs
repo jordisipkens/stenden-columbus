@@ -14,6 +14,8 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
         [Required]
         public int TravelID { get; set; }
 
+        public string Title { get; set; }
+
         public bool Published { get; set; }
 
         public DateTime PublishedTime { get; set; }
