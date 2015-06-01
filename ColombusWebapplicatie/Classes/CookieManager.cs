@@ -16,9 +16,11 @@ namespace ColombusWebapplicatie.Classes
         /// <param name="value"></param>
         public static void CreateCookie(HttpResponseBase context, string name, string value)
         {
-            HttpCookie myCookie = new HttpCookie(name, value);
-            context.Cookies.Add(myCookie);
-            context.SetCookie(myCookie);
+            if(context != null) {
+                HttpCookie myCookie = new HttpCookie(name, value);
+                context.Cookies.Add(myCookie);
+                context.SetCookie(myCookie);
+            }
         }
 
         /// <summary>
@@ -29,7 +31,7 @@ namespace ColombusWebapplicatie.Classes
         /// <returns></returns>
         public static string GetCookie(HttpRequestBase context, string name)
         {
-            if(context.Cookies[name] != null) {
+            if(context != null && context.Cookies[name] != null) {
                 return context.Cookies[name].Value;
             }
             return null;

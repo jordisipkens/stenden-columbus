@@ -15,21 +15,6 @@ namespace ColombusWebapplicatie.Classes
         public const string AZURE_BASE_URL = "http://columbus-webservice.azurewebsites.net/api/";
 
         /// <summary>
-        /// Starts a login request.
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="responseBase"></param>
-        public static void LoginRequest(User user, HttpResponseBase responseBase = null)
-        {
-            string userInfo = string.Format("{0}:{1}", user.Username, Encryption.Encrypt(user.Password));
-            string encodedUserInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(userInfo));
-            string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);
-
-            Token token = GetRequest<Token>("User/Login", new Dictionary<string, string>() { { "Authorization", credentials } }, AZURE_BASE_URL);
-            CookieManager.CreateCookie(responseBase, "Token", token.TokenString);
-        }
-
-        /// <summary>
         /// Starts a GET request.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -38,10 +23,10 @@ namespace ColombusWebapplicatie.Classes
         /// <param name="baseUrl"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static T GetRequest<T>(string url, Dictionary<string, string> headers = null, string baseUrl = AZURE_BASE_URL, HttpRequestBase request = null)
+        public static T GetRequest<T>(string url, HttpRequestBase request, Dictionary<string, string> headers = null, string baseUrl = AZURE_BASE_URL)
         {
-            HttpWebResponse q = (HttpWebResponse)CreateRequest(url, headers, baseUrl, request).GetResponse();
-            return ReadResponse<T>(q);
+            HttpWebResponse reponse = (HttpWebResponse)CreateRequest(url, headers, baseUrl, request).GetResponse();
+            return ReadResponse<T>(reponse);
         }
 
         /// <summary>
@@ -52,9 +37,34 @@ namespace ColombusWebapplicatie.Classes
         /// <param name="objectToPost"></param>
         /// <param name="baseUrl"></param>
         /// <returns></returns>
-        public static T PostRequest<T>(string url, object objectToPost, string baseUrl = AZURE_BASE_URL)
+        public static T PostRequest<T>(string url, HttpRequestBase request, object objectToPost, string baseUrl = AZURE_BASE_URL)
         {
-            return default(T);
+            HttpWebRequest httpWebRequest = (HttpWebRequest)CreateRequest(url, null, baseUrl, request);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+
+            using(var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream())) {
+                streamWriter.Write(JsonConvert.SerializeObject(objectToPost));
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            return ReadResponse<T>((HttpWebResponse)httpWebRequest.GetResponse());
+        }
+
+        /// <summary>
+        /// Starts a login request.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="responseBase"></param>
+        public static void LoginRequest(User user, HttpResponseBase responseBase = null)
+        {
+            string userInfo = string.Format("{0}:{1}", user.Username, Encryption.Encrypt(user.Password));
+            string encodedUserInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(userInfo));
+            string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);
+
+            Token token = GetRequest<Token>("User/Login", null, new Dictionary<string, string>() { { "Authorization", credentials } }, AZURE_BASE_URL);
+            CookieManager.CreateCookie(responseBase, "Token", token.TokenString);
         }
 
         /// <summary>
@@ -73,6 +83,7 @@ namespace ColombusWebapplicatie.Classes
                     req.Headers[header.Key] = header.Value;
                 }
             }
+
             if(request != null) {
                 req.Headers["Token"] = CookieManager.GetCookie(request, "Token");
             }
@@ -92,7 +103,13 @@ namespace ColombusWebapplicatie.Classes
             using(StreamReader sr = new StreamReader(data)) {
                 html = sr.ReadToEnd();
             }
-            return JsonConvert.DeserializeObject<T>(html);
+
+            try {
+                return JsonConvert.DeserializeObject<T>(html);
+            }
+            catch(Exception) {
+                return default(T);
+            }
         }
     }
 }
