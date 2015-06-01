@@ -1,27 +1,45 @@
-﻿@{
+﻿@model ColombusWebapplicatie.Models.Travelogue
+@{
     ViewBag.Title = "Nieuw reisverslag aanmaken";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@Html.BeginForm("AddParagraph", "Travelogue")
+{
 <h2>@ViewBag.Title</h2>
 <div class="white-block">
     <div class="container">
-        <div id="paragraphs">
-            @Html.Partial("_paragraph")
-            @Html.ActionLink("Voeg paragraaf toe", null, new { }, new { @class = "button orange", id = "btn_paragraph" })
-            <a class="button orange" id="test">TEST</a>
-        </div>
+        <table cellspacing="0" cellpadding="0" @*class="form"*@>
+            <tr>
+                <th>Titel</th>
+                <td>@Html.TextBoxFor(x => x.Title, new { @style = "width: 95%; padding: 1em;" })</td>
+            </tr>
+            <tr>
+                <th>Paragrafen</th>
+                @foreach (var par in Model.Paragraphs)
+                {
+                    @Html.Partial("_paragraph", par)
+                }
+
+                <td> @Html.ActionLink("Voeg paragraaf toe", "AddParagraph", new { }, new { @class = "button orange", id = "btn_paragraph" })</td>
+                <td>
+                    <input type="submit" name="AddParagraph" value="AddParagraph" />
+                    <input type="submit" name="Index" value="Index" />
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
+}
 
 
-    <script>
+@*<script>
         var partial = $("#document").load("/Travelogue/CreateTravelogue/AddParagraph");
 
         $("#test").click(function () {
             $("#paragraphs").append(partial);
         });
-    </script>
+    </script>*@
 
 
 
