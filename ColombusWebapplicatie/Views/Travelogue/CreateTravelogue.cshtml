@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Nieuw reisverslag aanmaken";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="white-block">
+    <div class="container">
+        <div id="paragraphs">
+            @Html.Partial("_paragraph")
+            @Html.ActionLink("Voeg paragraaf toe", null, new { }, new { @class = "button orange", id = "btn_paragraph" })
+            <a class="button orange" id="test">TEST</a>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        var partial = $("#document").load("/Travelogue/CreateTravelogue/AddParagraph");
+
+        $("#test").click(function () {
+            $("#paragraphs").append(partial);
+        });
+    </script>
+
+
+
+
