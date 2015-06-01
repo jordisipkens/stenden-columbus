@@ -1,4 +1,5 @@
-﻿using ColombusWebapplicatie.Models;
+﻿using ColombusWebapplicatie.Classes;
+using ColombusWebapplicatie.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,19 +23,9 @@ namespace ColombusWebapplicatie.Controllers
             return View();
         }
 
-        [HttpPost]
-        public string Login(User user)
+        public void Login(User user)
         {
-            WebRequest request = WebRequest.Create(apiUrl + "/api/User/Login");
-            string userInfo = string.Format("{0}:{1}", user.Username, Encrypt(user.Password));
-            string encodedUserInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(userInfo));
-            string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);
-            request.Headers["Authorization"] = credentials;
-            WebResponse response = request.GetResponse();
-            StreamReader streamReader = new StreamReader(response.GetResponseStream());
-            Token token = JsonConvert.DeserializeObject<Token>(streamReader.ReadToEnd());
-            return token.TokenString;
+            HTTPManager.LoginRequest(user, Response);
         }
-
     }
 }
