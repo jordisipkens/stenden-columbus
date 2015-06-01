@@ -114,11 +114,16 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Classes\JsonSerialization.cs" />
     <Compile Include="Controllers\TravelController.cs" />
     <Compile Include="Controllers\TravelogueController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Google\geometry.cs" />
+    <Compile Include="Models\Google\GooglePlacesResponse.cs" />
+    <Compile Include="Models\Google\location.cs" />
+    <Compile Include="Models\Google\results.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Coordinates.cs" />
     <Compile Include="Models\Location.cs" />
@@ -191,6 +196,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Travelogue\_paragraph.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Travel\AddTravel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\json\AddTravel.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Travel\AddLocations.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

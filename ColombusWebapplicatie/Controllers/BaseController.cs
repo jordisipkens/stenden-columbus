@@ -17,7 +17,7 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult Error(string errorMessage, ActionResult result)
         {
             TempData["error"] = errorMessage;
-            return result;
+            return result; 
         }
 
         public ActionResult ErrorToIndex(string errorMessage)
