@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(loginResponse == null) {
+        if(loginResponse != null) {
             Intent intent = new Intent(this, LoginScreen.class);
             startActivity(intent);
         }
