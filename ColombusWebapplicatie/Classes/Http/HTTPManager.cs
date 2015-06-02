@@ -7,15 +7,31 @@ using System.Net;
 using System.Text;
 using System.Web;
 
-namespace ColombusWebapplicatie.Classes
+namespace ColombusWebapplicatie.Classes.Http
 {
     public static class HTTPManager
     {
         public const string LOCAL_BASE_URL = "http://localhost:2758/api/";
         public const string AZURE_BASE_URL = "http://columbus-webservice.azurewebsites.net/api/";
+        public const string GOOGLE_PLACES_BASE_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=";
+
+        public const string GOOGLE_PLACES_API_KEY = "AIzaSyDpXa5VtOKNRA8obETZwkV7vbHzjio-17k";
 
         /// <summary>
-        /// Starts a GET request.
+        /// Used for a default web request to any website/webservice.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="headers"></param>
+        /// <returns></returns>
+        public static T GetRequest<T>(string url, Dictionary<string, string> headers = null)
+        {
+            HttpWebResponse response = (HttpWebResponse)CreateRequest(url, headers).GetResponse();
+            return ReadResponse<T>(response);
+        }
+
+        /// <summary>
+        /// Starts a GET request to the webservice.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="url"></param>
@@ -23,23 +39,23 @@ namespace ColombusWebapplicatie.Classes
         /// <param name="baseUrl"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static T GetRequest<T>(string url, HttpRequestBase request, Dictionary<string, string> headers = null, string baseUrl = AZURE_BASE_URL)
+        public static T WebserviceGetRequest<T>(string url, HttpRequestBase request, string baseUrl = AZURE_BASE_URL, Dictionary<string, string> headers = null)
         {
-            HttpWebResponse reponse = (HttpWebResponse)CreateRequest(url, headers, baseUrl, request).GetResponse();
+            HttpWebResponse reponse = (HttpWebResponse)CreateRequest(baseUrl + url, headers, request).GetResponse();
             return ReadResponse<T>(reponse);
         }
 
         /// <summary>
-        /// Starts a POST request.
+        /// Starts a POST request to the webservice.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="url"></param>
         /// <param name="objectToPost"></param>
         /// <param name="baseUrl"></param>
         /// <returns></returns>
-        public static T PostRequest<T>(string url, HttpRequestBase request, object objectToPost, string baseUrl = AZURE_BASE_URL)
+        public static T WebservicePostRequest<T>(string url, HttpRequestBase request, object objectToPost, string baseUrl = AZURE_BASE_URL)
         {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)CreateRequest(url, null, baseUrl, request);
+            HttpWebRequest httpWebRequest = (HttpWebRequest)CreateRequest(baseUrl + url, null, request);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
@@ -63,7 +79,7 @@ namespace ColombusWebapplicatie.Classes
             string encodedUserInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(userInfo));
             string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);
 
-            LoginResponse loginRequest = GetRequest<LoginResponse>("User/Login", null, new Dictionary<string, string>() { { "Authorization", credentials } }, AZURE_BASE_URL);
+            LoginResponse loginRequest = WebserviceGetRequest<LoginResponse>("User/Login", null, AZURE_BASE_URL, new Dictionary<string, string>() { { "Authorization", credentials } });
             return loginRequest;
         }
 
@@ -75,9 +91,9 @@ namespace ColombusWebapplicatie.Classes
         /// <param name="baseUrl"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        private static WebRequest CreateRequest(string url, Dictionary<string, string> headers = null, string baseUrl = AZURE_BASE_URL, HttpRequestBase request = null)
+        private static WebRequest CreateRequest(string url, Dictionary<string, string> headers = null, HttpRequestBase request = null)
         {
-            WebRequest req = WebRequest.Create(baseUrl + url);
+            WebRequest req = WebRequest.Create(url);
             if(headers != null) {
                 foreach(KeyValuePair<string, string> header in headers) {
                     req.Headers[header.Key] = header.Value;

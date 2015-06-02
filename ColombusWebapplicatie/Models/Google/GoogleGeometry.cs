@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using ColombusWebapplicatie.Models.Google;
+﻿using Newtonsoft.Json;
 
 namespace ColombusWebapplicatie.Models.Google
 {
     public class GoogleGeometry
     {
-        public GoogleLocation location { get; set; }
-
+        [JsonProperty("location")]
+        public GoogleLocation Location { get; set; }
     }
 }

@@ -1,27 +1,18 @@
-﻿using ColombusWebapplicatie.Classes;
+﻿using ColombusWebapplicatie.Classes.Http;
 using ColombusWebapplicatie.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ColombusWebapplicatie.Controllers
 {
     public class AccountController : BaseController
     {
-        //
         // GET: /Account/
 
         public ActionResult Index()
         {
             return View();
         }
+
         public RedirectToRouteResult Login(User user)
         {
             LoginResponse response = HTTPManager.LoginRequest(user);
@@ -29,6 +20,7 @@ namespace ColombusWebapplicatie.Controllers
                 CookieManager.CreateCookie(Response, "Token", response.Token);
                 Session["LoggedIn"] = true;
                 Session["User"] = response.User;
+                Session.Timeout = 180;
             }
             return RedirectToAction("Index", "Home");
         }
@@ -41,7 +33,7 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult RegisterUser(User user)
         {
             if(ModelState.IsValid) {
-                User addedUser = HTTPManager.GetRequest<User>("User", Request);
+                User addedUser = HTTPManager.WebserviceGetRequest<User>("User", Request);
                 return RedirectToAction("Index", "Home");
             }
             else {

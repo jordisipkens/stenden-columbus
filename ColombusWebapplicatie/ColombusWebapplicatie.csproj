@@ -108,9 +108,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\CookieManager.cs" />
+    <Compile Include="Classes\Http\CookieManager.cs" />
     <Compile Include="Classes\Encrpytion.cs" />
-    <Compile Include="Classes\HTTPManager.cs" />
+    <Compile Include="Classes\Http\HTTPManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -120,18 +120,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Google\GoogleAlternative.cs" />
     <Compile Include="Models\Google\GoogleGeometry.cs" />
-    <Compile Include="Models\Google\GooglePlacesResponse.cs" />
+    <Compile Include="Models\Google\GooglePhoto.cs" />
+    <Compile Include="Models\Google\GoogleResponse.cs" />
     <Compile Include="Models\Google\GoogleLocation.cs" />
-    <Compile Include="Models\Google\GoogleResults.cs" />
-    <Compile Include="Models\Rating.cs" />
-    <Compile Include="Models\Coordinates.cs" />
-    <Compile Include="Models\Location.cs" />
-    <Compile Include="Models\LocationDetails.cs" />
-    <Compile Include="Models\Paragraph.cs" />
-    <Compile Include="Models\LoginRequest.cs" />
-    <Compile Include="Models\Travel.cs" />
-    <Compile Include="Models\Travelogue.cs" />
+    <Compile Include="Models\Google\GoogleResult.cs" />
+    <Compile Include="Models\Photo.cs" />
+    <Compile Include="Models\Travel\Travelogue\Rating.cs" />
+    <Compile Include="Models\Travel\Coordinates.cs" />
+    <Compile Include="Models\Travel\Location.cs" />
+    <Compile Include="Models\Travel\LocationDetails.cs" />
+    <Compile Include="Models\Travel\Travelogue\Paragraph.cs" />
+    <Compile Include="Models\LoginResponse.cs" />
+    <Compile Include="Models\Travel\Travel.cs" />
+    <Compile Include="Models\Travel\Travelogue\Travelogue.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
