@@ -120,10 +120,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Google\geometry.cs" />
+    <Compile Include="Models\Google\GoogleGeometry.cs" />
     <Compile Include="Models\Google\GooglePlacesResponse.cs" />
-    <Compile Include="Models\Google\location.cs" />
-    <Compile Include="Models\Google\results.cs" />
+    <Compile Include="Models\Google\GoogleLocation.cs" />
+    <Compile Include="Models\Google\GoogleResults.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Coordinates.cs" />
     <Compile Include="Models\Location.cs" />

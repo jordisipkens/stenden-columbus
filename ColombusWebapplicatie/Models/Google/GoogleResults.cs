@@ -5,9 +5,9 @@ using System.Web;
 
 namespace ColombusWebapplicatie.Models.Google
 {
-    public class results
+    public class GoogleResults
     {
-        public geometry geometry { get; set; }
+        public GoogleGeometry geometry { get; set; }
         public string name { get; set; }
         public string reference { get; set; }
         public string vicinity { get; set; }

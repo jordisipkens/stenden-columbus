@@ -35,7 +35,7 @@ namespace ColombusWebapplicatie.Controllers
             Travel travel = new Travel();
             return View(travel);
         }
-
+        // Maar als je dan locaties hebt hoe zet je dat in een form? Als je 1 aan wilt klikken, dat zijn dan links geen formulierelementen dus die worden niet meegenomen. Ja
         [HttpPost] // Add travel to webservice
         public ActionResult AddTravel(Travel travel)
         {
@@ -78,6 +78,7 @@ namespace ColombusWebapplicatie.Controllers
             GooglePlacesResponse googlePlacesResponse = (GooglePlacesResponse)JsonConvert.DeserializeObject<GooglePlacesResponse>(responseString);
             return googlePlacesResponse;
         }
+
 
         [HttpPost] // Search for a location via Google Places API
         public ActionResult SearchLocation(string query)

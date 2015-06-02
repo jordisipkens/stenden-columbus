@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ColombusWebapplicatie.Models.Google;
 
 namespace ColombusWebapplicatie.Models.Google
 {
-    public class location
+    public class GoogleGeometry
     {
-        public string lat { get; set; }
-        public string lng { get; set; }
+        public GoogleLocation location { get; set; }
+
     }
 }
