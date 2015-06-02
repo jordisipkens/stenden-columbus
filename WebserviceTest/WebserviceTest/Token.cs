@@ -1,7 +1,11 @@
-﻿namespace TestLogin
+﻿using WebserviceColumbus.Models.Other;
+
+namespace TestLogin
 {
-    internal class Token
+    internal class LoginResponse
     {
-        public string TokenString { get; set; }
+        public User User { get; set; }
+
+        public string Token { get; set; }
     }
 }

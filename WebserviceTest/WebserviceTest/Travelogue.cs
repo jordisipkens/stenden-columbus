@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WebserviceColumbus.Models.Travel.Travelogue
 {
@@ -9,6 +10,12 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
 
         //[Required]
         public int TravelID { get; set; }
+
+        public string Title { get; set; }
+
+        public bool Published { get; set; }
+
+        public DateTime PublishedTime { get; set; }
 
         public ICollection<Paragraph> Paragraphs { get; set; }
     }

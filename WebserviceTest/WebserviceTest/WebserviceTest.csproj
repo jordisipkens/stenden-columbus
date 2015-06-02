@@ -57,6 +57,7 @@
     <Compile Include="Token.cs" />
     <Compile Include="Travel.cs" />
     <Compile Include="Travelogue.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
