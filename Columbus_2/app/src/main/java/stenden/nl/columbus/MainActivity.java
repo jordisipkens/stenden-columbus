@@ -23,6 +23,7 @@ import stenden.nl.columbus.Fragments.AccountFragment;
 import stenden.nl.columbus.Fragments.HomeFragment;
 import stenden.nl.columbus.Fragments.MapFragment;
 import stenden.nl.columbus.GSON.Objects.LoginResponse;
+import stenden.nl.columbus.GSON.Objects.User;
 
 
 public class MainActivity extends ActionBarActivity
@@ -40,9 +41,11 @@ public class MainActivity extends ActionBarActivity
 
     private Fragment mCurrentFragment;
 
-    public static LoginResponse loginResponse = null;
 
+    // Static variables used throughout fragments
+    public static LoginResponse loginResponse = null;
     public final static String PREFS_NAME = "C0lumbus";
+    public static User user = null; // Moet nog bij loginResponse verwerkt worden.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

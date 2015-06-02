@@ -28,6 +28,7 @@
                 android:gravity="center_vertical|start"/>
 
             <EditText
+                android:id="@+id/username"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"/>
@@ -49,6 +50,7 @@
                 android:gravity="center_vertical|start"/>
 
             <EditText
+                android:id="@+id/email"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"/>
@@ -69,6 +71,7 @@
                 android:gravity="center_vertical|start"/>
 
             <EditText
+                android:id="@+id/firstname"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"/>
@@ -89,6 +92,7 @@
                 android:gravity="center_vertical|start"/>
 
             <EditText
+                android:id="@+id/lastname"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"/>
