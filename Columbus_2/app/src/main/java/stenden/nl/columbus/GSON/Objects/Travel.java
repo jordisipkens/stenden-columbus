@@ -11,6 +11,8 @@ public class Travel {
 
     @SerializedName("ID")
     public int id;
+    @SerializedName("Title")
+    public String title;
     @SerializedName("StartDate")
     public String startDate;
     @SerializedName("EndDate")
@@ -26,6 +28,14 @@ public class Travel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getStartDate() {
