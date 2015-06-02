@@ -1,5 +1,11 @@
 ﻿@model ColombusWebapplicatie.Models.Paragraph
     <table cellspacing="0" cellpadding="0" @*class="form"*@>
+        @Html.HiddenFor(x => x.Height)
+        @Html.HiddenFor(x => x.FullWidth)
+        @Html.HiddenFor(x => x.Width)
+        @Html.HiddenFor(x => x.ID)
+        @Html.HiddenFor(x => x.Travelogue)
+        @Html.HiddenFor(x => x.AlignImageLeft)
         <tr>
             <th>Titel</th>
             <td>@Html.TextBoxFor(x => x.Header, new { @style = "width: 95%; padding: 1em;" })</td>
