@@ -67,17 +67,23 @@ namespace ColombusWebapplicatie.Controllers
             }
         }
 
-        [HttpPost] // Search for a location via Google Places API
-        public string SearchLocation(string search)
+        private GooglePlacesResponse RequestGooglePlaces(string query)
         {
             string googleApiKey = "AIzaSyDpXa5VtOKNRA8obETZwkV7vbHzjio-17k";
-            string googleUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + search + "&key=" + googleApiKey;
+            string googleUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + query + "&key=" + googleApiKey;
             WebRequest request = WebRequest.Create(googleUrl);
             WebResponse response = request.GetResponse();
             StreamReader streamReader = new StreamReader(response.GetResponseStream());
             string responseString = streamReader.ReadToEnd();
             GooglePlacesResponse googlePlacesResponse = (GooglePlacesResponse)JsonConvert.DeserializeObject<GooglePlacesResponse>(responseString);
-            return googlePlacesResponse.status;
+            return googlePlacesResponse;
+        }
+
+        [HttpPost] // Search for a location via Google Places API
+        public ActionResult SearchLocation(string query)
+        {
+            GooglePlacesResponse response = this.RequestGooglePlaces(query);
+            return View(response);
         }
 
         public ActionResult ViewTravel(int? id)

@@ -10,7 +10,7 @@
         <h2>@ViewBag.Title</h2>
         @using (Html.BeginForm("SearchLocation", "Travel", FormMethod.Post))
         {
-            @Html.TextBox("search");
+            @Html.TextBox("query");
             <input class="button orange" type="submit" name="search" value="Zoeken">
         }
     </div>
