@@ -2,6 +2,7 @@ package stenden.nl.columbus;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 import stenden.nl.columbus.Encryptie.CryptLib;
 import stenden.nl.columbus.GSON.GsonRequest;
-import stenden.nl.columbus.GSON.Objects.Token;
+import stenden.nl.columbus.GSON.Objects.LoginResponse;
 import stenden.nl.columbus.GSON.VolleyHelper;
 
 /**
@@ -40,6 +41,15 @@ public class LoginScreen extends Activity implements View.OnClickListener {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
+
+        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setToken(settings.getString("loginResponse", null));
+        if(loginResponse.getToken() != null){
+            MainActivity.loginResponse = loginResponse;
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
 
         login = (Button) findViewById(R.id.login);
         mUser = (EditText) findViewById(R.id.username);
@@ -70,6 +80,12 @@ public class LoginScreen extends Activity implements View.OnClickListener {
 
     @Override
     protected void onStop() {
+        if(MainActivity.loginResponse != null){
+            SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+
+            editor.putString("loginResponse", MainActivity.loginResponse.getToken()).commit();
+        }
         super.onStop();
     }
 
@@ -107,22 +123,26 @@ public class LoginScreen extends Activity implements View.OnClickListener {
             apiRequest(fullHeader);
         }
 
-        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        //startActivity(intent);
-
     }
 
     private void apiRequest(String header){
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("Authorization", "Basic QzBsdW1idXM6Y3hUdDdxSUNxcVpXUXpHMXVUVGdidz09");
+        headers.put("Authorization", "Basic " + header);
         String FULL_URL = base_url + login_call;
         VolleyHelper.getInstance(getApplicationContext()).addToRequestQueue(
-                new GsonRequest<>(FULL_URL, Token.class, headers, new Response.Listener<Token>() {
-                    public void onResponse(Token s) {
-                        Token token = s;
-                        if(token != null){
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
+                new GsonRequest<>(FULL_URL, LoginResponse.class, headers, new Response.Listener<LoginResponse>() {
+                    public void onResponse(LoginResponse loginResponse) {
+                        if(loginResponse.getToken() != null){
+                            // Sharedpreferences
+                            SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+                            SharedPreferences.Editor editor = settings.edit();
+
+                            editor.putString("loginResponse", loginResponse.getToken()).commit();
+
+                            // Start MainActivity
+                            MainActivity.loginResponse = loginResponse;
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
                         }
                     }
                 }));
@@ -152,5 +172,10 @@ public class LoginScreen extends Activity implements View.OnClickListener {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        System.exit(0);
     }
 }

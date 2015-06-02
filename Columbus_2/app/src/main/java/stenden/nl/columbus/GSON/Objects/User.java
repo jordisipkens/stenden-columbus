@@ -16,6 +16,10 @@ public class User {
     public String name;
     @SerializedName("LastName")
     public String lastName;
+    @SerializedName("Username")
+    public String user;
+    @SerializedName("Password")
+    public String password;
 
     public int getId() {
         return id;
@@ -47,5 +51,21 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

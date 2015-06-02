@@ -62,8 +62,6 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
-    private Fragment mCurrentFragment;
-
     public NavigationDrawerFragment() {
     }
 
@@ -112,6 +110,7 @@ public class NavigationDrawerFragment extends Fragment {
                 getString(R.string.title_section2),
                 getString(R.string.title_section3),
                 getString(R.string.title_section4),
+                getString(R.string.title_section5),
         }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

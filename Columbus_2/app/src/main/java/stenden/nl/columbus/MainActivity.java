@@ -1,6 +1,8 @@
 package stenden.nl.columbus;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import stenden.nl.columbus.Fragments.AboutFragment;
 import stenden.nl.columbus.Fragments.AccountFragment;
 import stenden.nl.columbus.Fragments.HomeFragment;
 import stenden.nl.columbus.Fragments.MapFragment;
+import stenden.nl.columbus.GSON.Objects.LoginResponse;
 
 
 public class MainActivity extends ActionBarActivity
@@ -37,8 +40,16 @@ public class MainActivity extends ActionBarActivity
 
     private Fragment mCurrentFragment;
 
+    public static LoginResponse loginResponse = null;
+
+    public final static String PREFS_NAME = "C0lumbus";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(loginResponse == null) {
+            Intent intent = new Intent(this, LoginScreen.class);
+            startActivity(intent);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -57,6 +68,17 @@ public class MainActivity extends ActionBarActivity
         ActionBar bar = getSupportActionBar();
         bar.setDisplayShowHomeEnabled(false);
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF7200")));
+    }
+
+    @Override
+    protected void onStop() {
+        if(loginResponse != null){
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+
+            editor.putString("loginResponse", loginResponse.getToken()).commit();
+        }
+        super.onStop();
     }
 
     /**
@@ -105,6 +127,12 @@ public class MainActivity extends ActionBarActivity
                 newFragment = new MapFragment();
                 tag = "map";
                 break;
+            case 4:
+                loginResponse = null;
+                SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+                settings.edit().putString("loginResponse", null).commit();
+                startActivity(new Intent(this, LoginScreen.class));
+                break;
         }
         if(mCurrentFragment == null){
             trans.add(R.id.container, newFragment, tag);
@@ -141,6 +169,10 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 4:
                 mTitle = getString(R.string.title_section4);
+                break;
+            case 5:
+                mTitle = getString(R.string.title_section5);
+                break;
         }
     }
 
