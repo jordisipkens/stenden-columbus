@@ -15,6 +15,5 @@ namespace ColombusWebapplicatie.Controllers
         {
             return View();
         }
-
     }
 }

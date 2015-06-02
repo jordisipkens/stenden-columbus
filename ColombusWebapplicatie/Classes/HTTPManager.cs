@@ -57,14 +57,14 @@ namespace ColombusWebapplicatie.Classes
         /// </summary>
         /// <param name="user"></param>
         /// <param name="responseBase"></param>
-        public static void LoginRequest(User user, HttpResponseBase responseBase = null)
+        public static LoginResponse LoginRequest(User user, HttpResponseBase responseBase = null)
         {
             string userInfo = string.Format("{0}:{1}", user.Username, Encryption.Encrypt(user.Password));
             string encodedUserInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(userInfo));
             string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);
 
-            Token token = GetRequest<Token>("User/Login", null, new Dictionary<string, string>() { { "Authorization", credentials } }, AZURE_BASE_URL);
-            CookieManager.CreateCookie(responseBase, "Token", token.TokenString);
+            LoginResponse loginRequest = GetRequest<LoginResponse>("User/Login", null, new Dictionary<string, string>() { { "Authorization", credentials } }, AZURE_BASE_URL);
+            return loginRequest;
         }
 
         /// <summary>

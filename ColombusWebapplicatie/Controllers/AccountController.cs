@@ -22,10 +22,37 @@ namespace ColombusWebapplicatie.Controllers
         {
             return View();
         }
-
-        public void Login(User user)
+        public RedirectToRouteResult Login(User user)
         {
-            HTTPManager.LoginRequest(user, Response);
+            LoginResponse response = HTTPManager.LoginRequest(user);
+            if(response != null) {
+                CookieManager.CreateCookie(Response, "Token", response.Token);
+                Session["LoggedIn"] = true;
+                Session["User"] = response.User;
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        public ActionResult RegisterUser(User user)
+        {
+            if(ModelState.IsValid) {
+                User addedUser = HTTPManager.GetRequest<User>("User", Request);
+                return RedirectToAction("Index", "Home");
+            }
+            else {
+                return View("Register", user);
+            }
+        }
+
+        public RedirectToRouteResult Logout()
+        {
+            Session["LoggedIn"] = false;
+            return RedirectToAction("Index", "Home");
         }
     }
 }

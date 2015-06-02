@@ -1,4 +1,5 @@
-﻿using ColombusWebapplicatie.Models;
+﻿using ColombusWebapplicatie.Classes;
+using ColombusWebapplicatie.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -41,16 +42,16 @@ namespace ColombusWebapplicatie.Controllers
         //        ImagePath = "http://d2hv3zvds9z8pu.cloudfront.net/img/112367_320x240_4890.jpg",
         //    }
         //};
-        #endregion
+#endregion
 
         public ActionResult Index()
         {
             List<Travelogue> model = new List<Travelogue>();
-            // Load Json file.
+             // Load Json file.
             StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travelogue.json"));
             // Deserialize Json to list of Travel objects.
             model.Add(JsonConvert.DeserializeObject<Travelogue>(streamReader.ReadToEnd()));
-
+            
             return View("Index", model);
         }
 
@@ -65,7 +66,7 @@ namespace ColombusWebapplicatie.Controllers
             }
             return View(model);
         }
-
+       
         public ActionResult CreateTravelogue()
         {
             ColombusWebapplicatie.Models.Travelogue model = new Travelogue();
@@ -79,7 +80,7 @@ namespace ColombusWebapplicatie.Controllers
             if (model.Paragraphs != null)
             {
                 model.Paragraphs.Add(new Paragraph());
-            }
+        }
             return View("CreateTravelogue", model);
         }
 
@@ -89,39 +90,13 @@ namespace ColombusWebapplicatie.Controllers
             if (Request.Form["AddParagraph"] != null)
             {
                 return AddParagraph(model);
-            }
+        }
             else if (Request.Form["Index"] != null)
-            {
+        {
                 return Index();
             }
             return Index();
         }
-
-        ////Temporary
-        //[HttpPost]
-        //public string GetList()
-        //{
-        //    WebRequest request = WebRequest.Create(apiUrl + "api/Travelogue");
-        //    //string userInfo = string.Format("{0}:{1}", user.Username, Encrypt(user.Password));
-        //    //string encodedUserInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(userInfo));
-        //    //string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);
-        //    // request.Headers["Authorization"] = credentials;
-        //    WebResponse response = request.GetResponse();
-        //    StreamReader streamReader = new StreamReader(response.GetResponseStream());
-        //    Token token = JsonConvert.DeserializeObject<Token>(streamReader.ReadToEnd());
-        //    return token.TokenString;
-        //}
-
-        ////Temporary get 1 travelogue
-        //[HttpPost]
-        //public string GetTravelogue(int id)
-        //{
-        //    WebRequest request = WebRequest.Create(apiUrl + "api/Travelogue/" + id);
-        //    WebResponse response = request.GetResponse();
-        //    StreamReader streamReader = new StreamReader(response.GetResponseStream());
-        //    Token token = JsonConvert.DeserializeObject<Token>(streamReader.ReadToEnd());
-        //    return token.TokenString;
-        //}
 
 
     }
