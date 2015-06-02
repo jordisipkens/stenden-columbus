@@ -2,6 +2,8 @@
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Web;
+using WebserviceColumbus.Database;
+using WebserviceColumbus.Models.Other;
 
 namespace WebserviceColumbus.Authorization
 {
@@ -74,7 +76,7 @@ namespace WebserviceColumbus.Authorization
         /// Checks if the Authorization header is set correctly, and if so returns a token.
         /// </summary>
         /// <returns></returns>
-        public static string CreateToken()
+        public static LoginResponse CreateToken()
         {
             string authHeader = HttpContext.Current.Request.Headers["Authorization"];
             if(authHeader != null) {
@@ -93,7 +95,7 @@ namespace WebserviceColumbus.Authorization
         /// </summary>
         /// <param name="credentials"></param>
         /// <returns></returns>
-        private static string AuthenticateUser(string credentials)
+        private static LoginResponse AuthenticateUser(string credentials)
         {
             credentials = Encryption.DecryptUTF8(credentials);
 
@@ -102,9 +104,10 @@ namespace WebserviceColumbus.Authorization
             string password = credentials.Substring(separator + 1);
 
             if(username.Equals("C0lumbus") && password.Equals("cxTt7qICqqZWQzG1uTTgbw==")) {    //TODO Change: UserDbManager.ValidateUser(username, password)
+                User user = new UserDbManager().GetEntity(username);
                 string token = string.Format("{0}/{1}", DateTime.Now.ToString("u"), username);
                 token = Encryption.Encrypt(token);
-                return token;
+                return new LoginResponse() { Token = token, User = user };
             }
             return null;
         }

@@ -7,6 +7,19 @@ namespace WebserviceColumbus.Database
 {
     public class UserDbManager : DbManager<User>
     {
+        public User GetEntity(string username)
+        {
+            try {
+                using(var db = new ColumbusDbContext()) {
+                    return db.Users.Where(u => u.Username.Equals(username)).First();
+                }
+            }
+            catch(Exception ex) {
+                new ErrorHandler(ex, "Failed to FIND User in database with corresponding username", true);
+                return null;
+            }
+        }
+
         public bool ValidateUser(string username)
         {
             try {

@@ -25,9 +25,9 @@ namespace WebserviceColumbus.Controllers
         [HttpGet]
         public HttpResponseMessage Login()
         {
-            string result = TokenManager.CreateToken();
+            LoginResponse result = TokenManager.CreateToken();
             if(result != null) {
-                return Request.CreateResponse(HttpStatusCode.OK, new Token() { TokenString = result });
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             return Request.CreateResponse(HttpStatusCode.Unauthorized);
         }

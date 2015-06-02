@@ -105,7 +105,7 @@
     <Compile Include="Migrations\201505291503213_Travelogue_Publish_Rating.Designer.cs">
       <DependentUpon>201505291503213_Travelogue_Publish_Rating.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Other\Token.cs" />
+    <Compile Include="Models\Other\LoginResponse.cs" />
     <Compile Include="Models\Travel\Travelogue\Rating.cs" />
     <Compile Include="Other\ErrorHandler.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -134,7 +134,6 @@
       <DependentUpon>201505240158454_added_attributes_user.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Other\Error.cs" />
     <Compile Include="Models\Other\Photo.cs" />
     <Compile Include="Models\Google\Root.cs" />
     <Compile Include="Models\Travel\Coordinates.cs" />
