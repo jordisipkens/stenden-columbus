@@ -1,20 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ColombusWebapplicatie.Models
 {
     public class User
     {
         public int ID { get; set; }
+
+        [Required(ErrorMessage = "Voornaam is vereist")]
         public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Achternaam is vereist")]
         public string LastName { get; set; }
+
+        [Required(ErrorMessage = "E-mail is vereist")]
         public string Email { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Username is vereist")]
         public string Username { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Wachtwoord is vereist")]
         public string Password { get; set; }
+
+        public string FullName { 
+            get 
+            { 
+                return string.Format("{0} {1}", FirstName, LastName); 
+            } 
+        }
     }
 }

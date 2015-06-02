@@ -1,4 +1,5 @@
-﻿using ColombusWebapplicatie.Models;
+﻿using ColombusWebapplicatie.Classes;
+using ColombusWebapplicatie.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -81,30 +82,17 @@ namespace ColombusWebapplicatie.Controllers
 
         //Temporary
         [HttpPost]
-        public string GetList()
+        public List<Travelogue> GetList()
         {
-            WebRequest request = WebRequest.Create(apiUrl + "api/Travelogue");
-            //string userInfo = string.Format("{0}:{1}", user.Username, Encrypt(user.Password));
-            //string encodedUserInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(userInfo));
-            //string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);
-           // request.Headers["Authorization"] = credentials;
-            WebResponse response = request.GetResponse();
-            StreamReader streamReader = new StreamReader(response.GetResponseStream());
-            Token token = JsonConvert.DeserializeObject<Token>(streamReader.ReadToEnd());
-            return token.TokenString;
+            User user = Session["User"] as User;
+            return HTTPManager.GetRequest<List<Travelogue>>("GetAll?userID=.." + user.ID, Request);
         }
 
         //Temporary get 1 travelogue
         [HttpPost]
-        public string GetTravelogue(int id)
+        public Travelogue GetTravelogue(int id)
         {
-            WebRequest request = WebRequest.Create(apiUrl + "api/Travelogue/" + id);
-            WebResponse response = request.GetResponse();
-            StreamReader streamReader = new StreamReader(response.GetResponseStream());
-            Token token = JsonConvert.DeserializeObject<Token>(streamReader.ReadToEnd());
-            return token.TokenString;
+            return HTTPManager.GetRequest<Travelogue>("Travelogue/" + id, Request);
         }
-
-
     }
 }

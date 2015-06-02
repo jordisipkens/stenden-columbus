@@ -24,10 +24,5 @@ namespace ColombusWebapplicatie.Controllers
         {
             return Error(errorMessage, RedirectToAction("Index"));
         }
-
-        public string GetFullName (User user)
-        {
-            return user.FirstName + " " + user.LastName;
-        }
     }
 }

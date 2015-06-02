@@ -124,7 +124,7 @@
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationDetails.cs" />
     <Compile Include="Models\Paragraph.cs" />
-    <Compile Include="Models\Token.cs" />
+    <Compile Include="Models\LoginRequest.cs" />
     <Compile Include="Models\Travel.cs" />
     <Compile Include="Models\Travelogue.cs" />
     <Compile Include="Models\User.cs" />
@@ -191,6 +191,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Travelogue\_paragraph.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

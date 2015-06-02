@@ -29,7 +29,7 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult ViewTravel(int? id)
         {
             // !!! Important: Not finished, just for testing !!! Supposed to check if the travel with the regarding id exists.
-            if (id!=id) {
+            if (id != null) {
                 // Return to the index of the controller with an error message.
                 return ErrorToIndex("Deze reis bestaat niet (meer).");
             } else {
