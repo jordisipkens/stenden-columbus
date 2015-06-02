@@ -23,6 +23,7 @@ import android.widget.TextView;
 import columbus.stenden.nl.columbus.Fragments.AboutFragment;
 import columbus.stenden.nl.columbus.Fragments.AccountFragment;
 import columbus.stenden.nl.columbus.Fragments.HomeFragment;
+import columbus.stenden.nl.columbus.Fragments.MapFragment;
 
 
 public class MainActivity extends ActionBarActivity
@@ -68,7 +69,7 @@ public class MainActivity extends ActionBarActivity
      *
      * !! - Make sure to add the new items to the onItemClickListener of the ListView.
      */
-    private String[] menuTitles = new String[]{"Home", "Account", "About"};
+    private String[] menuTitles = new String[]{"Home", "Account", "Over", "Google Map"};
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -85,6 +86,8 @@ public class MainActivity extends ActionBarActivity
         mTitle = getTitle();
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        mDrawerList = (ListView) findViewById(R.id.drawer_list);
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -203,10 +206,12 @@ public class MainActivity extends ActionBarActivity
     }*/
 
     private void setDrawerListView(){
-        mDrawerList = (ListView) findViewById(R.id.drawer_list);
+        if(mDrawerList != null) {
+            mDrawerList.setAdapter(new MenuAdapter(this, menuTitles));
+            setOnClickListener();
+        } else {
 
-        mDrawerList.setAdapter(new MenuAdapter(getApplicationContext(), menuTitles));
-        setOnClickListener();
+        }
     }
 
     private void setOnClickListener(){
@@ -234,6 +239,10 @@ public class MainActivity extends ActionBarActivity
                     case 2:
                         newFragment = new AboutFragment();
                         tag = "home";
+                        break;
+                    case 3:
+                        newFragment = new MapFragment();
+                        tag = "map";
                         break;
                 }
                 if(newFragment != null) {

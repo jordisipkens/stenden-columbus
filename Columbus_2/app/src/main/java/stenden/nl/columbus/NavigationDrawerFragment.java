@@ -1,8 +1,10 @@
-package columbus.stenden.nl.columbus;
+package stenden.nl.columbus;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -18,8 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -53,9 +56,13 @@ public class NavigationDrawerFragment extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
+    private int itemClicked = 0;
+
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+
+    private Fragment mCurrentFragment;
 
     public NavigationDrawerFragment() {
     }
@@ -93,24 +100,78 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                itemClicked = position;
+                ((BaseAdapter) mDrawerListView.getAdapter()).notifyDataSetChanged();
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
+
+        //Make sure to add new items in strings.xml and mainactvity.
+        mDrawerListView.setAdapter(new MenuAdapter(getActivity(), new String[]{
+                getString(R.string.title_section1),
+                getString(R.string.title_section2),
+                getString(R.string.title_section3),
+                getString(R.string.title_section4),
+        }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+    }
+
+    private class MenuAdapter extends BaseAdapter {
+
+        // Global view returns the menu item.
+        private View v;
+        private Context ctx;
+        private TextView title;
+        private String[] titles;
+
+        public MenuAdapter(Context ctx, String[] titles) {
+            this.ctx = ctx;
+            this.titles = titles;
+        }
+
+        @Override
+        public int getCount() {
+            return titles.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return titles[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            v = LayoutInflater.from(ctx).inflate(R.layout.list_view_layout,
+                    parent, false);
+            title = (TextView) v.findViewById(R.id.textView1);
+
+            title.setText(titles[position]);
+
+            if (!isEnabled(position)) {
+                v.setBackgroundColor(Color.parseColor("#ffc99d"));
+            }
+
+            return v;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            if (itemClicked == position) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
     /**
@@ -130,6 +191,7 @@ public class NavigationDrawerFragment extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -168,6 +230,7 @@ public class NavigationDrawerFragment extends Fragment {
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
