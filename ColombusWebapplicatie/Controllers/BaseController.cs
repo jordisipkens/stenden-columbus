@@ -14,15 +14,20 @@ namespace ColombusWebapplicatie.Controllers
     {
         public string apiUrl = "";
 
-        public ActionResult Error(string errorMessage, ActionResult result)
+        public ActionResult Error(ActionResult result, params string[] errorMessages)
         {
-            TempData["error"] = errorMessage;
+            TempData["error"] = errorMessages;
             return result;
         }
 
-        public ActionResult ErrorToIndex(string errorMessage)
+        public ActionResult ErrorToIndex(params string[] errorMessages)
         {
-            return Error(errorMessage, RedirectToAction("Index"));
+            return Error(RedirectToAction("Index"), errorMessages);
+        }
+
+        public string GetFullName (User user)
+        {
+            return user.FirstName + " " + user.LastName;
         }
     }
 }

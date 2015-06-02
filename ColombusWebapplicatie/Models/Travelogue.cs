@@ -8,11 +8,6 @@ namespace ColombusWebapplicatie.Models
 {
     public class Travelogue
     {
-        //public int ID { get; set; }
-        //public int TravelID { get; set; }
-        //public string Header { get; set; }
-        //public List<Paragraph> Paragraphs { get; set; }
-
         [Key]
         public int ID { get; set; }
 
@@ -27,6 +22,6 @@ namespace ColombusWebapplicatie.Models
 
         public virtual ICollection<Rating> Ratings { get; set; }
 
-        public virtual ICollection<Paragraph> Paragraphs { get; set; }
+        public virtual IList<Paragraph> Paragraphs { get; set; }
     }
 }

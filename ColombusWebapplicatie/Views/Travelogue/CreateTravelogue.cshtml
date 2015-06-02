@@ -1,28 +1,49 @@
-﻿@{
+﻿@model ColombusWebapplicatie.Models.Travelogue
+@{
     ViewBag.Title = "Nieuw reisverslag aanmaken";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
-<div class="white-block">
-    <div class="container">
-        <div id="paragraphs">
-            @Html.Partial("_paragraph")
-            @Html.ActionLink("Voeg paragraaf toe", null, new { }, new { @class = "button orange", id = "btn_paragraph" })
-            <a class="button orange" id="test">TEST</a>
+@using (Html.BeginForm("SubmitButton", "Travelogue", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Published)
+    @Html.HiddenFor(x => x.PublishedTime)
+    <h2>@ViewBag.Title</h2>
+    <div class="white-block">
+        <div class="container">
+            <table cellspacing="0" cellpadding="0">
+                <tr>
+                    <th>Titel</th>
+                    <td>@Html.TextBoxFor(x => x.Title, new { @style = "width: 95%; padding: 1em;" })</td>
+                </tr>
+                <tr>
+                    <th>Paragrafen</th>
+                    @for (var i = 0; i < Model.Paragraphs.Count; i++)
+                    {
+                        @Html.HiddenFor(x => x.Paragraphs[i].Height)
+                        @Html.HiddenFor(x => x.Paragraphs[i].FullWidth)
+                        @Html.HiddenFor(x => x.Paragraphs[i].Width)
+                        @Html.HiddenFor(x => x.Paragraphs[i].Travelogue)
+                    <tr>
+                        <th>Titel</th>
+                        <td>@Html.TextBoxFor(x => x.Paragraphs[i].Header, new { @style = "width: 95%; padding: 1em;" })</td>
+                    </tr>
+                        <tr>
+                            <th>Tekst</th>
+                            <td>@Html.TextAreaFor(x => x.Paragraphs[i].Text, new { @style = "width: 95%; padding: 1em;" })</td>
+                        </tr>
+                        <tr>
+                            <th>Foto</th>
+                            <td>@Html.TextBoxFor(x => x.Paragraphs[i].PhotoID, new { @style = "width: 95%; padding: 1em;" })</td>
+                        </tr>            
+                    }
+                   
+                </table>
+                <input type="submit" name="AddParagraph" value="AddParagraph" class="button orange float right" style="float:right;" />
+                <input type="submit" name="Index" value="Index" class="button orange float right" />
+            </div>
         </div>
-    </div>
-</div>
-
-
-    <script>
-        var partial = $("#document").load("/Travelogue/CreateTravelogue/AddParagraph");
-
-        $("#test").click(function () {
-            $("#paragraphs").append(partial);
-        });
-    </script>
-
-
+}
 
 

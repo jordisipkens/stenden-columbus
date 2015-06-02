@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using ColombusWebapplicatie.Classes;
 
 namespace ColombusWebapplicatie.Controllers
 {
@@ -46,23 +47,19 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult Index()
         {
             List<Travelogue> model = new List<Travelogue>();
-           
              // Load Json file.
             StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travelogue.json"));
             // Deserialize Json to list of Travel objects.
             model.Add(JsonConvert.DeserializeObject<Travelogue>(streamReader.ReadToEnd()));
             
-            return View(model);
+            return View("Index", model);
         }
 
         //Method for viewing 1 travelogue
         public ActionResult ViewTravelogue(int? id)
         {
-            Travelogue model = new Travelogue();
-            // Load Json file.
-            StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travelogue.json"));
-            // Deserialize Json to list of Travel objects.
-            model = JsonConvert.DeserializeObject<Travelogue>(streamReader.ReadToEnd());
+
+            Travelogue model = HTTPManager.GetRequest<Travelogue>("Travelogue/" + id, Request);
             foreach (Paragraph par in model.Paragraphs)
             {
                 par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
@@ -72,27 +69,35 @@ namespace ColombusWebapplicatie.Controllers
        
         public ActionResult CreateTravelogue()
         {
-            return View();
+            ColombusWebapplicatie.Models.Travelogue model = new Travelogue();
+            model.Paragraphs = new List<Paragraph>();
+            model.Paragraphs.Add(new Paragraph());
+            return View(model);
         }
 
-        public ActionResult AddParagraph()
+        public ActionResult AddParagraph(Travelogue model)
         {
-            return PartialView("_paragraph");
+            if (model.Paragraphs != null)
+            {
+                model.Paragraphs.Add(new Paragraph());
+        }
+            return View("CreateTravelogue", model);
         }
 
-        //Temporary
-        [HttpPost]
-        public List<Travelogue> GetList()
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SubmitButton(Travelogue model)
         {
-            User user = Session["User"] as User;
-            return HTTPManager.GetRequest<List<Travelogue>>("GetAll?userID=.." + user.ID, Request);
+            if (Request.Form["AddParagraph"] != null)
+            {
+                return AddParagraph(model);
+        }
+            else if (Request.Form["Index"] != null)
+        {
+                return Index();
+            }
+            return Index();
         }
 
-        //Temporary get 1 travelogue
-        [HttpPost]
-        public Travelogue GetTravelogue(int id)
-        {
-            return HTTPManager.GetRequest<Travelogue>("Travelogue/" + id, Request);
-        }
+
     }
 }

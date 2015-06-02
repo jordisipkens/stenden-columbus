@@ -19,7 +19,11 @@
         {
             <div class="error">
                 <div class="container">
-                    @TempData["error"];
+                    @foreach (string error in TempData["error"] as string[])
+                    {
+                        @error;
+                        <br />
+                    }
                 </div>
             </div>
         }
