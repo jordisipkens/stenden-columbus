@@ -58,7 +58,10 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult ViewTravelogue(int? id)
         {
 
-            Travelogue model = HTTPManager.GetRequest<Travelogue>("Travelogue/" + id, Request);
+            // Travelogue model = HTTPManager.GetRequest<Travelogue>("Travelogue/" + id, Request);
+            StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travelogue.json"));
+            // Deserialize Json to list of Travel objects.
+            Travelogue model = JsonConvert.DeserializeObject<Travelogue>(streamReader.ReadToEnd());
             foreach (Paragraph par in model.Paragraphs)
             {
                 par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
@@ -74,7 +77,7 @@ namespace ColombusWebapplicatie.Controllers
             return View(model);
         }
 
-        public ActionResult AddParagraph(Travelogue model)
+        private ActionResult AddParagraph(Travelogue model)
         {
             if (model.Paragraphs != null)
             {
@@ -90,38 +93,42 @@ namespace ColombusWebapplicatie.Controllers
             {
                 return AddParagraph(model);
             }
-            else if (Request.Form["Index"] != null)
+            else if (Request.Form["Publish"] != null)
             {
+                PublishTravelogue(model);
+                return Index();
+            }
+            else if (Request.Form["Save"] != null)
+            {
+                SaveTravelogue(model);
                 return Index();
             }
             return Index();
         }
 
-        ////Temporary
-        //[HttpPost]
-        //public string GetList()
-        //{
-        //    WebRequest request = WebRequest.Create(apiUrl + "api/Travelogue");
-        //    //string userInfo = string.Format("{0}:{1}", user.Username, Encrypt(user.Password));
-        //    //string encodedUserInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(userInfo));
-        //    //string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);
-        //    // request.Headers["Authorization"] = credentials;
-        //    WebResponse response = request.GetResponse();
-        //    StreamReader streamReader = new StreamReader(response.GetResponseStream());
-        //    Token token = JsonConvert.DeserializeObject<Token>(streamReader.ReadToEnd());
-        //    return token.TokenString;
-        //}
+        private void PublishTravelogue(Travelogue model)
+        {
+            if (model.ID != 0)
+            {
+                HTTPManager.PostRequest<Travelogue>("Travelogue?travelogueId=" + model.ID + "&isPublic=true", Request, model);
+            }
+            else
+            {
+                Travelogue savedTravelogue = SaveTravelogue(model);
+                if (savedTravelogue != null)
+                {
+                    PublishTravelogue(savedTravelogue);
+                }
+            }
+        }
 
-        ////Temporary get 1 travelogue
-        //[HttpPost]
-        //public string GetTravelogue(int id)
-        //{
-        //    WebRequest request = WebRequest.Create(apiUrl + "api/Travelogue/" + id);
-        //    WebResponse response = request.GetResponse();
-        //    StreamReader streamReader = new StreamReader(response.GetResponseStream());
-        //    Token token = JsonConvert.DeserializeObject<Token>(streamReader.ReadToEnd());
-        //    return token.TokenString;
-        //}
+        private Travelogue SaveTravelogue(Travelogue model)
+        {
+            return HTTPManager.PostRequest<Travelogue>("Travelogue", Request, model);
+        }
+
+
+
 
 
     }

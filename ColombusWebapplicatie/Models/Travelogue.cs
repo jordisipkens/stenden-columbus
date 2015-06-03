@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -23,5 +24,9 @@ namespace ColombusWebapplicatie.Models
         public virtual ICollection<Rating> Ratings { get; set; }
 
         public virtual IList<Paragraph> Paragraphs { get; set; }
+
+        [JsonIgnore]
+        public int Index { get; set; }
+
     }
 }
