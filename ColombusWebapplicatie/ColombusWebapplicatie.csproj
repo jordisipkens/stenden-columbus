@@ -108,25 +108,33 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\CookieManager.cs" />
+    <Compile Include="Classes\Http\CookieManager.cs" />
     <Compile Include="Classes\Encrpytion.cs" />
-    <Compile Include="Classes\HTTPManager.cs" />
+    <Compile Include="Classes\Http\HTTPManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Classes\JsonSerialization.cs" />
     <Compile Include="Controllers\TravelController.cs" />
     <Compile Include="Controllers\TravelogueController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Rating.cs" />
-    <Compile Include="Models\Coordinates.cs" />
-    <Compile Include="Models\Location.cs" />
-    <Compile Include="Models\LocationDetails.cs" />
-    <Compile Include="Models\Paragraph.cs" />
-    <Compile Include="Models\Token.cs" />
-    <Compile Include="Models\Travel.cs" />
-    <Compile Include="Models\Travelogue.cs" />
+    <Compile Include="Models\Google\GoogleAlternative.cs" />
+    <Compile Include="Models\Google\GoogleGeometry.cs" />
+    <Compile Include="Models\Google\GooglePhoto.cs" />
+    <Compile Include="Models\Google\GoogleResponse.cs" />
+    <Compile Include="Models\Google\GoogleLocation.cs" />
+    <Compile Include="Models\Google\GoogleResult.cs" />
+    <Compile Include="Models\Photo.cs" />
+    <Compile Include="Models\Travel\Travelogue\Rating.cs" />
+    <Compile Include="Models\Travel\Coordinates.cs" />
+    <Compile Include="Models\Travel\Location.cs" />
+    <Compile Include="Models\Travel\LocationDetails.cs" />
+    <Compile Include="Models\Travel\Travelogue\Paragraph.cs" />
+    <Compile Include="Models\LoginResponse.cs" />
+    <Compile Include="Models\Travel\Travel.cs" />
+    <Compile Include="Models\Travel\Travelogue\Travelogue.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -178,7 +186,7 @@
     <Content Include="Views\Travel\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Travel\ViewTravel.cshtml" />
+    <Content Include="Views\Travel\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Travelogue\ViewTravelogue.cshtml" />
@@ -188,6 +196,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Travelogue\CreateTravelogue.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Travelogue\_paragraph.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Register.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Travel\AddTravel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\json\AddTravel.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Travel\AddLocations.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Travel\SearchLocation.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
-namespace ColombusWebapplicatie.Models
+namespace ColombusWebapplicatie.Models.Travel.Travelogue
 {
     public class Rating
     {
@@ -14,9 +10,5 @@ namespace ColombusWebapplicatie.Models
 
         [Required]
         public double RatingValue { get; set; }
-
-        //Navigation
-        [JsonIgnore]
-        public virtual Travelogue Travelogue { get; set; }
     }
 }

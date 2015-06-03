@@ -1,0 +1,41 @@
+﻿@model ColombusWebapplicatie.Models.User
+
+@{
+    ViewBag.Title = "Registeren";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="white-block form">
+    <div class="container">
+        <table cellspacing="0" cellpadding="0">
+            @using(Html.BeginForm("RegisterUser", "Account", FormMethod.Post)) {
+                <tr>
+                    <td>@Html.TextBoxFor(user => user.Username, new { @placeholder = "Gebruikersnaam", @class = "form input" })</td>
+                    <td>@Html.ValidationMessageFor(x=>x.Username)</td>
+                </tr>
+                <tr>
+                    <td>@Html.PasswordFor(user => user.Password, new { @placeholder = "Wachtwoord", @class = "form input" })</td>
+                    <td>@Html.ValidationMessageFor(x => x.Password)</td>
+                </tr>
+                <tr>
+                    <td>@Html.TextBoxFor(user => user.FirstName, new { @placeholder = "Voornaam", @class = "form input" })</td>
+                    <td>@Html.ValidationMessageFor(x => x.FirstName)</td>
+                </tr>
+                <tr>
+                    <td>@Html.TextBoxFor(user => user.LastName, new { @placeholder = "Achternaam", @class = "form input" })</td>
+                    <td>@Html.ValidationMessageFor(x => x.LastName)</td>
+                </tr>
+                <tr>
+                    <td>@Html.TextBoxFor(user => user.Email, new { @placeholder = "E-mail", @class = "form input" })</td>
+                    <td>@Html.ValidationMessageFor(x => x.Email)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input class="button orange" type="submit" name="submit" value="Registreer">
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

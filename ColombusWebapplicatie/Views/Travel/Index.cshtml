@@ -1,4 +1,4 @@
-﻿@model IList<ColombusWebapplicatie.Models.Travel>
+﻿@model IList<ColombusWebapplicatie.Models.Travel.Travel>
 
 @{
     ViewBag.Title = "Reizen";
@@ -19,7 +19,7 @@
                 foreach (var travel in Model)
                 {
                     <tr>
-                        <td>@Html.ActionLink(travel.Title, "ViewTravel", new { id = travel.ID })</td>
+                        <td>@Html.ActionLink(travel.Title, "View", new { id = travel.ID })</td>
                         <td>@travel.StartDate.Day-@travel.StartDate.Month-@travel.StartDate.Year</td>
                         <td>@travel.EndDate.Day-@travel.EndDate.Month-@travel.EndDate.Year</td>
                     </tr>

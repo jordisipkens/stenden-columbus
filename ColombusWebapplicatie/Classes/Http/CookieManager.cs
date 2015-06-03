@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 
-namespace ColombusWebapplicatie.Classes
+namespace ColombusWebapplicatie.Classes.Http
 {
     public static class CookieManager
     {

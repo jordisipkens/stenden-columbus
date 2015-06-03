@@ -1,0 +1,23 @@
+﻿@model ColombusWebapplicatie.Models.Google.GoogleResponse
+
+@{
+    ViewBag.Title = "Gevonden locaties";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="white-block">
+    <div class="container">
+        <h2>@ViewBag.Title</h2>
+        <p>Er zijn @Model.Results.Length resultaten gevonden.</p>
+        @if (@Model.Results.Length > 0)
+        {
+            <ul id="search-locations">
+                @foreach(var result in Model.Results)
+                {
+                    <li>@result.Name</li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+

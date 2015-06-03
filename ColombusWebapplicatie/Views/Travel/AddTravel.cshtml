@@ -1,0 +1,22 @@
+﻿@model ColombusWebapplicatie.Models.Travel.Travel
+
+@{
+    ViewBag.Title = "Reis plannen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="white-block">
+    <div class="container">
+        <h2>@ViewBag.Title</h2>
+        @using (Html.BeginForm("AddTravel", "Travel", FormMethod.Post))
+        {
+            @Html.LabelFor(travel => travel.Title, "Titel:")
+            @Html.TextBoxFor(travel => travel.Title, new { @placeholder = "Titel" })
+            @Html.LabelFor(travel => travel.StartDate, "Begindatum:")
+            @Html.TextBoxFor(travel => travel.StartDate, new { @placeholder = "Begindatum" })
+            @Html.LabelFor(travel => travel.EndDate, "Einddatum:")
+            @Html.TextBoxFor(travel => travel.EndDate, new { @placeholder = "Einddatum" })
+            <input class="button orange" type="submit" name="add" value="Toevoegen">
+        }
+    </div>
+</div>

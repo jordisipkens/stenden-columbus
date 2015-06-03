@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ColombusWebapplicatie.Models.User user = Session["User"] as ColombusWebapplicatie.Models.User;
 }
 <div class="background-image balloons">
     <div class="container">
@@ -12,10 +14,20 @@
     </div>
     <div class="white-block form">
         <div class="container">
-            @using(Html.BeginForm("Login", "Account", FormMethod.Post)) {
-                @Html.TextBoxFor(user => user.Username, new { @placeholder = "Gebruikersnaam", @class="form input" })
-                @Html.PasswordFor(user => user.Password, new { @placeholder = "Wachtwoord", @class="form input"})
-                <input class="button orange"type="submit" name="submit" value="Inloggen">
+            @if(!Convert.ToBoolean(Session["LoggedIn"])) {
+                using(Html.BeginForm("Login", "Account", FormMethod.Post)) {
+                    @Html.TextBoxFor(u => u.Username, new { @placeholder = "Gebruikersnaam", @class = "form input" })
+                    @Html.PasswordFor(u => u.Password, new { @placeholder = "Wachtwoord", @class = "form input" })
+                    <input class="button orange" type="submit" name="submit" value="Inloggen">
+                }
+            }
+            else {
+                if(user != null) { 
+                    <h1>Hallo, @user.FullName</h1>
+                }
+                else {
+                    <h1>Hallo, Gebruiker</h1>
+                }
             }
         </div>
     </div>

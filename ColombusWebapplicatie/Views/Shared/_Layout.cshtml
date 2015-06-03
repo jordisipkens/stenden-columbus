@@ -34,9 +34,14 @@
             <div id="menu">
                 <ul>
                     <li class="menu-item">@Html.ActionLink("Home", "Index", "Home")</li>
+                @if(!Convert.ToBoolean(Session["LoggedIn"])) {
+                    <li class="menu-item">@Html.ActionLink("Registreren", "Register", "Account")</li>
+                }
+                else {
                     <li class="menu-item">@Html.ActionLink("Mijn reizen", "Index", "Travel")</li>
                     <li class="menu-item">@Html.ActionLink("Reisverslagen", "Index", "Travelogue")</li>
-                    <li class="menu-item">@Html.ActionLink("Account", "Index", "Account")</li>
+                    <li class="menu-item">@Html.ActionLink("Logout", "Logout", "Account")</li>
+                }
                 </ul>
             </div>
         </div>
@@ -49,15 +54,17 @@
             <div class="half">
                 <h2>Lorem Ipsum</h2>
                 <ul>
-                    <li>@Html.ActionLink("Home", "/")</li>
-                    <li>@Html.ActionLink("Mijn reizen", "/")</li>
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                @if(Convert.ToBoolean(Session["LoggedIn"])) {
+                    <li>@Html.ActionLink("Mijn reizen", "Index", "Travel")</li>
                     <li>@Html.ActionLink("Account", "/")</li>
+                }
                 </ul>
             </div>
             <div class="half">
                 <h2>Lorem Ipsum</h2>
                 <ul>
-                    <li>@Html.ActionLink("verslagen", "/")</li>
+                    <li>@Html.ActionLink("Verslagen", "/")</li>
                     <li>@Html.ActionLink("Over ons", "/")</li>
                     <li>@Html.ActionLink("Android app", "/")</li>
                 </ul>

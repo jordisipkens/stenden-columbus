@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
-namespace ColombusWebapplicatie.Models
+namespace ColombusWebapplicatie.Models.Travel.Travelogue
 {
     public class Travelogue
     {
@@ -21,7 +19,7 @@ namespace ColombusWebapplicatie.Models
 
         public DateTime PublishedTime { get; set; }
 
-        public virtual ICollection<Rating> Ratings { get; set; }
+        public virtual IList<Rating> Ratings { get; set; }
 
         public virtual IList<Paragraph> Paragraphs { get; set; }
 
