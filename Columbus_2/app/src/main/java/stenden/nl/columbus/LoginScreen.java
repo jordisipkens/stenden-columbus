@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Response;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -138,8 +139,10 @@ public class LoginScreen extends Activity implements View.OnClickListener {
                             SharedPreferences.Editor editor = settings.edit();
 
                             editor.putString("loginResponse", loginResponse.getToken()).commit();
+                            editor.putString("user", new Gson().toJson(loginResponse.getUser())).commit();
 
                             // Start MainActivity
+                            MainActivity.user = loginResponse.getUser();
                             MainActivity.loginResponse = loginResponse;
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();

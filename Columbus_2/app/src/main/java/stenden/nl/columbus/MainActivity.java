@@ -17,6 +17,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+
+import com.google.gson.Gson;
 
 import stenden.nl.columbus.Fragments.AboutFragment;
 import stenden.nl.columbus.Fragments.AccountFragment;
@@ -41,15 +45,26 @@ public class MainActivity extends ActionBarActivity
 
     private Fragment mCurrentFragment;
 
-
     // Static variables used throughout fragments
     public static LoginResponse loginResponse = null;
     public final static String PREFS_NAME = "C0lumbus";
-    public static User user = null; // Moet nog bij loginResponse verwerkt worden.
+    public static User user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(loginResponse != null) {
+
+        // Get SharedPreferences file.
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        // Get user logged in.
+        user = new Gson().fromJson(settings.getString("user", null), User.class);
+
+        // Get token and set loginresponse.
+        loginResponse = new LoginResponse();
+        loginResponse.setUser(user);
+        loginResponse.setToken(settings.getString("token", null));
+
+        if(loginResponse == null) {
             Intent intent = new Intent(this, LoginScreen.class);
             startActivity(intent);
         }
@@ -74,12 +89,28 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
+    public void onBackPressed() {
+        // When the current fragment is Home, pop all fragments until home fragment.
+        if(getSupportFragmentManager().getBackStackEntryCount() >0){
+            String currentBackStackLayer = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+            if(currentBackStackLayer.equals("home")){
+               System.exit(0);
+            } else {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onStop() {
         if(loginResponse != null){
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
 
             editor.putString("loginResponse", loginResponse.getToken()).commit();
+            editor.putString("user", new Gson().toJson(user)).commit();
         }
         super.onStop();
     }
@@ -119,12 +150,12 @@ public class MainActivity extends ActionBarActivity
             // Account menu item.
             case 1:
                 newFragment = new AccountFragment();
-                tag = "home";
+                tag = "account";
                 break;
             // About menu item.
             case 2:
                 newFragment = new AboutFragment();
-                tag = "home";
+                tag = "over_ons";
                 break;
             case 3:
                 newFragment = new MapFragment();
@@ -132,13 +163,15 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 4:
                 loginResponse = null;
+                user = null;
                 SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
                 settings.edit().putString("loginResponse", null).commit();
+                settings.edit().putString("user", null);
                 startActivity(new Intent(this, LoginScreen.class));
                 break;
         }
         if(mCurrentFragment == null){
-            trans.add(R.id.container, newFragment, tag);
+            trans.replace(R.id.container, newFragment, tag);
             trans.addToBackStack(tag);
             trans.commit();
             //trans.hide(mCurrentFragment);
@@ -146,7 +179,7 @@ public class MainActivity extends ActionBarActivity
         }
         else if(newFragment != null) {
             if(newFragment.getClass() != mCurrentFragment.getClass()) {
-                trans.add(R.id.container, newFragment, tag);
+                trans.replace(R.id.container, newFragment, tag);
                 trans.addToBackStack("tag");
                 trans.commit();
                 trans.hide(mCurrentFragment);
