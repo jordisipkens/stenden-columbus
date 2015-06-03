@@ -26,5 +26,8 @@ namespace ColombusWebapplicatie.Models.Travel.Travelogue
         [JsonIgnore]
         public int Index { get; set; }
 
+        [JsonIgnore]
+        public Travel Travel { get; set; }
+
     }
 }

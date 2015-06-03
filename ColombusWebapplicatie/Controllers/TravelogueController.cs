@@ -1,4 +1,5 @@
 ﻿using ColombusWebapplicatie.Classes.Http;
+using ColombusWebapplicatie.Models.Travel;
 using ColombusWebapplicatie.Models.Travel.Travelogue;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -17,11 +18,11 @@ namespace ColombusWebapplicatie.Controllers
             StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travelogue.json"));
             // Deserialize Json to list of Travel objects.
             model.Add(JsonConvert.DeserializeObject<Travelogue>(streamReader.ReadToEnd()));
-            foreach(Travelogue travelogue in model)
+            foreach (Travelogue travelogue in model)
             {
-                if(travelogue.Title.Length >= maxTitleLenght)
+                if (travelogue.Title.Length >= maxTitleLenght)
                 {
-                    travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght-3) + "...";
+                    travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght - 3) + "...";
                 }
             }
 
@@ -33,6 +34,17 @@ namespace ColombusWebapplicatie.Controllers
             Travelogue model = new Travelogue();
             model.Paragraphs = new List<Paragraph>();
             model.Paragraphs.Add(new Paragraph());
+            return View(model);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CreateTravelogue(Travel travel)
+        {
+            Travelogue model = new Travelogue();
+            model.Paragraphs = new List<Paragraph>();
+            model.Paragraphs.Add(new Paragraph());
+            model.Travel = travel;
+            model.TravelID = travel.ID;
             return View(model);
         }
 

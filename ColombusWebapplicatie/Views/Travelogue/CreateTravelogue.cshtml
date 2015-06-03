@@ -1,5 +1,5 @@
 ﻿@model ColombusWebapplicatie.Models.Travel.Travelogue.Travelogue
-           @{
+@{
     ViewBag.Title = "Nieuw reisverslag aanmaken";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -10,6 +10,15 @@
     @Html.HiddenFor(x => x.Published)
     @Html.HiddenFor(x => x.PublishedTime)
     <h2>@ViewBag.Title</h2>
+    foreach (var location in Model.Travel.Locations)
+    {
+        <div class="orange-block">
+            <div class="container">
+                location.Note
+            </div>
+        </div>
+    }
+
     <div class="container">
         <table cellspacing="0" cellpadding="0">
             <tr>
