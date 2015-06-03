@@ -1,5 +1,5 @@
-﻿@model ColombusWebapplicatie.Models.Travelogue
-@{
+﻿@model ColombusWebapplicatie.Models.Travel.Travelogue.Travelogue
+           @{
     ViewBag.Title = "Nieuw reisverslag aanmaken";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -28,7 +28,6 @@
                     @Html.HiddenFor(x => x.Paragraphs[i].Height)
                     @Html.HiddenFor(x => x.Paragraphs[i].FullWidth)
                     @Html.HiddenFor(x => x.Paragraphs[i].Width)
-                    @Html.HiddenFor(x => x.Paragraphs[i].Travelogue)
                     <tr>
                         <th>
                             Titel
@@ -65,5 +64,3 @@
         </div>
     </div>
 }
-
-

@@ -1,4 +1,5 @@
-﻿@model IList<ColombusWebapplicatie.Models.Travelogue>
+﻿@model IList<ColombusWebapplicatie.Models.Travel.Travelogue.Travelogue>
+
 @{
     ViewBag.Title = "Reisverslagen";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -18,7 +19,7 @@
                 foreach (var travelogue in Model)
                 {
                     <tr>
-                        <td>@Html.ActionLink("travelogue " + @travelogue.TravelID, "ViewTravelogue", new { id = travelogue.ID })</td>
+                        <td>@Html.ActionLink(@travelogue.Title , "ViewTravelogue", new { id = travelogue.ID })</td>
                         <td>@travelogue.PublishedTime.Day-@travelogue.PublishedTime.Month-@travelogue.PublishedTime.Year</td>
                         <td>@travelogue.Ratings</td>
                     </tr>

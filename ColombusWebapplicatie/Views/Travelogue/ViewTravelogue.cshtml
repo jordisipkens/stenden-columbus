@@ -1,10 +1,10 @@
-﻿@model ColombusWebapplicatie.Models.Travelogue
+﻿@model ColombusWebapplicatie.Models.Travel.Travelogue.Travelogue
 @{
     ViewBag.Title = "Reisverslagen";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container">
-    <h2>@Model.TravelID</h2>
+    <h2>@Model.Title</h2>
 
     @{foreach (var par in Model.Paragraphs)
     {
