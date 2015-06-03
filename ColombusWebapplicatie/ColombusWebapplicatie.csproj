@@ -186,7 +186,7 @@
     <Content Include="Views\Travel\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Travel\ViewTravel.cshtml" />
+    <Content Include="Views\Travel\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Travelogue\ViewTravelogue.cshtml" />
