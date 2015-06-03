@@ -104,10 +104,10 @@ namespace WebserviceColumbus.Authorization
             string password = credentials.Substring(separator + 1);
 
             if(username.Equals("C0lumbus") && password.Equals("cxTt7qICqqZWQzG1uTTgbw==")) {    //TODO Change: UserDbManager.ValidateUser(username, password)
-                User user = new UserDbManager().GetEntity(username);
+                //User user = new UserDbManager().GetEntity(username);
                 string token = string.Format("{0}/{1}", DateTime.Now.ToString("u"), username);
                 token = Encryption.Encrypt(token);
-                return new LoginResponse() { Token = token, User = user };
+                return new LoginResponse() { Token = token, User = new User() { Username = "DummyUser" } };//user };
             }
             return null;
         }
