@@ -18,7 +18,7 @@ public class LoginResponse {
         this.token = token;
     }
 
-    /*@SerializedName("User")
+    @SerializedName("User")
     public User user;
 
     public User getUser() {
@@ -27,5 +27,5 @@ public class LoginResponse {
 
     public void setUser(User user) {
         this.user = user;
-    }*/
+    }
 }
