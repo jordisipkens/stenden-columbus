@@ -20,6 +20,22 @@ namespace WebserviceColumbus.Database
             }
         }
 
+        public override User AddEntity(User entity)
+        {
+            try {
+                using(var db = new ColumbusDbContext()) {
+                    if(!db.Users.Any(u => u.Username.Equals(entity.Username))) {
+                        return base.AddEntity(entity);
+                    }
+                    return null;
+                }
+            }
+            catch(Exception ex) {
+                new ErrorHandler(ex, "Failed to CREATE User in database", true);
+                return null;
+            }
+        }
+
         public bool ValidateUser(string username)
         {
             try {
