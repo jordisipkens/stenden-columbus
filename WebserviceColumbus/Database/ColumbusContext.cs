@@ -1,4 +1,7 @@
-﻿using System.Data.Entity;
+﻿using System.Configuration;
+using System.Data.Entity;
+using System.Data.SqlClient;
+using WebserviceColumbus.Authorization;
 using WebserviceColumbus.Models.Other;
 using WebserviceColumbus.Models.Travel;
 using WebserviceColumbus.Models.Travel.Travelogue;
@@ -7,9 +10,21 @@ namespace WebserviceColumbus.Database
 {
     public class ColumbusDbContext : DbContext
     {
-        /*public ColumbusDbContext() : 
-            base("workstation id=Stenden-Columbus.mssql.somee.com;packet size=4096;user id=RoyB_SQLLogin_1;pwd=2hqlc93kkr;data source=Stenden-Columbus.mssql.somee.com;persist security info=False;initial catalog=Stenden-Columbus")
-        { }*/
+        public ColumbusDbContext() :
+            base(GetConnectionString())
+        {
+            
+        }
+
+        /// <summary>
+        /// Small security for connectionstring password
+        /// </summary>
+        /// <returns></returns>
+        private static string GetConnectionString()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["ColumbusDbContext"].ConnectionString;
+            return Encryption.Decrypt(connectionString);
+        }
 
         public DbSet<Travel> Travels { get; set; }
 
