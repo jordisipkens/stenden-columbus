@@ -29,5 +29,10 @@ namespace ColombusWebapplicatie.Controllers
         {
             return user.FirstName + " " + user.LastName;
         }
+
+        public bool IsLoggedIn()
+        {
+            return Session["User"] != null;
+        }
     }
 }

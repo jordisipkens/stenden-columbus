@@ -9,7 +9,7 @@ namespace ColombusWebapplicatie.Models.Travel
         [Key]
         public int ID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage="Titel is vereist")]
         public string Title { get; set; }
 
         public DateTime StartDate { get; set; }
@@ -18,7 +18,6 @@ namespace ColombusWebapplicatie.Models.Travel
 
         public IList<Location> Locations { get; set; }
 
-        [Required]
         public User User { get; set; }
     }
 }

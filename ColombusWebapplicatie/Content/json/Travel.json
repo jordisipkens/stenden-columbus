@@ -1,6 +1,6 @@
 [  
    {  
-      "ID":2,
+      "ID":0,
       "StartDate":"2015-05-13T12:52:44.0945817+02:00",
       "EndDate":"2015-05-14T12:52:44.0945817+02:00",
 	  "Title":"Reis 1",
@@ -62,8 +62,8 @@
                "PhoneNumber":"555-1234",
                "PlaceID":"ABC123",
                "Coordinates":{  
-                  "Latitude":123.0,
-                  "Longitude":123.0
+                  "Latitude":40.778099,
+                  "Longitude":-73.985303
                }
             }
          },
@@ -78,8 +78,8 @@
                "PhoneNumber":"555-4321",
                "PlaceID":"XYZ987",
                "Coordinates":{  
-                  "Latitude":200.0,
-                  "Longitude":200.0
+                  "Latitude":40.689247,
+                  "Longitude":-74.044502
                }
             }
          }

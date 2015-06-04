@@ -13,8 +13,8 @@ namespace ColombusWebapplicatie.Classes.Http
     {
         public const string LOCAL_BASE_URL = "http://localhost:2758/api/";
         public const string AZURE_BASE_URL = "http://columbus-webservice.azurewebsites.net/api/";
-        public const string GOOGLE_PLACES_BASE_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=";
 
+        public const string GOOGLE_PLACES_BASE_URL = "https://maps.googleapis.com/maps/api/place/";
         public const string GOOGLE_PLACES_API_KEY = "AIzaSyDpXa5VtOKNRA8obETZwkV7vbHzjio-17k";
 
         /// <summary>
@@ -24,10 +24,11 @@ namespace ColombusWebapplicatie.Classes.Http
         /// <param name="url"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public static T GetRequest<T>(string url, Dictionary<string, string> headers = null)
+        public static T GoogleGetRequest<T>(string method, Dictionary<string, string> parameters = null, Dictionary<string, string> headers = null)
         {
-            HttpWebResponse response = (HttpWebResponse)CreateRequest(url, headers).GetResponse();
-            return ReadResponse<T>(response);
+            parameters.Add("key", GOOGLE_PLACES_API_KEY);
+            string url = string.Format("{0}{1}/json", GOOGLE_PLACES_BASE_URL, method);
+            return ReadResponse<T>(CreateRequest(url, parameters, headers));
         }
 
         /// <summary>
@@ -41,8 +42,7 @@ namespace ColombusWebapplicatie.Classes.Http
         /// <returns></returns>
         public static T WebserviceGetRequest<T>(string url, HttpRequestBase request, string baseUrl = AZURE_BASE_URL, Dictionary<string, string> headers = null)
         {
-            HttpWebResponse reponse = (HttpWebResponse)CreateRequest(baseUrl + url, headers, request).GetResponse();
-            return ReadResponse<T>(reponse);
+            return ReadResponse<T>(CreateRequest(baseUrl + url, headers, request));
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace ColombusWebapplicatie.Classes.Http
                 streamWriter.Close();
             }
 
-            return ReadResponse<T>((HttpWebResponse)httpWebRequest.GetResponse());
+            return ReadResponse<T>((WebRequest)httpWebRequest);
         }
 
         /// <summary>
@@ -106,26 +106,47 @@ namespace ColombusWebapplicatie.Classes.Http
             return req;
         }
 
+        private static WebRequest CreateRequest(string url, Dictionary<string, string> parameters = null, Dictionary<string, string> headers = null, HttpRequestBase request = null)
+        {
+            return CreateRequest(BuildUrl(url, parameters), headers, request);
+        }
+
         /// <summary>
         /// Reads the response and converts it to an object.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="response"></param>
         /// <returns></returns>
-        private static T ReadResponse<T>(HttpWebResponse response)
+        private static T ReadResponse<T>(WebRequest request)
         {
-            Stream data = response.GetResponseStream();
-            string html;
-            using(StreamReader sr = new StreamReader(data)) {
-                html = sr.ReadToEnd();
-            }
-
             try {
-                return JsonConvert.DeserializeObject<T>(html);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream data = response.GetResponseStream();
+                using(StreamReader sr = new StreamReader(data)) {
+                    return JsonConvert.DeserializeObject<T>(sr.ReadToEnd());
+                }
             }
             catch(Exception) {
                 return default(T);
             }
+        }
+
+        /// <summary>
+        /// Builds an url by adding all parameters to the base
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        private static string BuildUrl(string url, Dictionary<string, string> parameters = null)
+        {
+            if(parameters != null && parameters.Count > 0) {
+                url += "?";
+                foreach(KeyValuePair<string, string> parameter in parameters) {
+                    url += string.Format("{0}={1}&", parameter.Key, parameter.Value);
+                }
+                url = url.Remove(url.Length - 1);
+            }
+            return url;
         }
     }
 }

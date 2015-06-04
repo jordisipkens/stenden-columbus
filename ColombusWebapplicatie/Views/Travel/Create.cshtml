@@ -1,0 +1,45 @@
+﻿@model ColombusWebapplicatie.Models.Travel.Travel
+
+@{
+    ViewBag.Title = "Nieuwe Reis Aanmaken";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker();
+    });
+</script>
+
+<div class="white-block form">
+    <div class="container">
+        <h2>@ViewBag.Title</h2>
+        @using(Html.BeginForm("CreateTravel", "Travel", FormMethod.Post))
+        {
+            <table cellspacing ="0" cellpadding="0" id="travels">
+                <tr>
+                    <td>@Html.LabelFor(travel => travel.Title, "Titel:")</td>
+                    <td>@Html.TextBoxFor(travel => travel.Title, new { @placeholder = "Titel" })</td>
+                    <td>@Html.ValidationMessageFor(x => x.Title)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(travel => travel.StartDate, "Start Datum:")</td>
+                    <td>@Html.TextBoxFor(model => model.StartDate, new { @class = "form-control datepicker" })</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(travel => travel.EndDate, "Eind Datum:")</td>
+                    <td>@Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker" })</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="button orange"><input class="button orange" type="submit" name="add" value="Toevoegen"></td>
+                </tr>
+            </table>
+        }
+    </div>
+</div>

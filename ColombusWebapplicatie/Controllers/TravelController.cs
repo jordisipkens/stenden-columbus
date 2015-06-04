@@ -4,7 +4,6 @@ using ColombusWebapplicatie.Models.Travel;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -12,9 +11,6 @@ namespace ColombusWebapplicatie.Controllers
 {
     public class TravelController : BaseController
     {
-        // GET: /Travel/
-
-        // View all travels.
         public ActionResult Index()
         {
             // Load Json file.
@@ -25,7 +21,7 @@ namespace ColombusWebapplicatie.Controllers
             return View(travels);
         }
 
-        public ActionResult View(int id = 0)
+        public ActionResult ViewTravel(int id)
         {
             if(id != 0) {
                 List<Travel> travels = JsonSerialization.DeserializeFromFile<List<Travel>>(Server.MapPath("~/Content/json/Travel.json"));
@@ -37,60 +33,58 @@ namespace ColombusWebapplicatie.Controllers
             return ErrorToIndex("Deze reis bestaat niet (meer)");
         }
 
-        private GoogleResponse RequestGooglePlaces(string query)
+        public ActionResult Create()
         {
-            string googleApiKey = "AIzaSyDpXa5VtOKNRA8obETZwkV7vbHzjio-17k";
-            string googleUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + query + "&key=" + googleApiKey;
-            WebRequest request = WebRequest.Create(googleUrl);
-            WebResponse response = request.GetResponse();
-            StreamReader streamReader = new StreamReader(response.GetResponseStream());
-            string responseString = streamReader.ReadToEnd();
-            GoogleResponse googlePlacesResponse = (GoogleResponse)JsonConvert.DeserializeObject<GoogleResponse>(responseString);
-            return googlePlacesResponse;
+            return View();
         }
 
-        [HttpGet] // Show add travel page
-        public ActionResult AddTravel()
-        {
-            Travel travel = new Travel();
-            return View(travel);
-        }
-
-        // Maar als je dan locaties hebt hoe zet je dat in een form? Als je 1 aan wilt klikken, dat
-        // zijn dan links geen formulierelementen dus die worden niet meegenomen. Ja
-        [HttpPost] // Add travel to webservice
-        public ActionResult AddTravel(Travel travel)
+        public ActionResult CreateTravel(Travel travel)
         {
             if(ModelState.IsValid) {
-                JsonSerialization.SerializeToFile(travel, (Server.MapPath("~/Content/json/AddTravel.json")));
-                Travel savedTravel = JsonSerialization.DeserializeFromFile<Travel>(Server.MapPath("~/Content/json/AddTravel.json"));
-                return RedirectToAction("AddLocations", "Travel", new { travelId = savedTravel.ID });
+                if(IsLoggedIn()) {
+                    //travel.User = Session["User"] as User;
+                    //Travel addedTravel = HTTPManager.WebservicePostRequest<Travel>("Travel", Request, travel);
+                    return RedirectToAction("Index", "Travel");
+                }
+                return ErrorToIndex("Je bent niet ingelogd");
             }
             else {
-                return View(travel);
+                return View("Create", travel);
             }
         }
 
-        [HttpGet] // Show add locations page.
-        public ActionResult AddLocations(int travelId)
+        public ActionResult AddLocation(int travelID)
         {
-            // Supposed to try and get the travel by the travelId.
-            Travel travel = JsonSerialization.DeserializeFromFile<Travel>(Server.MapPath("~/Content/json/AddTravel.json"));
-            // Supposed to check if travel exists.
-            if(travelId == travel.ID) {
-                return View(travel);
+            if(travelID != 0) {
+                ViewBag.TravelID = travelID;
+                return View();
             }
-            else {
-                return ErrorToIndex("Deze reis bestaat niet (meer).");
-            }
-        }
-        [HttpPost] // Search for a location via Google Places API
-        public ActionResult SearchLocation(string query)
-        {
-            GoogleResponse response = this.RequestGooglePlaces(query);
-            return View(response);
+            return ErrorToIndex("Deze reis bestaat niet (meer)");
         }
 
-        
+        [HttpPost]
+        public ActionResult SearchLocation(int travelID, string query)
+        {
+
+            List<LocationDetails> locations = RequestGooglePlaces("textsearch", new Dictionary<string, string>() { { "query", query } });
+            if(locations != null) {
+                ViewBag.TravelID = travelID;
+                return View("AddLocation", locations);
+            }
+            return Error(RedirectToAction("ViewTravel", travelID), "Er is een fout opgetreden tijdens het zoeken naar locaties");
+        }
+
+        private List<LocationDetails> RequestGooglePlaces(string url, Dictionary<string, string> parameters)
+        {
+            GoogleResponse response = HTTPManager.GoogleGetRequest<GoogleResponse>(url, parameters);
+            if(response != null) {
+                List<LocationDetails> locations = new List<LocationDetails>();
+                foreach(GoogleResult result in response.Results) {
+                    locations.Add(new LocationDetails(result));
+                }
+                return locations;
+            }
+            return null;
+        }
     }
 }

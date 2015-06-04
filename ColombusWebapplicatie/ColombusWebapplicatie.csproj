@@ -186,7 +186,7 @@
     <Content Include="Views\Travel\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Travel\View.cshtml" />
+    <Content Include="Views\Travel\ViewTravel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Travelogue\ViewTravelogue.cshtml" />
@@ -204,16 +204,13 @@
     <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Travel\AddTravel.cshtml" />
+    <Content Include="Views\Travel\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\json\AddTravel.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Travel\AddLocations.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Travel\SearchLocation.cshtml" />
+    <Content Include="Views\Travel\AddLocation.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

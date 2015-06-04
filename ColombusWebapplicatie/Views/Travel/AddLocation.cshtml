@@ -1,0 +1,26 @@
+﻿@model IList<ColombusWebapplicatie.Models.Travel.LocationDetails>
+
+@{
+    ViewBag.Title = "Locaties Toevoegen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="white-block">
+    <div class="container">
+        <h2>@ViewBag.Title</h2>
+        @using(Html.BeginForm("SearchLocation", "Travel", FormMethod.Post, new { travelID = ViewBag.TravelID })) {
+            @Html.Hidden("travelID", null, new { travelID = ViewBag.TravelID })
+            @Html.TextBox("query");
+            <input class="button orange" type="submit" name="search" value="Zoeken">
+        }
+        @if(Model != null && Model.Count > 0) {
+                foreach(var result in Model) {
+                    <ul id="search-locations">
+                        <li>@result.Name</li>
+                        <li>@result.PlaceID</li>
+                    </ul>
+                    <br />
+                }
+        }
+    </div>
+</div>
