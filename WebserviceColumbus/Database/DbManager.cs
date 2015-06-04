@@ -55,17 +55,21 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>Value if insert was succesfull</returns>
-        public virtual bool AddEntity(T entity)
+        public virtual T AddEntity(T entity)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
                     db.Set<T>().Add(entity);
-                    return db.SaveChanges() == 1;
+                    bool succes = db.SaveChanges() == 1;
+                    if(succes) {
+                        return entity;
+                    }
+                    return null;
                 }
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to CREATE " + typeof(T) + " in database", true);
-                return false;
+                return null;
             }
         }
 

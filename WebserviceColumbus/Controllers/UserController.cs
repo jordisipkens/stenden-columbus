@@ -14,7 +14,8 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Register([FromBody]User user)
         {
             if(user != null) {
-                if(new UserDbManager().AddEntity(user)) {
+                User foundUser = new UserDbManager().AddEntity(user);
+                if(foundUser != null) {
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
             }
