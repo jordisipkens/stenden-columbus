@@ -210,7 +210,7 @@ namespace WebserviceColumbus.Database
         /// <returns></returns>
         private List<Travelogue> GetBest(int offset, int limit)
         {
-            List<Travelogue> travelogues = GetEntities();    //TODO
+            List<Travelogue> travelogues = GetEntities();    //TODO Rating algorithm
             if(travelogues != null) {
                 if(offset + limit > travelogues.Count) {
                     limit = travelogues.Count - offset;

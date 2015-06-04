@@ -45,6 +45,15 @@ namespace WebserviceColumbus.Authorization
         }
 
         /// <summary>
+        /// Returns only the date in the token.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetDateFromToken()
+        {
+            return GetTokenValues()[0];
+        }
+
+        /// <summary>
         /// Returns only the username in the token.
         /// </summary>
         /// <returns></returns>
@@ -65,7 +74,7 @@ namespace WebserviceColumbus.Authorization
             if(values != null && values.Length == 2) {
                 DateTime parsedDate = DateTime.Parse(values[0], null, DateTimeStyles.RoundtripKind);
 
-                if(CheckDate(parsedDate) && values[1].Equals("C0lumbus")) {    //TODO Change: UserDbManager.ValidateUser(values[1])
+                if(CheckDate(parsedDate) && new UserDbManager().ValidateUser(values[1])) {
                     return true;
                 }
             }
@@ -103,7 +112,7 @@ namespace WebserviceColumbus.Authorization
             string username = credentials.Substring(0, separator);
             string password = credentials.Substring(separator + 1);
 
-            if(username.Equals("C0lumbus") && password.Equals("cxTt7qICqqZWQzG1uTTgbw==")) {    //TODO Change: UserDbManager.ValidateUser(username, password)
+            if(new UserDbManager().ValidateUser(username, password)) {
                 User user = new UserDbManager().GetEntity(username);
                 string token = string.Format("{0}/{1}", DateTime.Now.ToString("u"), username);
                 token = Encryption.Encrypt(token);
