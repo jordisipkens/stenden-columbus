@@ -40,7 +40,7 @@ namespace ColombusWebapplicatie.Classes.Http
         /// <param name="baseUrl"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static T WebserviceGetRequest<T>(string url, HttpRequestBase request, string baseUrl = AZURE_BASE_URL, Dictionary<string, string> headers = null)
+        public static T WebserviceGetRequest<T>(string url, HttpRequestBase request, Dictionary<string, string> headers = null, string baseUrl = AZURE_BASE_URL)
         {
             return ReadResponse<T>(CreateRequest(baseUrl + url, headers, request));
         }
@@ -53,7 +53,7 @@ namespace ColombusWebapplicatie.Classes.Http
         /// <param name="objectToPost"></param>
         /// <param name="baseUrl"></param>
         /// <returns></returns>
-        public static T WebservicePostRequest<T>(string url, HttpRequestBase request, object objectToPost, string baseUrl = AZURE_BASE_URL)
+        public static T WebservicePostRequest<T>(string url, HttpRequestBase request, T objectToPost, string baseUrl = AZURE_BASE_URL)
         {
             HttpWebRequest httpWebRequest = (HttpWebRequest)CreateRequest(baseUrl + url, null, request);
             httpWebRequest.ContentType = "application/json";
@@ -79,7 +79,7 @@ namespace ColombusWebapplicatie.Classes.Http
             string encodedUserInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(userInfo));
             string credentials = string.Format("{0} {1}", "Basic", encodedUserInfo);
 
-            LoginResponse loginRequest = WebserviceGetRequest<LoginResponse>("User/Login", null, AZURE_BASE_URL, new Dictionary<string, string>() { { "Authorization", credentials } });
+            LoginResponse loginRequest = WebserviceGetRequest<LoginResponse>("User/Login", null, new Dictionary<string, string>() { { "Authorization", credentials } });
             return loginRequest;
         }
 

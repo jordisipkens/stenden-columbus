@@ -1,4 +1,5 @@
-﻿using ColombusWebapplicatie.Classes.Http;
+﻿using ColombusWebapplicatie.Classes;
+using ColombusWebapplicatie.Classes.Http;
 using ColombusWebapplicatie.Models;
 using System.Web.Mvc;
 
@@ -33,7 +34,8 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult RegisterUser(User user)
         {
             if(ModelState.IsValid) {
-                User addedUser = HTTPManager.WebserviceGetRequest<User>("User", Request);
+                user.Password = Encryption.Encrypt(user.Password);
+                User addedUser = HTTPManager.WebservicePostRequest<User>("User/Register", Request, user);
                 return RedirectToAction("Index", "Home");
             }
             else {
