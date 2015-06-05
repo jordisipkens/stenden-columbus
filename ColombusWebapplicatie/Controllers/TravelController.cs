@@ -31,8 +31,11 @@ namespace ColombusWebapplicatie.Controllers
                 List<Travel> travels = JsonSerialization.DeserializeFromFile<List<Travel>>(Server.MapPath("~/Content/json/Travel.json"));
                 /*Travel travel = HTTPManager.WebserviceGetRequest<Travel>("travel/" + id, Request);
                 if(travel != null) {*/
-                return View(travels[id]);
                 //}
+                Travel travel = travels.Find(i => i.ID == id);
+                if (travel !=null) {
+                    return View(travel);
+                }
             }
             return ErrorToIndex("Deze reis bestaat niet (meer)");
         }
