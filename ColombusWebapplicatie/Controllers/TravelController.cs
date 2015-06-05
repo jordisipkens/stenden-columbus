@@ -1,4 +1,5 @@
 ﻿using ColombusWebapplicatie.Classes.Http;
+using ColombusWebapplicatie.Models;
 using ColombusWebapplicatie.Models.Google;
 using ColombusWebapplicatie.Models.Travel;
 using Newtonsoft.Json;
@@ -13,22 +14,18 @@ namespace ColombusWebapplicatie.Controllers
     {
         public ActionResult Index()
         {
-            // Load Json file.
-            StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travel.json"));
-            // Deserialize Json to list of Travel objects.
-            List<Travel> travels = JsonConvert.DeserializeObject<List<Travel>>(streamReader.ReadToEnd());
-            // Return the regarding view.
+            int userID = (Session["User"] as User).ID;
+            List<Travel> travels = HTTPManager.WebserviceGetRequest<List<Travel>>("Travel/GetAll", Request, null, new Dictionary<string, string>() { { "userID", userID.ToString() } });
             return View(travels);
         }
 
-        public ActionResult ViewTravel(int id)
+        public ActionResult ViewTravel(int id = 0)
         {
             if(id != 0) {
-                List<Travel> travels = JsonSerialization.DeserializeFromFile<List<Travel>>(Server.MapPath("~/Content/json/Travel.json"));
-                /*Travel travel = HTTPManager.WebserviceGetRequest<Travel>("travel/" + id, Request);
-                if(travel != null) {*/
-                return View(travels[id]);
-                //}
+                Travel travel = HTTPManager.WebserviceGetRequest<Travel>("travel/" + id, Request);
+                if(travel != null) {
+                    return View(travel);
+                }
             }
             return ErrorToIndex("Deze reis bestaat niet (meer)");
         }
@@ -41,12 +38,9 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult CreateTravel(Travel travel)
         {
             if(ModelState.IsValid) {
-                if(IsLoggedIn()) {
-                    //travel.User = Session["User"] as User;
-                    //Travel addedTravel = HTTPManager.WebservicePostRequest<Travel>("Travel", Request, travel);
-                    return RedirectToAction("Index", "Travel");
-                }
-                return ErrorToIndex("Je bent niet ingelogd");
+                travel.UserID = (Session["User"] as User).ID;
+                Travel addedTravel = HTTPManager.WebservicePostRequest<Travel>("Travel", Request, travel);
+                return RedirectToAction("Index", "Travel");
             }
             else {
                 return View("Create", travel);

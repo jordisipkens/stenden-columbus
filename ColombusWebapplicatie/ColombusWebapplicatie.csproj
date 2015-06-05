@@ -114,7 +114,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Classes\JsonSerialization.cs" />
     <Compile Include="Controllers\TravelController.cs" />
     <Compile Include="Controllers\TravelogueController.cs" />
     <Compile Include="Global.asax.cs">

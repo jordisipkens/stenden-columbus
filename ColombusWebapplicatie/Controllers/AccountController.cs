@@ -7,23 +7,25 @@ namespace ColombusWebapplicatie.Controllers
 {
     public class AccountController : BaseController
     {
-        // GET: /Account/
-
         public ActionResult Index()
         {
             return View();
         }
 
-        public RedirectToRouteResult Login(User user)
+        public ActionResult Login(User user)
         {
-            LoginResponse response = HTTPManager.LoginRequest(user);
-            if(response != null) {
-                CookieManager.CreateCookie(Response, "Token", response.Token);
-                Session["LoggedIn"] = true;
-                Session["User"] = response.User;
-                Session.Timeout = 180;
+            if(user.Username != null || user.Password != null) {
+                LoginResponse response = HTTPManager.LoginRequest(user);
+                if(response != null) {
+                    CookieManager.CreateCookie(Response, "Token", response.Token);
+                    Session["LoggedIn"] = true;
+                    Session["User"] = response.User;
+                    Session.Timeout = 180;
+                    return RedirectToAction("Index", "Home");
+                }
+                return Error(RedirectToAction("Index", "Home"), "Username of wachtwoord is incorrect");
             }
-            return RedirectToAction("Index", "Home");
+            return Error(RedirectToAction("Index", "Home"), "Username of wachtwoord is vereist");
         }
 
         public ActionResult Register()
@@ -36,17 +38,17 @@ namespace ColombusWebapplicatie.Controllers
             if(ModelState.IsValid) {
                 user.Password = Encryption.Encrypt(user.Password);
                 User addedUser = HTTPManager.WebservicePostRequest<User>("User/Register", Request, user);
-                return RedirectToAction("Index", "Home");
+                return MessageToIndex("Gebruiker aangemaakt");
             }
             else {
                 return View("Register", user);
             }
         }
 
-        public RedirectToRouteResult Logout()
+        public ActionResult Logout()
         {
-            Session["LoggedIn"] = false;
-            return RedirectToAction("Index", "Home");
+            Session.Abandon();
+            return Error(RedirectToAction("Index", "Home"), "Succelvol uitgelogd");
         }
     }
 }

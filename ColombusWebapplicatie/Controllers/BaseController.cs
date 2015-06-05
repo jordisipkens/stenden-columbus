@@ -12,8 +12,6 @@ namespace ColombusWebapplicatie.Controllers
 {
     public class BaseController : Controller
     {
-        public string apiUrl = "";
-
         public ActionResult Error(ActionResult result, params string[] errorMessages)
         {
             TempData["error"] = errorMessages;
@@ -25,14 +23,15 @@ namespace ColombusWebapplicatie.Controllers
             return Error(RedirectToAction("Index"), errorMessages);
         }
 
-        public string GetFullName (User user)
+        public ActionResult Message(ActionResult result, params string[] messages)
         {
-            return user.FirstName + " " + user.LastName;
+            TempData["message"] = messages;
+            return result;
         }
 
-        public bool IsLoggedIn()
+        public ActionResult MessageToIndex(params string[] messages)
         {
-            return Session["User"] != null;
+            return Message(RedirectToAction("Index"), messages);
         }
     }
 }

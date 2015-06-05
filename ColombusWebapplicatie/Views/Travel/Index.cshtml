@@ -14,7 +14,7 @@
                 <th>Begindatum</th>
                 <th>Einddatum</th>
             </tr>
-            @if (Model.Count > 0)
+            @if (Model != null && Model.Count > 0)
             {
                 foreach (var travel in Model)
                 {
@@ -27,7 +27,7 @@
                 <tr>
                     <td></td>
                     <td></td>
-                    <td class="button orange">@Html.ActionLink("Nieuw", "Create")</td>
+                    <td class="button orange">@Html.ActionLink("Nieuw", "Create", "Travel")</td>
                 </tr>
             }
             else {
