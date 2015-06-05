@@ -15,7 +15,7 @@ namespace ColombusWebapplicatie.Models
         [Required(ErrorMessage = "E-mail is vereist")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Username is vereist")]
+        [Required(ErrorMessage = "Gebruikersnaam is vereist")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Wachtwoord is vereist")]
