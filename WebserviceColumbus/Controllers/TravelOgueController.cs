@@ -25,7 +25,7 @@ namespace WebserviceColumbus.Controllers
         }
 
         //GET: api/Travelogue/GetAll?userID=..
-        [HttpGet, TokenRequired]
+        [HttpGet, TokenRequired, Route("api/Travelogue/GetAll")]
         public HttpResponseMessage GetAll(int userID)
         {
             if(new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
@@ -56,14 +56,14 @@ namespace WebserviceColumbus.Controllers
         }
 
         //GET: api/Travelogue/Search?value=..&limit=..
-        [HttpGet]
+        [HttpGet, Route("api/Travel/Search")]
         public HttpResponseMessage Search(string value, int limit = 20)
         {
             return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().Search(value, limit));
         }
 
         //GET: api/Travelogue?travelogueID=..&isPublic=..
-        [HttpGet, TokenRequired]
+        [HttpGet, TokenRequired, Route("api/Travel/Publish")]
         public HttpResponseMessage Publish(int travelogueID, bool isPublic = true)
         {
             if(new TravelogueDbManager().Publish(travelogueID, isPublic)) {

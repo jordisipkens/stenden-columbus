@@ -21,7 +21,7 @@ namespace WebserviceColumbus.Controllers
         }
 
         // GET: api/Travel/GetAll?userID=..&offset=..&limit=..
-        [HttpGet, TokenRequired]
+        [HttpGet, TokenRequired, Route("api/Travel/GetAll")]
         public HttpResponseMessage GetAll(int userID, int offset = 0, int limit = 20)
         {
             if(new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), userID)) {
