@@ -5,36 +5,32 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Scripts {
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-    <script>
-        var markers = [];
-        function initialize() {
-            var mapCanvas = document.getElementById('map-canvas');
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+<script>
+    function initialize() {
+        @if(Model.Locations.Count > 0) {
+            <text>
+            var myFirstLatlng = new google.maps.LatLng(@Model.Locations[0].LocationDetails.Coordinates.Latitude, @Model.Locations[0].LocationDetails.Coordinates.Longitude);
             var mapOptions = {
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                zoom: 5,
+                center: myFirstLatlng
             }
-            var map = new google.maps.Map(mapCanvas, mapOptions)
-            var markerId = 0;
-            var latLngBounds = new google.maps.LatLngBounds();
-            @foreach(var location in Model.Locations)
-                {
-                    <text>
-            markers[markerId] = new google.maps.Marker({
-                position: new google.maps.LatLng(@location.LocationDetails.Coordinates.Latitude, @location.LocationDetails.Coordinates.Longitude),
-                title: "@Html.Raw(location.LocationDetails.Name)"
-            });
-            markers[markerId].setMap(map);
-            latLngBounds.extend(markers[markerId].position);
-            markerId++;
+            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
             </text>
-                }
-            map.setCenter(latLngBounds.getCenter());
-            map.fitBounds(latLngBounds);
+            foreach(var location in Model.Locations) {
+                <text>
+                var myLatlng = new google.maps.LatLng(@location.LocationDetails.Coordinates.Latitude, @location.LocationDetails.Coordinates.Longitude);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: map,
+                    title: '@location.LocationDetails.Name'
+                });
+                </text>
+            }
         }
         google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-}
+    }
+</script>    
 
 <div class="white-block">
     <div class="container">
@@ -47,14 +43,13 @@
     </div>
     <div id="map-canvas"></div> <!-- Google Maps -->
     <div class="container">
-        <div class="button orange">@Html.ActionLink("Locatie Toevoegen", "AddLocation", new { travelID = Model.ID })</div>
+        <div class="button orange">@Html.ActionLink("Locatie Toevoegen", "SearchLocation", new { travelID = Model.ID })</div>
         @if(Model.Locations.Count > 0) {
             <ul>
                 @foreach(var location in Model.Locations) {
                     <li>
                         <h4>@location.LocationDetails.Name</h4>
                         <div class="travel-details">
-                            <div class="travel-detail">@location.Date.Day-@location.Date.Month-@location.Date.Year om @location.Date.Hour:@location.Date.Minute</div>
                             @if(location.Note.IsEmpty() == false) {
                                 <div class="travel-note">@location.Note</div>
                             }

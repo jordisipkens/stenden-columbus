@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ColombusWebapplicatie.Models.Google
+namespace ColombusWebapplicatie.Models.Google.Search
 {
     public class GoogleResult
     {

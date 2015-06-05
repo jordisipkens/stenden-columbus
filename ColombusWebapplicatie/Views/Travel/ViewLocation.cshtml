@@ -1,0 +1,78 @@
+﻿@model ColombusWebapplicatie.Models.Google.Details.GooglePlace
+
+@{
+    ViewBag.Title = "Reizen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker();
+    });
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+<script>
+    function initialize() {
+        var myLatlng = new google.maps.LatLng(@Model.Geometry.Location.Latitude, @Model.Geometry.Location.Longitude);
+        var mapOptions = {
+            zoom: 11,
+            center: myLatlng
+        }
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: '@Model.Name'
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<div class="white-block">
+    <h2>@ViewBag.Title</h2>
+    <div id="map-canvas"></div> <!-- Google Maps -->
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td>@Model.Name</td>
+        </tr>
+        <tr>
+            <td>@Model.FormattedAddress</td>
+        </tr>
+        <tr>
+            <td>@Model.FormattedPhoneNumber</td>
+        </tr>
+        <tr>
+            <td>Rating: @Model.Rating</td>
+        </tr>
+        <tr>
+            <td>
+                @{
+                    string types = "";
+                    foreach(string type in Model.Types) {
+                        types += types + ",";
+                    }
+                    Html.DisplayText(types.Remove(types.Length - 1));
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>@Model.Website</td>
+        </tr>
+            @using(Html.BeginForm("AddLocation", "Travel", new { travelID = ViewBag.TravelID, date = DateTime.Now.ToLongDateString() })) {
+                TempData["Place"] = Model;
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Date, "Datum: ")
+                        @Html.TextBoxFor(model => model.Date, new { @class = "form-control datepicker" })
+                    </td>
+                </tr>
+                <tr>
+                    <td><input class="button orange" type="submit" name="search" value="Voeg toe"></td>
+                </tr>
+            }
+    </table>
+</div>
+}

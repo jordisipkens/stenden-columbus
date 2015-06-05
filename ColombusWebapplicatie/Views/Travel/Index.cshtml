@@ -14,10 +14,8 @@
                 <th>Begindatum</th>
                 <th>Einddatum</th>
             </tr>
-            @if (Model != null && Model.Count > 0)
-            {
-                foreach (var travel in Model)
-                {
+            @if (Model != null && Model.Count > 0) {
+                foreach (var travel in Model) {
                     <tr>
                         <td>@Html.ActionLink(travel.Title, "ViewTravel", new { id = travel.ID })</td>
                         <td>@travel.StartDate.Day-@travel.StartDate.Month-@travel.StartDate.Year</td>

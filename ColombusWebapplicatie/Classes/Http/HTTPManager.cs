@@ -126,7 +126,7 @@ namespace ColombusWebapplicatie.Classes.Http
                     return JsonConvert.DeserializeObject<T>(sr.ReadToEnd());
                 }
             }
-            catch(Exception) {
+            catch(WebException) {
                 return default(T);
             }
         }

@@ -119,12 +119,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Google\Details\GoogleAddressComponent.cs" />
+    <Compile Include="Models\Google\Details\GoogleDetailResponse.cs" />
+    <Compile Include="Models\Google\Details\GoogleReview.cs" />
+    <Compile Include="Models\Google\Details\GoogleReviewAspect.cs" />
     <Compile Include="Models\Google\GoogleAlternative.cs" />
     <Compile Include="Models\Google\GoogleGeometry.cs" />
-    <Compile Include="Models\Google\GooglePhoto.cs" />
-    <Compile Include="Models\Google\GoogleResponse.cs" />
-    <Compile Include="Models\Google\GoogleLocation.cs" />
-    <Compile Include="Models\Google\GoogleResult.cs" />
+    <Compile Include="Models\Google\Search\GooglePhoto.cs" />
+    <Compile Include="Models\Google\Details\GooglePlace.cs" />
+    <Compile Include="Models\Google\Search\GoogleSearchResponse.cs" />
+    <Compile Include="Models\Google\GoogleCoords.cs" />
+    <Compile Include="Models\Google\Search\GoogleResult.cs" />
     <Compile Include="Models\Photo.cs" />
     <Compile Include="Models\Travel\Travelogue\Rating.cs" />
     <Compile Include="Models\Travel\Coordinates.cs" />
@@ -209,7 +214,10 @@
     <Content Include="Content\json\AddTravel.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Travel\AddLocation.cshtml" />
+    <Content Include="Views\Travel\SearchLocation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Travel\ViewLocation.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace ColombusWebapplicatie.Models.Google
+namespace ColombusWebapplicatie.Models.Google.Search
 {
-    public class GoogleLocation
+    public class GoogleCoords
     {
         [JsonProperty("lat")]
         public string Latitude { get; set; }

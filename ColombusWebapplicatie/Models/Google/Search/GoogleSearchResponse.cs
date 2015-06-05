@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace ColombusWebapplicatie.Models.Google
+namespace ColombusWebapplicatie.Models.Google.Search
 {
-    public class GoogleResponse
+    public class GoogleSearchResponse
     {
         [JsonProperty("html_attributes")]
         public string[] HtmlAttributes { get; set; }
