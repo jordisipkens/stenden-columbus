@@ -48,7 +48,7 @@ namespace WebserviceColumbus.Controllers
             Travel travel = dbManager.GetEntity(travelID);
             if(travel != null) {
                 if(travel.User.Username.Equals(TokenManager.GetUsernameFromToken())) {
-                    if(dbManager.DeleteEntity(travelID)) {
+                    if(dbManager.DeleteEntity(travel)) {
                         return Request.CreateResponse(HttpStatusCode.Accepted);
                     }
                     return Request.CreateResponse(HttpStatusCode.Conflict);

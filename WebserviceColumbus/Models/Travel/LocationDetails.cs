@@ -23,7 +23,7 @@ namespace WebserviceColumbus.Models.Travel
         [ForeignKey("CoordinatesID")]
         public virtual Coordinates Coordinates { get; set; }
 
-        [Required, JsonIgnore]
+        [Required]
         public int CoordinatesID { get; set; }
     }
 }

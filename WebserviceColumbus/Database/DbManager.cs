@@ -140,24 +140,6 @@ namespace WebserviceColumbus.Database
             }
         }
 
-        /// <summary>
-        /// Deletes the given entity.
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
-        public virtual bool DeleteEntity(int ID)
-        {
-            try {
-                using(var db = new ColumbusDbContext()) {
-                    return DeleteEntity(db.Set<T>().Find(ID));
-                }
-            }
-            catch(Exception ex) {
-                new ErrorHandler(ex, "Failed to FIND " + typeof(T) + " in database with ID #" + ID, true);
-                return false;
-            }
-        }
-
         #endregion Delete
 
         /// <summary>

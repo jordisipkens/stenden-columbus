@@ -38,36 +38,38 @@ namespace WebserviceColumbus.Authorization
         /// <returns></returns>
         private static string EncryptDecrypt(string value, string encryptionKey, EncryptMode mode)
         {
-            using(RijndaelManaged cipher = GetCipher()) {
-                byte[] rgbIV = new byte[cipher.BlockSize / 8];
-                byte[] rgbKey = new byte[32];
-                byte[] rgbIVBytes = new byte[16];
+            if(value.Length > 0) {
+                using(RijndaelManaged cipher = GetCipher()) {
+                    byte[] rgbIV = new byte[cipher.BlockSize / 8];
+                    byte[] rgbKey = new byte[32];
+                    byte[] rgbIVBytes = new byte[16];
 
-                byte[] encrpytedPassword = Encoding.UTF8.GetBytes(encryptionKey);
-                rgbIVBytes = Encoding.UTF8.GetBytes("");
+                    byte[] encrpytedPassword = Encoding.UTF8.GetBytes(encryptionKey);
+                    rgbIVBytes = Encoding.UTF8.GetBytes("");
 
-                int length = encrpytedPassword.Length;
-                if(length > rgbKey.Length) {
-                    length = rgbKey.Length;
-                }
-                int ivLenth = rgbIVBytes.Length;
-                if(ivLenth > rgbIV.Length) {
-                    ivLenth = rgbIV.Length;
-                }
+                    int length = encrpytedPassword.Length;
+                    if(length > rgbKey.Length) {
+                        length = rgbKey.Length;
+                    }
+                    int ivLenth = rgbIVBytes.Length;
+                    if(ivLenth > rgbIV.Length) {
+                        ivLenth = rgbIV.Length;
+                    }
 
-                Array.Copy(encrpytedPassword, rgbKey, length);
-                Array.Copy(rgbIVBytes, rgbIV, ivLenth);
-                cipher.Key = rgbKey;
-                cipher.IV = rgbIV;
+                    Array.Copy(encrpytedPassword, rgbKey, length);
+                    Array.Copy(rgbIVBytes, rgbIV, ivLenth);
+                    cipher.Key = rgbKey;
+                    cipher.IV = rgbIV;
 
-                UTF8Encoding encoding = new UTF8Encoding();
-                if(mode.Equals(EncryptMode.ENCRYPT)) {
-                    byte[] plainText = cipher.CreateEncryptor().TransformFinalBlock(encoding.GetBytes(value), 0, value.Length);
-                    return Convert.ToBase64String(plainText);
-                }
-                else if(mode.Equals(EncryptMode.DECRYPT)) {
-                    byte[] plainText = cipher.CreateDecryptor().TransformFinalBlock(Convert.FromBase64String(value), 0, Convert.FromBase64String(value).Length);
-                    return encoding.GetString(plainText);
+                    UTF8Encoding encoding = new UTF8Encoding();
+                    if(mode.Equals(EncryptMode.ENCRYPT)) {
+                        byte[] plainText = cipher.CreateEncryptor().TransformFinalBlock(encoding.GetBytes(value), 0, value.Length);
+                        return Convert.ToBase64String(plainText);
+                    }
+                    else if(mode.Equals(EncryptMode.DECRYPT)) {
+                        byte[] plainText = cipher.CreateDecryptor().TransformFinalBlock(Convert.FromBase64String(value), 0, Convert.FromBase64String(value).Length);
+                        return encoding.GetString(plainText);
+                    }
                 }
             }
             return null;

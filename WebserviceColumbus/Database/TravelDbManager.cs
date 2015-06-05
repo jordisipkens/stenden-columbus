@@ -61,9 +61,16 @@ namespace WebserviceColumbus.Database
                 using(var db = new ColumbusDbContext()) {
                     db.Entry(entity).State = EntityState.Modified;
                     foreach(Location location in entity.Locations) {
-                        db.Entry(location).State = EntityState.Modified;
-                        db.Entry(location.LocationDetails).State = EntityState.Modified;
-                        db.Entry(location.LocationDetails.Coordinates).State = EntityState.Modified;
+                        EntityState state;
+                        if(location.ID == 0) {
+                            state = EntityState.Added;
+                        }
+                        else {
+                            state = EntityState.Modified;
+                        }
+                        db.Entry(location).State = state;
+                        db.Entry(location.LocationDetails).State = state;
+                        db.Entry(location.LocationDetails.Coordinates).State = state;
                     }
                     db.SaveChanges();
                     return true;
