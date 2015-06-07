@@ -17,34 +17,45 @@
 @section Scripts {
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script>
-        var markers = [];
-        function initialize() {
-            var mapCanvas = document.getElementById('map-canvas');
-            var mapOptions = {
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-            var map = new google.maps.Map(mapCanvas, mapOptions)
-            var markerId = 0;
-            var latLngBounds = new google.maps.LatLngBounds();
-            @foreach(var location in Model.Locations)
+    var markers = [];
+    var infoWindows = [];
+    function initialize() {
+        var mapCanvas = document.getElementById('map-canvas');
+        var mapOptions = {
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions)
+        var markerId = 0;
+        var latLngBounds = new google.maps.LatLngBounds();
+        @foreach(var location in Model.Locations)
             {
                 <text>
-            markers[markerId] = new google.maps.Marker({
-                position: new google.maps.LatLng(@location.LocationDetails.Coordinates.Latitude, @location.LocationDetails.Coordinates.Longitude),
-                title: "@Html.Raw(location.LocationDetails.Name)"
-            });
-            markers[markerId].setMap(map);
-            latLngBounds.extend(markers[markerId].position);
-            markerId++;
-            </text>
+        infoWindows[markerId] = new google.maps.InfoWindow({
+            content: "<h4>@location.LocationDetails.Name</h4>"
+                    +"@(location.LocationDetails.Address.IsEmpty()==false?Html.Raw("<div>"+location.LocationDetails.Address+"</div>"):Html.Raw(""))"
+                    +"@(location.LocationDetails.PhoneNumber.IsEmpty()==false?Html.Raw("<div>"+location.LocationDetails.PhoneNumber+"</div>"):Html.Raw(""))"
+                });
+
+                markers[markerId] = new google.maps.Marker({
+                    id: markerId,
+                    position: new google.maps.LatLng(@location.LocationDetails.Coordinates.Latitude, @location.LocationDetails.Coordinates.Longitude),
+        title: "@Html.Raw(location.LocationDetails.Name)"
+    });
+    markers[markerId].setMap(map);
+    latLngBounds.extend(markers[markerId].position);
+    google.maps.event.addListener(markers[markerId], 'click', function() {
+        infoWindows[this.id].open(map,markers[this.id]);
+    });
+    markerId++;
+    </text>
             }
-            map.setCenter(latLngBounds.getCenter());
-            map.fitBounds(latLngBounds);
-        }
-        google.maps.event.addDomListener(window, 'load', initialize);
+    map.setCenter(latLngBounds.getCenter());
+    map.fitBounds(latLngBounds);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 }
-<div class="white-block">
+<div class="container white-block">
     <div class="container">
         <h2>Reistitel</h2>
         <div>
@@ -57,7 +68,7 @@
     @if (Model.Locations.Count > 0)
     {
         <div class="container">
-            <ul>
+            <ul id="locations">
                 @foreach (var location in Model.Locations)
                 {
                     <li>
@@ -85,7 +96,7 @@
     <div class="container">
         @using (Html.BeginForm("CreateTravelogue", "Travelogue", Model))
         {
-            <input type="submit" value="Nieuw verslag aanmaken" />
+            <input type="submit" value="Nieuw verslag aanmaken" class="button orange float right" />
         }
     </div>
 </div>

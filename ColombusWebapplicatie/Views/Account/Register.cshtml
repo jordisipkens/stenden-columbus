@@ -8,45 +8,45 @@
 <div class="container white-block">
     <div class="container">
         <h2>@ViewBag.Title</h2>
+        @using(Html.BeginForm("RegisterUser", "Account", FormMethod.Post)) {
         <table cellspacing="0" cellpadding="0">
-            @using(Html.BeginForm("RegisterUser", "Account", FormMethod.Post)) {
-                <tr>
-                    <th>Gebruikersnaam:</th>
-                    <td>@Html.TextBoxFor(user => user.Username, new { @placeholder = "Gebruikersnaam", @class = "form input" })</td>
-                </tr>
-                <tr>
-                    <td colspan="2">@Html.ValidationMessageFor(x=>x.Username)</td>
-                </tr>
-                <tr>
-                    <th>Wachtwoord:</th>
-                    <td>@Html.PasswordFor(user => user.Password, new { @placeholder = "Wachtwoord", @class = "form input" })</td>
-                </tr>
-                <tr>
-                    <td colspan="2">@Html.ValidationMessageFor(x => x.Password)</td>
-                </tr>
-                <tr>
-                    <th>Voornaam:</th>
-                    <td>@Html.TextBoxFor(user => user.FirstName, new { @placeholder = "Voornaam", @class = "form input" })</td>
-                </tr>
-                <tr>
-                    <td colspan="2">@Html.ValidationMessageFor(x => x.FirstName)</td>
-                </tr>
-                <tr>
-                    <th>Achternaam:</th>
-                    <td>@Html.TextBoxFor(user => user.LastName, new { @placeholder = "Achternaam", @class = "form input" })</td>
-                </tr>
-                <tr>
-                    <td colspan="2">@Html.ValidationMessageFor(x => x.LastName)</td>
-                </tr>
-                <tr>
-                    <th>E-mailadres:</th>
-                    <td>@Html.TextBoxFor(user => user.Email, new { @placeholder = "E-mailadres", @class = "form input" })</td>
-                </tr>
-                <tr>
-                    <td colspan="2">@Html.ValidationMessageFor(x => x.Email)</td>
-                </tr>
-            }
+            <tr>
+                <th>Gebruikersnaam:</th>
+                <td>@Html.TextBoxFor(user => user.Username, new { @placeholder = "Gebruikersnaam", @class = "form input" })</td>
+            </tr>
+            <tr>
+                <td colspan="2">@Html.ValidationMessageFor(x=>x.Username)</td>
+            </tr>
+            <tr>
+                <th>Wachtwoord:</th>
+                <td>@Html.PasswordFor(user => user.Password, new { @placeholder = "Wachtwoord", @class = "form input" })</td>
+            </tr>
+            <tr>
+                <td colspan="2">@Html.ValidationMessageFor(x => x.Password)</td>
+            </tr>
+            <tr>
+                <th>Voornaam:</th>
+                <td>@Html.TextBoxFor(user => user.FirstName, new { @placeholder = "Voornaam", @class = "form input" })</td>
+            </tr>
+            <tr>
+                <td colspan="2">@Html.ValidationMessageFor(x => x.FirstName)</td>
+            </tr>
+            <tr>
+                <th>Achternaam:</th>
+                <td>@Html.TextBoxFor(user => user.LastName, new { @placeholder = "Achternaam", @class = "form input" })</td>
+            </tr>
+            <tr>
+                <td colspan="2">@Html.ValidationMessageFor(x => x.LastName)</td>
+            </tr>
+            <tr>
+                <th>E-mailadres:</th>
+                <td>@Html.TextBoxFor(user => user.Email, new { @placeholder = "E-mailadres", @class = "form input" })</td>
+            </tr>
+            <tr>
+                <td colspan="2">@Html.ValidationMessageFor(x => x.Email)</td>
+            </tr>   
         </table>
         <input type="submit" name="submit" value="Registreer" class="button orange float right">
+        }
         </div>
 </div>
