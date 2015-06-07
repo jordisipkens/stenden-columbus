@@ -17,8 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 
 import com.google.gson.Gson;
 
@@ -49,6 +47,11 @@ public class MainActivity extends ActionBarActivity
     public static LoginResponse loginResponse = null;
     public final static String PREFS_NAME = "C0lumbus";
     public static User user = null;
+
+    // Api requests
+    public static String BASE_URL = "http://columbus-webservice.azurewebsites.net/api/";
+    public static String LOGIN_URL = "User/Login";
+    public static String ALL_TRAVELS_URL = "Travel/GetAll";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -27,8 +27,6 @@ import stenden.nl.columbus.GSON.VolleyHelper;
 public class LoginScreen extends Activity implements View.OnClickListener {
     private Button login;
     private EditText mUser, mPass;
-    private String base_url = "http://columbus-webservice.azurewebsites.net/";
-    private String login_call = "api/User/Login";
 
     //AES Encryption fields
     //private static final String key = "C0lumbu5";
@@ -129,7 +127,7 @@ public class LoginScreen extends Activity implements View.OnClickListener {
     private void apiRequest(String header){
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Basic " + header);
-        String FULL_URL = base_url + login_call;
+        String FULL_URL = MainActivity.BASE_URL + MainActivity.LOGIN_URL;
         VolleyHelper.getInstance(getApplicationContext()).addToRequestQueue(
                 new GsonRequest<>(FULL_URL, LoginResponse.class, headers, new Response.Listener<LoginResponse>() {
                     public void onResponse(LoginResponse loginResponse) {
