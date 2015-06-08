@@ -63,11 +63,13 @@ public class MainActivity extends ActionBarActivity
         user = new Gson().fromJson(settings.getString("user", null), User.class);
 
         // Get token and set loginresponse.
-        loginResponse = new LoginResponse();
-        loginResponse.setUser(user);
-        loginResponse.setToken(settings.getString("token", null));
-
         if(loginResponse == null) {
+            loginResponse = new LoginResponse();
+            loginResponse.setUser(user);
+            loginResponse.setToken(settings.getString("loginResponse", null));
+        }
+
+        if(loginResponse.getToken() == null) {
             Intent intent = new Intent(this, LoginScreen.class);
             startActivity(intent);
         }
