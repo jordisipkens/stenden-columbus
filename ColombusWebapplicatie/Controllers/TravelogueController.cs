@@ -11,22 +11,23 @@ namespace ColombusWebapplicatie.Controllers
     public class TravelogueController : BaseController
     {
         private static int maxTitleLenght = 30;
+
         public ActionResult Index()
         {
+            ViewBag.Title = "Mijn Reisverslagen";
             List<Travelogue> model = new List<Travelogue>();
             // Load Json file.
             StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travelogue.json"));
             // Deserialize Json to list of Travel objects.
             model.Add(JsonConvert.DeserializeObject<Travelogue>(streamReader.ReadToEnd()));
-            foreach (Travelogue travelogue in model)
-        {
-                if (travelogue.Title.Length >= maxTitleLenght)
-                {
-                    travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght - 3) + "...";
-            }
+            return View("Index", ShortenTitles(model));
         }
 
-            return View("Index", model);
+        public ActionResult Display(SearchType sortBy)
+        {
+            ViewBag.Title = "Alle Reisverslagen";
+            List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/Display", Request, new Dictionary<string, string>() { { "filter", sortBy.ToString() }, { "limit", "20" } });
+            return View("Index", ShortenTitles(travelogues));
         }
 
         public ActionResult CreateTravelogue()
@@ -87,6 +88,7 @@ namespace ColombusWebapplicatie.Controllers
             }
             return View(model);
         }
+
         private ActionResult AddParagraph(Travelogue model)
         {
             if (model.Paragraphs != null)
@@ -95,6 +97,7 @@ namespace ColombusWebapplicatie.Controllers
             }
             return View("CreateTravelogue", model);
         }
+
         private void PublishTravelogue(Travelogue model)
         {
             if (model.ID != 0)
@@ -114,6 +117,26 @@ namespace ColombusWebapplicatie.Controllers
         private Travelogue SaveTravelogue(Travelogue model)
         {
             return HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
+        }
+
+        #region Helpers
+        private List<Travelogue> ShortenTitles(List<Travelogue> travelogues)
+        {
+            if(travelogues != null) {
+                foreach(Travelogue travelogue in travelogues) {
+                    if(travelogue.Title.Length >= maxTitleLenght) {
+                        travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght - 3) + "...";
+                    }
+                }
+            }
+            return travelogues;
+        }
+        #endregion
+
+        public enum SearchType
+        {
+            Best,
+            Latest
         }
     }
 }
