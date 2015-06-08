@@ -14,14 +14,21 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.android.volley.Response;
+import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import stenden.nl.columbus.GSON.GsonRequest;
 import stenden.nl.columbus.GSON.Objects.Travel;
+import stenden.nl.columbus.GSON.VolleyHelper;
+import stenden.nl.columbus.MainActivity;
 import stenden.nl.columbus.R;
 
 /**
  * Created by Jordi on 19/05/15.
- *
+ * <p/>
  * Fragment for the home screen of the user.
  * Should display travels when they are bounded to the current account.
  */
@@ -29,7 +36,7 @@ public class HomeFragment extends Fragment {
 
     private ListView mTravelList;
     private TravelAdapter mAdapter;
-    private Travel[] travels;
+    private Travel[] mTravels;
 
     public HomeFragment() {
         super();
@@ -47,22 +54,31 @@ public class HomeFragment extends Fragment {
 
         mTravelList = (ListView) v.findViewById(R.id.travel_list);
 
-        // Create test array[] of Travel objects
-        ArrayList<Travel> arrayList = new ArrayList(5);
-        for(int i = 0; i < 5; i++){
-            Travel object = new Travel();
-            object.setStartDate(i + "-03-2015");
-            object.setEndDate(i + "-05-2015");
+        // Call all travels from user.
+        if(MainActivity.loginResponse.getUser() != null) {
+            Map<String, String> headers = new HashMap<String, String>();
+            headers.put("Token", MainActivity.loginResponse.getToken());
 
-            arrayList.add(i, object);
+
+            String full_url = MainActivity.BASE_URL + MainActivity.ALL_TRAVELS_URL
+                    + "?userID=" + MainActivity.loginResponse.getUser().getId();
+
+            VolleyHelper.getInstance(getActivity()).addToRequestQueue(
+                    new GsonRequest<>(full_url,
+                            Travel[].class, headers, new Response.Listener<Travel[]>() {
+                        public void onResponse(Travel[] tempTravel) {
+                            if (tempTravel != null) {
+                                // Show the desired lists.
+                                mTravels = tempTravel;
+
+                                mAdapter = new TravelAdapter(mTravels, getActivity());
+                                mTravelList.setAdapter(mAdapter);
+
+                                setAdapterListener();
+                            }
+                        }
+                    }));
         }
-        travels = new Travel[]{arrayList.get(0), arrayList.get(1), arrayList.get(2), arrayList.get(3), arrayList.get(4)};
-
-
-        mAdapter = new TravelAdapter(travels, getActivity());
-        mTravelList.setAdapter(mAdapter);
-
-        setAdapterListener();
 
         return v;
     }
@@ -92,28 +108,36 @@ public class HomeFragment extends Fragment {
         super.onDetach();
     }
 
-    private void setAdapterListener(){
+    private void setAdapterListener() {
         mTravelList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // new fragment with travel details.
+                // Travel must be sent trough to show travel.
+                // Serialize the travel and deserialise in the TravelDetailFragment.java
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 FragmentTransaction trans = manager.beginTransaction();
 
-                trans.add(R.id.container, new TravelDetailFragment(), "Detail");
+                Fragment frag = new TravelDetailFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("travel", new Gson().toJson(mTravels[i]));
+                frag.setArguments(bundle);
+
+                trans.replace(R.id.container, frag);
                 trans.addToBackStack("Detail");
                 trans.commit();
             }
         });
     }
 
-    private class TravelAdapter extends BaseAdapter{
+    private class TravelAdapter extends BaseAdapter {
         private Travel[] list;
         private Context ctx;
         private View v;
         private TextView startDate, endDate;
 
-        public TravelAdapter(Travel[] list, Context ctx){
+        public TravelAdapter(Travel[] list, Context ctx) {
             this.list = list;
             this.ctx = ctx;
         }
