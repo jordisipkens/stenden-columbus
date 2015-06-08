@@ -22,17 +22,17 @@
                         <td>@travel.EndDate.Day-@travel.EndDate.Month-@travel.EndDate.Year</td>
                     </tr>
                 }
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td class="button orange">@Html.ActionLink("Nieuw", "Create", "Travel")</td>
-                </tr>
             }
             else {
                 <tr>
                     <td colspan="3">Er zijn geen reizen beschikbaar.</td>
                 </tr>
             }
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="button orange">@Html.ActionLink("Nieuw", "Create", "Travel")</td>
+            </tr>
         </table>
     </div>
 </div>

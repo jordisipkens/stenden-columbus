@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Scripts
+{
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript">
@@ -30,6 +32,7 @@
     }
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>
+}
 
 <div class="white-block">
     <h2>@ViewBag.Title</h2>
