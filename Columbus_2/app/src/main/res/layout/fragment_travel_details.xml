@@ -29,6 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
+            android:singleLine="false"
             android:layout_weight="5"
             android:textSize="13sp"
             android:gravity="center|right"
