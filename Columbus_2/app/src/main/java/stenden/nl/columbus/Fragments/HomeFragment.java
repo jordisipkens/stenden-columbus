@@ -70,6 +70,7 @@ public class HomeFragment extends Fragment {
                             if (tempTravel != null) {
                                 // Show the desired lists.
                                 mTravels = tempTravel;
+                                MainActivity.travels = mTravels;
 
                                 mAdapter = new TravelAdapter(mTravels, getActivity());
                                 mTravelList.setAdapter(mAdapter);
@@ -122,6 +123,7 @@ public class HomeFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("travel", new Gson().toJson(mTravels[i]));
+                bundle.putInt("TravelID", mTravels[i].getId());
                 frag.setArguments(bundle);
 
                 trans.replace(R.id.container, frag);

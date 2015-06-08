@@ -30,6 +30,8 @@ public class TravelDetailFragment extends Fragment {
 
     private LocationAdapter adapter;
 
+    private int travelID;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +48,9 @@ public class TravelDetailFragment extends Fragment {
 
         Bundle bundle = getArguments();
         mTravel = new Gson().fromJson(bundle.getString("travel"), Travel.class);
+        travelID = bundle.getInt("TravelID");
 
-        if(mTravel != null){
+        if (mTravel != null) {
             // Set title and date
             travelTitle.setText(mTravel.getTitle());
             travelDate.setText(mTravel.getStartDate() + " / " + mTravel.getEndDate());
@@ -135,7 +138,17 @@ public class TravelDetailFragment extends Fragment {
             note.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Fragment frag = new LocationNoteFragment();
 
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("TravelID", travelID);
+                    bundle.putInt("LocID", loc.getId());
+
+                    frag.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, frag)
+                            .addToBackStack("LocationNote").commit();
                 }
             });
 

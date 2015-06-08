@@ -25,6 +25,7 @@ import stenden.nl.columbus.Fragments.AccountFragment;
 import stenden.nl.columbus.Fragments.HomeFragment;
 import stenden.nl.columbus.Fragments.MapFragment;
 import stenden.nl.columbus.GSON.Objects.LoginResponse;
+import stenden.nl.columbus.GSON.Objects.Travel;
 import stenden.nl.columbus.GSON.Objects.User;
 
 
@@ -43,10 +44,15 @@ public class MainActivity extends ActionBarActivity
 
     private Fragment mCurrentFragment;
 
-    // Static variables used throughout fragments
+    /**
+     * Static variables that keep all the data retrieved from the API.
+     */
     public static LoginResponse loginResponse = null;
     public final static String PREFS_NAME = "C0lumbus";
     public static User user = null;
+    public static Travel[] travels = null;
+
+
 
     // Api requests
     public static String BASE_URL = "http://columbus-webservice.azurewebsites.net/api/";
