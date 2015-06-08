@@ -16,8 +16,8 @@ namespace ColombusWebapplicatie.Controllers
             if(Session["User"] != null && (Session["User"]).GetType() == typeof(User)) {
                 int userID = (Session["User"] as User).ID;
                 List<Travel> travels = HTTPManager.WebserviceGetRequest<List<Travel>>("Travel/GetAll", Request, null, new Dictionary<string, string>() { { "userID", userID.ToString() } });
-                return View(travels);
-            }
+            return View(travels);
+        }
             return View();
         }
 
@@ -27,7 +27,7 @@ namespace ColombusWebapplicatie.Controllers
                 Travel travel = HTTPManager.WebserviceGetRequest<Travel>("travel/" + id, Request);
                 if(travel != null) {
                     return View(travel);
-                }
+            }
             }
             return ErrorToIndex("Deze reis bestaat niet (meer)");
         }
@@ -56,7 +56,7 @@ namespace ColombusWebapplicatie.Controllers
                 return View();
             }
             return ErrorToIndex("Deze reis bestaat niet (meer)");
-        }
+            }
 
         public ActionResult ShowFoundLocation(int travelID, string query)
         {
@@ -83,7 +83,7 @@ namespace ColombusWebapplicatie.Controllers
             Travel postedTravel = HTTPManager.WebservicePostRequest<Travel>("travel", Request, travel);
             return RedirectToAction("Index", "Travel"); //TODO Go to travel with corresponding TravelID
         }
-
+        
         #region Helpers
         private List<LocationDetails> RequestGooglePlaces(string url, Dictionary<string, string> parameters)
         {

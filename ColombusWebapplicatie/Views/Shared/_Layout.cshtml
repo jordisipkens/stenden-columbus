@@ -42,14 +42,16 @@
             <div id="menu">
                 <ul>
                     <li class="menu-item">@Html.ActionLink("Home", "Index", "Home")</li>
-                @if(!Convert.ToBoolean(Session["LoggedIn"])) {
-                    <li class="menu-item">@Html.ActionLink("Registreren", "Register", "Account")</li>
-                }
-                else {
-                    <li class="menu-item">@Html.ActionLink("Mijn reizen", "Index", "Travel")</li>
                     <li class="menu-item">@Html.ActionLink("Reisverslagen", "Index", "Travelogue")</li>
-                    <li class="menu-item">@Html.ActionLink("Logout", "Logout", "Account")</li>
-                }
+                    @if (!Convert.ToBoolean(Session["LoggedIn"]))
+                    {
+                        <li class="menu-item">@Html.ActionLink("Registreren", "Register", "Account")</li>
+                    }
+                    else
+                    {
+                        <li class="menu-item">@Html.ActionLink("Mijn reizen", "Index", "Travel")</li>
+                        <li class="menu-item">@Html.ActionLink("Logout", "Logout", "Account")</li>
+                    }
                 </ul>
             </div>
         </div>
@@ -63,10 +65,11 @@
                 <h2>Lorem Ipsum</h2>
                 <ul>
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                @if(Convert.ToBoolean(Session["LoggedIn"])) {
-                    <li>@Html.ActionLink("Mijn reizen", "Index", "Travel")</li>
-                    <li>@Html.ActionLink("Account", "/")</li>
-                }
+                    @if (Convert.ToBoolean(Session["LoggedIn"]))
+                    {
+                        <li>@Html.ActionLink("Mijn reizen", "Index", "Travel")</li>
+                        <li>@Html.ActionLink("Account", "/")</li>
+                    }
                 </ul>
             </div>
             <div class="half">

@@ -6,8 +6,10 @@
 }
 
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
-<script>
-    function initialize() {
+    <script>
+    var markers = [];
+    var infoWindows = [];
+        function initialize() {
         @if(Model.Locations.Count > 0) {
             <text>
             var myFirstLatlng = new google.maps.LatLng(@Model.Locations[0].LocationDetails.Coordinates.Latitude, @Model.Locations[0].LocationDetails.Coordinates.Longitude);
@@ -19,20 +21,31 @@
             </text>
             foreach(var location in Model.Locations) {
                 <text>
-                var myLatlng = new google.maps.LatLng(@location.LocationDetails.Coordinates.Latitude, @location.LocationDetails.Coordinates.Longitude);
-                var marker = new google.maps.Marker({
-                    position: myLatlng,
-                    map: map,
-                    title: '@location.LocationDetails.Name'
+        infoWindows[markerId] = new google.maps.InfoWindow({
+            content: "<h4>@location.LocationDetails.Name</h4>"
+                    +"@(location.LocationDetails.Address.IsEmpty()==false?Html.Raw("<div>"+location.LocationDetails.Address+"</div>"):Html.Raw(""))"
+                    +"@(location.LocationDetails.PhoneNumber.IsEmpty()==false?Html.Raw("<div>"+location.LocationDetails.PhoneNumber+"</div>"):Html.Raw(""))"
                 });
+
+                markers[markerId] = new google.maps.Marker({
+                    id: markerId,
+                    position: new google.maps.LatLng(@location.LocationDetails.Coordinates.Latitude, @location.LocationDetails.Coordinates.Longitude),
+        title: "@Html.Raw(location.LocationDetails.Name)"
+                    });
+    markers[markerId].setMap(map);
+    latLngBounds.extend(markers[markerId].position);
+    google.maps.event.addListener(markers[markerId], 'click', function() {
+        infoWindows[this.id].open(map,markers[this.id]);
+    });
+    markerId++;
                 </text>
             }
         }
         google.maps.event.addDomListener(window, 'load', initialize);
     }
-</script>    
-
-<div class="white-block">
+    </script>
+}
+<div class="container white-block">
     <div class="container">
         <h2>Reistitel</h2>
         <div>
@@ -42,7 +55,7 @@
         <h3>Locaties</h3>
     </div>
     <div id="map-canvas"></div> <!-- Google Maps -->
-    <div class="container">
+        <div class="container">
         <div class="button orange">@Html.ActionLink("Locatie Toevoegen", "SearchLocation", new { travelID = Model.ID })</div>
         @if(Model.Locations.Count > 0) {
             <ul>
@@ -63,6 +76,13 @@
                     </li>
                 }
             </ul>
+        }
+        </div>
+    }
+    <div class="container">
+        @using (Html.BeginForm("CreateTravelogue", "Travelogue", Model))
+        {
+            <input type="submit" value="Nieuw verslag aanmaken" class="button orange float right" />
         }
     </div>
 </div>

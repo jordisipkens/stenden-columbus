@@ -1,10 +1,11 @@
-﻿@model IList<ColombusWebapplicatie.Models.Travelogue>
+﻿@model IList<ColombusWebapplicatie.Models.Travel.Travelogue.Travelogue>
+
 @{
     ViewBag.Title = "Reisverslagen";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container white-block">
+<div class="white-block">
     <h2>@ViewBag.Title</h2>
     <div class="container">
         <table cellspacing="0" cellpadding="0" id="travels">
@@ -18,7 +19,7 @@
                 foreach (var travelogue in Model)
                 {
                     <tr>
-                        <td>@Html.ActionLink("travelogue " + @travelogue.TravelID, "ViewTravelogue", new { id = travelogue.ID })</td>
+                        <td>@Html.ActionLink(@travelogue.Title , "ViewTravelogue", new { id = travelogue.ID })</td>
                         <td>@travelogue.PublishedTime.Day-@travelogue.PublishedTime.Month-@travelogue.PublishedTime.Year</td>
                         <td>@travelogue.Ratings</td>
                     </tr>
@@ -31,9 +32,6 @@
                 </tr>
             }
         </table>
-    </div>
-
-    <div class="container">
-        @Html.ActionLink("Nieuw verslag", "CreateTravelogue", new { }, new { @class = "button orange float right" })
+        @Html.ActionLink("Nieuw verslag", "CreateTravelogue", "Travelogue", new { }, new { @class = "button orange float right" })
     </div>
 </div>
