@@ -15,7 +15,7 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult Login(User user)
         {
             if(user.Username != null || user.Password != null) {
-                LoginResponse response = HTTPManager.LoginRequest(user);
+                LoginResponse response = HttpManager.LoginRequest(user);
                 if(response != null) {
                     CookieManager.CreateCookie(Response, "Token", response.Token);
                     Session["LoggedIn"] = true;
@@ -37,7 +37,7 @@ namespace ColombusWebapplicatie.Controllers
         {
             if(ModelState.IsValid) {
                 user.Password = Encryption.Encrypt(user.Password);
-                User addedUser = HTTPManager.WebservicePostRequest<User>("User/Register", Request, user);
+                User addedUser = HttpManager.WebservicePostRequest<User>("User/Register", Request, user);
                 return MessageToIndex("Gebruiker aangemaakt");
             }
             else {
