@@ -24,7 +24,7 @@ namespace ColombusWebapplicatie.Controllers
         //Method for viewing 1 travelogue
         public ActionResult ViewTravelogue(int? id)
         {
-            Travelogue model = HTTPManager.WebserviceGetRequest<Travelogue>("Travelogue/" + id, Request);
+            Travelogue model = HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/" + id, Request);
             foreach(Paragraph par in model.Paragraphs) {
                 par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
             }
@@ -70,7 +70,7 @@ namespace ColombusWebapplicatie.Controllers
         {
             if (model.ID != 0)
             {
-                HTTPManager.WebservicePostRequest<Travelogue>("Travelogue?travelogueId=" + model.ID + "&isPublic=true", Request, model);
+                HttpManager.WebservicePostRequest<Travelogue>("Travelogue?travelogueId=" + model.ID + "&isPublic=true", Request, model);
             }
             else
             {
@@ -84,7 +84,7 @@ namespace ColombusWebapplicatie.Controllers
 
         private Travelogue SaveTravelogue(Travelogue model)
         {
-            return HTTPManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
+            return HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
         }
 
 
