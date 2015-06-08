@@ -19,12 +19,12 @@ namespace ColombusWebapplicatie.Controllers
             // Deserialize Json to list of Travel objects.
             model.Add(JsonConvert.DeserializeObject<Travelogue>(streamReader.ReadToEnd()));
             foreach (Travelogue travelogue in model)
-            {
+        {
                 if (travelogue.Title.Length >= maxTitleLenght)
                 {
                     travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght - 3) + "...";
-                }
             }
+        }
 
             return View("Index", model);
         }
@@ -42,11 +42,11 @@ namespace ColombusWebapplicatie.Controllers
         {
             Travelogue model = new Travelogue();
             model.Paragraphs = new List<Paragraph>();
-            model.Paragraphs.Add(new Paragraph());
+                model.Paragraphs.Add(new Paragraph());
             model.Travel = travel;
             model.TravelID = travel.ID;
             return View(model);
-        }
+            }
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SubmitButton(Travelogue model)
@@ -63,8 +63,8 @@ namespace ColombusWebapplicatie.Controllers
             else if (Request.Form["Save"] != null)
             {
                 SaveTravelogue(model);
-                return Index();
-            }
+            return Index();
+        }
             return Index();
         }
 
@@ -99,7 +99,7 @@ namespace ColombusWebapplicatie.Controllers
         {
             if (model.ID != 0)
             {
-                HTTPManager.WebservicePostRequest<Travelogue>("Travelogue?travelogueId=" + model.ID + "&isPublic=true", Request, model);
+                HttpManager.WebservicePostRequest<Travelogue>("Travelogue?travelogueId=" + model.ID + "&isPublic=true", Request, model);
             }
             else
             {
@@ -113,7 +113,7 @@ namespace ColombusWebapplicatie.Controllers
 
         private Travelogue SaveTravelogue(Travelogue model)
         {
-            return HTTPManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
+            return HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
         }
     }
 }

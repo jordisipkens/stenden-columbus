@@ -9,7 +9,7 @@ using System.Web;
 
 namespace ColombusWebapplicatie.Classes.Http
 {
-    public static class HTTPManager
+    public static class HttpManager
     {
         public const string LOCAL_BASE_URL = "http://localhost:2758/api/";
         public const string AZURE_BASE_URL = "http://columbus-webservice.azurewebsites.net/api/";
