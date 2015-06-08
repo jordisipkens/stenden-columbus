@@ -23,9 +23,7 @@ public class LocationNoteFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_note, container, false);
 
-        
-
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return v;
     }
 
     @Override
