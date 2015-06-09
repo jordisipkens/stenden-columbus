@@ -129,10 +129,6 @@
     <Compile Include="Migrations\201505291503213_Travelogue_Publish_Rating.Designer.cs">
       <DependentUpon>201505291503213_Travelogue_Publish_Rating.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201506021832116_update.cs" />
-    <Compile Include="Migrations\201506021832116_update.Designer.cs">
-      <DependentUpon>201506021832116_update.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Other\LoginResponse.cs" />
     <Compile Include="Models\Travel\Travelogue\Rating.cs" />
     <Compile Include="Other\ErrorHandler.cs" />
@@ -209,9 +205,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505291503213_Travelogue_Publish_Rating.resx">
       <DependentUpon>201505291503213_Travelogue_Publish_Rating.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201506021832116_update.resx">
-      <DependentUpon>201506021832116_update.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
