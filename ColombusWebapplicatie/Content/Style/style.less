@@ -98,6 +98,46 @@ table {
     }
 }
 
+.ui-datepicker {
+    color: @font_color_light;
+    background-color: @orange;
+    font-family: @font;
+    border: solid 1px @white;
+    .ui-state-default {
+        padding: 0.3em;
+        background-color: @white;
+        color: @font_color;
+        font-family: @font;
+        &:hover {
+            background-color: lighten(@orange,10%);
+            color: @font_color_light;
+        }
+    }
+}
+
+.ui-datepicker-next {
+    float: right;
+    font-family: @font;
+    padding-right: 1em;
+    padding-top: 1em;
+    cursor: pointer;
+}
+
+.ui-datepicker-prev {
+    float: left;
+    font-family: @font;
+    padding-left: 1em;
+    padding-top: 1em;
+    cursor: pointer;
+}
+
+.ui-datepicker-title {
+    font-family: open sans;
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+
 
 ::-webkit-input-placeholder { /* WebKit browsers */
     color: @white;
