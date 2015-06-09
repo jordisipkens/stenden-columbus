@@ -6,6 +6,7 @@ using ColombusWebapplicatie.Models.Travel;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using ColombusWebapplicatie.Classes.Http;
 
 namespace ColombusWebapplicatie.Controllers
 {
@@ -17,20 +18,20 @@ namespace ColombusWebapplicatie.Controllers
             {
                 int userID = (Session["User"] as User).ID;
                 List<Travel> travels = HttpManager.WebserviceGetRequest<List<Travel>>("Travel/GetAll", Request, null, new Dictionary<string, string>() { { "userID", userID.ToString() } });
-            return View(travels);
-        }
+                return View(travels);
+            }
             return View();
         }
 
         public ActionResult ViewTravel(int travelID = 0)
         {
-            if (id != 0)
+            if (travelID != 0)
             {
-                Travel travel = HTTPManager.WebserviceGetRequest<Travel>("travel/" + id, Request);
+                Travel travel = HttpManager.WebserviceGetRequest<Travel>("travel/" + travelID, Request);
                 if (travel != null)
                 {
                     return View(travel);
-            }
+                }
             }
             return ErrorToIndex("Deze reis bestaat niet (meer)");
         }
@@ -62,7 +63,7 @@ namespace ColombusWebapplicatie.Controllers
                 return View();
             }
             return ErrorToIndex("Deze reis bestaat niet (meer)");
-            }
+        }
 
         public ActionResult ShowFoundLocation(int travelID, string query)
         {
@@ -90,17 +91,17 @@ namespace ColombusWebapplicatie.Controllers
             Travel postedTravel = HttpManager.WebservicePostRequest<Travel>("travel", Request, travel);
             return RedirectToAction("ViewTravel", "Travel", new { travelID = travelID });
         }
-        
+
         public ActionResult CreateNote(int travelID, int locationID, string note)
         {
-            Travel travel = HTTPManager.WebserviceGetRequest<Travel>("travel/" + travelID, Request);
+            Travel travel = HttpManager.WebserviceGetRequest<Travel>("travel/" + travelID, Request);
             foreach (Location location in travel.Locations)
             {
-                if(location.ID == locationID)
+                if (location.ID == locationID)
                 {
                     location.Note = note;
-                    Travel postedTravel = HTTPManager.WebservicePostRequest<Travel>("travel", Request, travel);
-                    return Message(RedirectToAction("ViewTravel", "Travel", new { id = travelID}), "Notitie toegevoegd");
+                    Travel postedTravel = HttpManager.WebservicePostRequest<Travel>("travel", Request, travel);
+                    return Message(RedirectToAction("ViewTravel", "Travel", new { id = travelID }), "Notitie toegevoegd");
                 }
             }
             return Error(RedirectToAction("ViewTravel", "Travel", new { id = travelID }), "Er is iets fout gegaan.");
@@ -109,7 +110,7 @@ namespace ColombusWebapplicatie.Controllers
         #region Helpers
         private List<LocationDetails> RequestGooglePlaces(string url, Dictionary<string, string> parameters)
         {
-            GoogleSearchResponse response = HTTPManager.GoogleGetRequest<GoogleSearchResponse>(url, parameters);
+            GoogleSearchResponse response = HttpManager.GoogleGetRequest<GoogleSearchResponse>(url, parameters);
             if (response != null)
             {
                 List<LocationDetails> locations = new List<LocationDetails>();
