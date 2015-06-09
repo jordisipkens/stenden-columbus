@@ -121,13 +121,9 @@
     <Compile Include="Authorization\Encryption.cs" />
     <Compile Include="Database\TravelDbManager.cs" />
     <Compile Include="Database\TravelogueDbManager.cs" />
-    <Compile Include="Migrations\201505291347388_Travelogue_published.cs" />
-    <Compile Include="Migrations\201505291347388_Travelogue_published.Designer.cs">
-      <DependentUpon>201505291347388_Travelogue_published.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505291503213_Travelogue_Publish_Rating.cs" />
-    <Compile Include="Migrations\201505291503213_Travelogue_Publish_Rating.Designer.cs">
-      <DependentUpon>201505291503213_Travelogue_Publish_Rating.cs</DependentUpon>
+    <Compile Include="Migrations\201506091421468_Init.cs" />
+    <Compile Include="Migrations\201506091421468_Init.Designer.cs">
+      <DependentUpon>201506091421468_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Other\LoginResponse.cs" />
     <Compile Include="Models\Travel\Travelogue\Rating.cs" />
@@ -141,22 +137,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Authorization\TokenManager.cs" />
-    <Compile Include="Migrations\201505221504135_init.cs" />
-    <Compile Include="Migrations\201505221504135_init.Designer.cs">
-      <DependentUpon>201505221504135_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505221518045_Changed_User.cs" />
-    <Compile Include="Migrations\201505221518045_Changed_User.Designer.cs">
-      <DependentUpon>201505221518045_Changed_User.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505240029451_added_username.cs" />
-    <Compile Include="Migrations\201505240029451_added_username.Designer.cs">
-      <DependentUpon>201505240029451_added_username.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201505240158454_added_attributes_user.cs" />
-    <Compile Include="Migrations\201505240158454_added_attributes_user.Designer.cs">
-      <DependentUpon>201505240158454_added_attributes_user.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Other\Photo.cs" />
     <Compile Include="Models\Google\Root.cs" />
@@ -185,26 +165,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201505221504135_init.resx">
-      <DependentUpon>201505221504135_init.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505221518045_Changed_User.resx">
-      <DependentUpon>201505221518045_Changed_User.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505240029451_added_username.resx">
-      <DependentUpon>201505240029451_added_username.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505240158454_added_attributes_user.resx">
-      <DependentUpon>201505240158454_added_attributes_user.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505291347388_Travelogue_published.resx">
-      <DependentUpon>201505291347388_Travelogue_published.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201505291503213_Travelogue_Publish_Rating.resx">
-      <DependentUpon>201505291503213_Travelogue_Publish_Rating.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201506091421468_Init.resx">
+      <DependentUpon>201506091421468_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

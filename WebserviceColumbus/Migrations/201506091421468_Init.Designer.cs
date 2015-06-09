@@ -7,13 +7,13 @@ namespace WebserviceColumbus.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class added_username : IMigrationMetadata
+    public sealed partial class Init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(added_username));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201505240029451_added_username"; }
+            get { return "201506091421468_Init"; }
         }
         
         string IMigrationMetadata.Source
