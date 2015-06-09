@@ -8,26 +8,31 @@
     <script src="~/Content/Scripts/JQuery/jquery-1.11.3.min.js"></script>
     <link href="~/Content/Style/style.less" rel="stylesheet/less" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Schoolbell&v1' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
     @RenderSection("Styles", false)
     @RenderSection("Scripts", false)
 </head>
 <body>
     <script src="~/Content/Scripts/Less/Less.js" type="text/javascript"></script>
     <header>
-        @if (TempData["error"] != null) {
+        @if (TempData["error"] != null)
+        {
             <div class="error">
                 <div class="container">
-                    @foreach (string error in TempData["error"] as string[]) {
+                    @foreach (string error in TempData["error"] as string[])
+                    {
                         @error;
                         <br />
                     }
                 </div>
             </div>
         }
-        else if(TempData["message"] != null) {
+        else if (TempData["message"] != null)
+        {
             <div class="message">
                 <div class="container">
-                    @foreach(string message in TempData["message"] as string[]) {
+                    @foreach (string message in TempData["message"] as string[])
+                    {
                         @message;
                         <br />
                     }

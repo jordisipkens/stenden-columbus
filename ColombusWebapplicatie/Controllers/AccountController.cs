@@ -37,8 +37,8 @@ namespace ColombusWebapplicatie.Controllers
         {
             if(ModelState.IsValid) {
                 user.Password = Encryption.Encrypt(user.Password);
-                User addedUser = HttpManager.WebservicePostRequest<User>("User/Register", Request, user);
-                return MessageToIndex("Gebruiker aangemaakt");
+                User addedUser = HTTPManager.WebservicePostRequest<User>("User/Register", Request, user);
+                return Message(RedirectToAction("Index", "Home"),"Gebruiker aangemaakt");
             }
             else {
                 return View("Register", user);

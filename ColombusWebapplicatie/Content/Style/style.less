@@ -17,6 +17,8 @@
 //Transparency for the black overlay on background images.
 @transparency: 0.5;
 
+@font: 'Segoe UI', 'Open Sans';
+
 
 * {
     margin: 0px;
@@ -26,7 +28,7 @@
 body {
     margin: 0px;
     padding: 0px;
-    font-family: 'Segoe UI';
+    font-family: @font;
     color: @font_color;
     background-color: @white;
 }
@@ -53,7 +55,8 @@ ul {
 h1 {
     margin: 0px;
     text-align: center;
-    font-family: 'Segoe UI Light';
+    font-family: @font;
+    font-weight: lighter;
 }
 
 h2, h3 {
@@ -61,7 +64,8 @@ h2, h3 {
     padding-top: 1em;
     padding-bottom: 1em;
     text-align: center;
-    font-family: 'Segoe UI Light';
+    font-family: @font;
+    font-weight: lighter;
 }
 
 table {
@@ -149,18 +153,18 @@ input:-webkit-autofill {
     padding-bottom: 2em;
     float: left;
     background: linear-gradient( rgba(0, 0, 0, @transparency), rgba(0, 0, 0, @transparency) ), url(/Content/Images/Background/bridge.jpg) no-repeat;
-    background-position-y: 100%;
+    background-position: 0% 0%, 0% 100%;
     background-size: 100%;
 
     &.sunset {
         background: linear-gradient( rgba(0, 0, 0, @transparency), rgba(0, 0, 0, @transparency) ), url(/Content/Images/Background/sunset.jpg) no-repeat;
-        background-position-y: 100%;
+        background-position: 0% 0%, 0% 100%;
         background-size: 100%;
     }
 
     &.balloons {
         background: linear-gradient( rgba(0, 0, 0, @transparency), rgba(0, 0, 0, @transparency) ), url(/Content/Images/Background/balloons.jpg) no-repeat;
-        background-position-y: 100%;
+        background-position: 0% 0%, 0% 100%;
         background-size: 100%;
     }
 }
@@ -192,7 +196,7 @@ input:-webkit-autofill {
         box-shadow: 0 0 0;
         -webkit-box-shadow: inset 0 0 #e8930c;
         text-decoration: none;
-        border-width: 0px
+        border-width: 0px;
     }
 }
 
@@ -204,7 +208,8 @@ input:-webkit-autofill {
 
     h2 {
         color: @font_color_light;
-        font-family: 'Segoe UI Light';
+        font-family: @font;
+        font-weight: lighter;
     }
 }
 
@@ -314,7 +319,8 @@ footer {
     h2 {
         margin: 0px;
         text-align: left;
-        font-family: 'Segoe UI Light';
+        font-family: @font;
+        font-weight: lighter;
         color: @white;
     }
 
@@ -417,14 +423,12 @@ footer {
     color: @white;
 }
 
-#map-canvas
-{
+#map-canvas {
     margin-bottom: 1em;
     width: 100%;
     height: 400px;
 }
 
-#locations li
-{
+#locations li {
     margin-bottom: 1em;
 }

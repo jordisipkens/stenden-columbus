@@ -66,20 +66,25 @@
         <div id="map-canvas"></div> <!-- Google Maps -->
     }
         <div class="container">
-        <div class="button orange">@Html.ActionLink("Locatie Toevoegen", "SearchLocation", new { travelID = Model.ID })</div>
+        @Html.ActionLink("Locatie Toevoegen", "SearchLocation", new { travelID = Model.ID }, new { @class = "button orange float left"})
         @if(Model.Locations.Count > 0) {
-            <ul>
+            <ul class="white-block float left">
                 @foreach(var location in Model.Locations) {
                     <li>
                         <h4>@location.LocationDetails.Name</h4>
                         <div class="travel-details">
-                            @if(location.Note.IsEmpty() == false) {
+                            @if(!location.Note.IsEmpty()) {
                                 <div class="travel-note">@location.Note</div>
                             }
-                            @if(location.LocationDetails.Address.IsEmpty() == false) {
+                            else
+                            {
+                                //Temporary note
+                                @Html.ActionLink("Notie toevoegen", "CreateNote", new { travelID = Model.ID, locationID = location.ID, note = "Bedrijfsuitje" }, new { @class = "button orange float left" })
+                            }
+                            @if(!location.LocationDetails.Address.IsEmpty()) {
                                 <div class="travel-detail">@location.LocationDetails.Address</div>
                             }
-                            @if(location.LocationDetails.PhoneNumber.IsEmpty() == false) {
+                            @if(!location.LocationDetails.PhoneNumber.IsEmpty()) {
                                 <div class="travel-detail">Tel.: @location.LocationDetails.PhoneNumber</div>
                             }
                             
@@ -90,7 +95,6 @@
             </ul>
         }
         </div>
-    }
     <div class="container">
         @using (Html.BeginForm("CreateTravelogue", "Travelogue", Model))
         {
