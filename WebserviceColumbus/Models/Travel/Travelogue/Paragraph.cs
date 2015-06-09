@@ -19,8 +19,6 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
         public int Width { get; set; }
 
         public int Height { get; set; }
-        
-        public bool AlignImageLeft { get; set; }
 
         //Navigation
         [JsonIgnore]
