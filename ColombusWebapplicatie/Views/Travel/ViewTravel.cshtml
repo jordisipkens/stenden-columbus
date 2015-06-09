@@ -5,45 +5,53 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+@section Scripts {
+    if (@Model.Locations.Count>0){
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
     <script>
-    var markers = [];
-    var infoWindows = [];
+        var markers = [];
+        var infoWindows = [];
         function initialize() {
-        @if(Model.Locations.Count > 0) {
-            <text>
-            var myFirstLatlng = new google.maps.LatLng(@Model.Locations[0].LocationDetails.Coordinates.Latitude, @Model.Locations[0].LocationDetails.Coordinates.Longitude);
+            var mapCanvas = document.getElementById('map-canvas');
             var mapOptions = {
-                zoom: 5,
-                center: myFirstLatlng
+                mapTypeId: google.maps.MapTypeId.ROADMAP
             }
-            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-            </text>
-            foreach(var location in Model.Locations) {
-                <text>
-        infoWindows[markerId] = new google.maps.InfoWindow({
-            content: "<h4>@location.LocationDetails.Name</h4>"
-                    +"@(location.LocationDetails.Address.IsEmpty()==false?Html.Raw("<div>"+location.LocationDetails.Address+"</div>"):Html.Raw(""))"
-                    +"@(location.LocationDetails.PhoneNumber.IsEmpty()==false?Html.Raw("<div>"+location.LocationDetails.PhoneNumber+"</div>"):Html.Raw(""))"
-                });
-
-                markers[markerId] = new google.maps.Marker({
-                    id: markerId,
-                    position: new google.maps.LatLng(@location.LocationDetails.Coordinates.Latitude, @location.LocationDetails.Coordinates.Longitude),
-        title: "@Html.Raw(location.LocationDetails.Name)"
+            var map = new google.maps.Map(mapCanvas, mapOptions)
+            var markerId = 0;
+            var latLngBounds = new google.maps.LatLngBounds();
+            @foreach(var location in Model.Locations)
+                {
+                    <text>
+                    infoWindows[markerId] = new google.maps.InfoWindow({
+                        content: "<h4>@location.LocationDetails.Name</h4>"
+                        +"@(location.LocationDetails.Address.IsEmpty()==false?Html.Raw("<div>"+location.LocationDetails.Address+"</div>"):Html.Raw(""))"
+                        +"@(location.LocationDetails.PhoneNumber.IsEmpty()==false?Html.Raw("<div>"+location.LocationDetails.PhoneNumber+"</div>"):Html.Raw(""))"
                     });
-    markers[markerId].setMap(map);
-    latLngBounds.extend(markers[markerId].position);
-    google.maps.event.addListener(markers[markerId], 'click', function() {
-        infoWindows[this.id].open(map,markers[this.id]);
-    });
-    markerId++;
-                </text>
-            }
+                    markers[markerId] = new google.maps.Marker({
+                        id: markerId,
+                        position: new google.maps.LatLng(@location.LocationDetails.Coordinates.Latitude, @location.LocationDetails.Coordinates.Longitude),
+                        title: "@Html.Raw(location.LocationDetails.Name)"
+                    });
+                    markers[markerId].setMap(map);
+                    latLngBounds.extend(markers[markerId].position);
+                    google.maps.event.addListener(markers[markerId], 'click', function() {
+                        infoWindows[this.id].open(map,markers[this.id]);
+                    });
+                    markerId++;
+                    </text>
+                }
+            map.setCenter(latLngBounds.getCenter());
+            map.fitBounds(latLngBounds);
+            zoomChangeBoundsListener = google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
+                if (this.getZoom()){
+                    this.setZoom(6);
+                }
+            });
+            setTimeout(function(){google.maps.event.removeListener(zoomChangeBoundsListener)}, 2000);
         }
         google.maps.event.addDomListener(window, 'load', initialize);
-    }
     </script>
+    }
 }
 <div class="container white-block">
     <div class="container">
@@ -54,31 +62,39 @@
         </div>
         <h3>Locaties</h3>
     </div>
-    <div id="map-canvas"></div> <!-- Google Maps -->
+    @if(Model.Locations.Count>0) {
+        <div id="map-canvas"></div> <!-- Google Maps -->
+    }
         <div class="container">
-        <div class="button orange">@Html.ActionLink("Locatie Toevoegen", "SearchLocation", new { travelID = Model.ID })</div>
+        @Html.ActionLink("Locatie Toevoegen", "SearchLocation", new { travelID = Model.ID }, new { @class = "button orange float left"})
         @if(Model.Locations.Count > 0) {
-            <ul>
+            <ul class="white-block float left">
                 @foreach(var location in Model.Locations) {
                     <li>
                         <h4>@location.LocationDetails.Name</h4>
                         <div class="travel-details">
-                            @if(location.Note.IsEmpty() == false) {
+                            @if(!location.Note.IsEmpty()) {
                                 <div class="travel-note">@location.Note</div>
                             }
-                            @if(location.LocationDetails.Address.IsEmpty() == false) {
+                            else
+                            {
+                                //Temporary note
+                                @Html.ActionLink("Notie toevoegen", "CreateNote", new { travelID = Model.ID, locationID = location.ID, note = "Bedrijfsuitje" }, new { @class = "button orange float left" })
+                            }
+                            @if(!location.LocationDetails.Address.IsEmpty()) {
                                 <div class="travel-detail">@location.LocationDetails.Address</div>
                             }
-                            @if(location.LocationDetails.PhoneNumber.IsEmpty() == false) {
+                            @if(!location.LocationDetails.PhoneNumber.IsEmpty()) {
                                 <div class="travel-detail">Tel.: @location.LocationDetails.PhoneNumber</div>
                             }
+                            
                         </div>
+                        @Html.ActionLink("Bekijk locatie", "ViewLocation", "Travel", new { travelID=Model.ID, placeID=location.LocationDetails.PlaceID }, null)
                     </li>
                 }
             </ul>
         }
         </div>
-    }
     <div class="container">
         @using (Html.BeginForm("CreateTravelogue", "Travelogue", Model))
         {

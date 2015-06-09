@@ -6,6 +6,7 @@ using ColombusWebapplicatie.Models.Travel;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using ColombusWebapplicatie.Classes.Http;
 
 namespace ColombusWebapplicatie.Controllers
 {
@@ -13,7 +14,8 @@ namespace ColombusWebapplicatie.Controllers
     {
         public ActionResult Index()
         {
-            if(Session["User"] != null && (Session["User"]).GetType() == typeof(User)) {
+            if (Session["User"] != null && (Session["User"]).GetType() == typeof(User))
+            {
                 int userID = (Session["User"] as User).ID;
                 List<Travel> travels = HttpManager.WebserviceGetRequest<List<Travel>>("Travel/GetAll", Request, null, new Dictionary<string, string>() { { "userID", userID.ToString() } });
                 return View(travels);
@@ -23,9 +25,11 @@ namespace ColombusWebapplicatie.Controllers
 
         public ActionResult ViewTravel(int travelID = 0)
         {
-            if(travelID != 0) {
+            if (travelID != 0)
+            {
                 Travel travel = HttpManager.WebserviceGetRequest<Travel>("travel/" + travelID, Request);
-                if(travel != null) {
+                if (travel != null)
+                {
                     return View(travel);
                 }
             }
@@ -39,19 +43,22 @@ namespace ColombusWebapplicatie.Controllers
 
         public ActionResult CreateTravel(Travel travel)
         {
-            if(ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 travel.UserID = (Session["User"] as User).ID;
                 Travel addedTravel = HttpManager.WebservicePostRequest<Travel>("Travel", Request, travel);
                 return RedirectToAction("Index", "Travel");
             }
-            else {
+            else
+            {
                 return View("Create", travel);
             }
         }
 
         public ActionResult SearchLocation(int travelID)
         {
-            if(travelID != 0) {
+            if (travelID != 0)
+            {
                 ViewBag.TravelID = travelID;
                 return View();
             }
@@ -61,7 +68,8 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult ShowFoundLocation(int travelID, string query)
         {
             List<LocationDetails> locations = RequestGooglePlaces("textsearch", new Dictionary<string, string>() { { "query", query } });
-            if(locations != null) {
+            if (locations != null)
+            {
                 ViewBag.TravelID = travelID;
                 return View("SearchLocation", locations);
             }
@@ -84,13 +92,30 @@ namespace ColombusWebapplicatie.Controllers
             return RedirectToAction("ViewTravel", "Travel", new { travelID = travelID });
         }
 
+        public ActionResult CreateNote(int travelID, int locationID, string note)
+        {
+            Travel travel = HttpManager.WebserviceGetRequest<Travel>("travel/" + travelID, Request);
+            foreach (Location location in travel.Locations)
+            {
+                if (location.ID == locationID)
+                {
+                    location.Note = note;
+                    Travel postedTravel = HttpManager.WebservicePostRequest<Travel>("travel", Request, travel);
+                    return Message(RedirectToAction("ViewTravel", "Travel", new { id = travelID }), "Notitie toegevoegd");
+                }
+            }
+            return Error(RedirectToAction("ViewTravel", "Travel", new { id = travelID }), "Er is iets fout gegaan.");
+        }
+
         #region Helpers
         private List<LocationDetails> RequestGooglePlaces(string url, Dictionary<string, string> parameters)
         {
             GoogleSearchResponse response = HttpManager.GoogleGetRequest<GoogleSearchResponse>(url, parameters);
-            if(response != null) {
+            if (response != null)
+            {
                 List<LocationDetails> locations = new List<LocationDetails>();
-                foreach(GoogleResult result in response.Results) {
+                foreach (GoogleResult result in response.Results)
+                {
                     locations.Add(new LocationDetails(result));
                 }
                 return locations;
