@@ -8,31 +8,30 @@
 <div class="white-block">
     <h2>@ViewBag.Title</h2>
     <div class="container">
-        <table cellspacing ="0" cellpadding="0" id="travels">
+        <table cellspacing="0" cellpadding="0" id="travels">
             <tr>
                 <th>Titel</th>
                 <th>Begindatum</th>
                 <th>Einddatum</th>
             </tr>
-            @if (Model != null && Model.Count > 0) {
-                foreach (var travel in Model) {
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var travel in Model)
+                {
                     <tr>
                         <td>@Html.ActionLink(travel.Title, "ViewTravel", new { id = travel.ID })</td>
                         <td>@travel.StartDate.Day-@travel.StartDate.Month-@travel.StartDate.Year</td>
                         <td>@travel.EndDate.Day-@travel.EndDate.Month-@travel.EndDate.Year</td>
                     </tr>
                 }
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td class="button orange">@Html.ActionLink("Nieuw", "Create", "Travel")</td>
-                </tr>
             }
-            else {
+            else
+            {
                 <tr>
                     <td colspan="3">Er zijn geen reizen beschikbaar.</td>
                 </tr>
             }
         </table>
+        @Html.ActionLink("Nieuw", "Create", "Travel", new {},new {@class="button orange float right"})
     </div>
 </div>

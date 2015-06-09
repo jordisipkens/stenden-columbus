@@ -9,6 +9,8 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(x => x.Published)
     @Html.HiddenFor(x => x.PublishedTime)
+    @Html.HiddenFor(x => x.Travel)
+    
     <h2>@ViewBag.Title</h2>
     foreach (var location in Model.Travel.Locations)
     {
