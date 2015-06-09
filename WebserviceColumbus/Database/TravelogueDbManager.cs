@@ -56,7 +56,7 @@ namespace WebserviceColumbus.Database
             try {
                 using(var db = new ColumbusDbContext()) {
                     List<int> travelIDs = db.Travels.Where(t => t.UserID == userID).Select(t => t.ID).ToList();
-                    return db.Travelogues.Where(t => travelIDs.Contains(t.TravelID)).ToList();
+                    return db.Travelogues.Include("Paragraphs").Include("Ratings").Where(t => travelIDs.Contains(t.TravelID)).ToList();
                 }
             }
             catch(Exception ex) {
