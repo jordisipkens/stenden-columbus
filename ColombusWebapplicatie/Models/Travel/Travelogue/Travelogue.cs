@@ -29,5 +29,8 @@ namespace ColombusWebapplicatie.Models.Travel.Travelogue
         [JsonIgnore]
         public Travel Travel { get; set; }
 
+        public Travelogue() {
+            PublishedTime = new DateTime(1970, 1, 1);
+        }
     }
 }

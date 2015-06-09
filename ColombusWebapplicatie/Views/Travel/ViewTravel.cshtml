@@ -96,8 +96,7 @@
         }
         </div>
     <div class="container">
-        @using (Html.BeginForm("CreateTravelogue", "Travelogue", Model))
-        {
+        @using(Html.BeginForm("CreateTravelogue", "Travelogue", new { travelID = Model.ID })) {
             <input type="submit" value="Nieuw verslag aanmaken" class="button orange float right" />
         }
     </div>

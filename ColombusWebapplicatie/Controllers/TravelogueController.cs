@@ -1,5 +1,4 @@
 ﻿using ColombusWebapplicatie.Classes.Http;
-using ColombusWebapplicatie.Models.Travel;
 using ColombusWebapplicatie.Models.Travel.Travelogue;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -14,58 +13,50 @@ namespace ColombusWebapplicatie.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Title = "Mijn Reisverslagen";
-            List<Travelogue> model = new List<Travelogue>();
-            // Load Json file.
-            StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travelogue.json"));
-            // Deserialize Json to list of Travel objects.
-            model.Add(JsonConvert.DeserializeObject<Travelogue>(streamReader.ReadToEnd()));
-            return View("Index", ShortenTitles(model));
+            Models.User user = Session["User"] as Models.User;
+            if(user != null) {
+                ViewBag.Title = "Mijn Reisverslagen";
+                List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/GetAll", Request, null, new Dictionary<string, string>() { { "userID", user.ID.ToString() } });
+                return View("Index", ShortenTitles(travelogues));
+            }
+            return Error(RedirectToAction("Index", "Home"), "Er is een fout opgetreden");
         }
 
         public ActionResult Display(SearchType sortBy)
         {
             ViewBag.Title = "Alle Reisverslagen";
-            List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/Display", Request, new Dictionary<string, string>() { { "filter", sortBy.ToString() }, { "limit", "20" } });
+            List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/Display", Request, null, new Dictionary<string, string>() { { "filter", sortBy.ToString() }, { "limit", "20" } });
             return View("Index", ShortenTitles(travelogues));
         }
 
-        public ActionResult CreateTravelogue()
+        [HttpPost]
+        public ActionResult CreateTravelogue(int travelID = 0)
         {
-            Travelogue model = new Travelogue();
-            model.Paragraphs = new List<Paragraph>();
-            model.Paragraphs.Add(new Paragraph());
-            return View(model);
+            if(travelID != 0) {
+                Travelogue travelogue = new Travelogue();
+                travelogue.TravelID = travelID;
+                Travelogue newTravelogue = HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, travelogue);
+                if(newTravelogue != null) {
+                    return View(newTravelogue);
+                }
+            }
+            return Error(RedirectToAction("Index", "Travel"), "Er is een fout opgetreden");
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CreateTravelogue(Travel travel)
-        {
-            Travelogue model = new Travelogue();
-            model.Paragraphs = new List<Paragraph>();
-                model.Paragraphs.Add(new Paragraph());
-            model.Travel = travel;
-            model.TravelID = travel.ID;
-            return View(model);
-            }
-
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult SubmitButton(Travelogue model)
         {
-            if (Request.Form["AddParagraph"] != null)
-            {
+            if(Request.Form["AddParagraph"] != null) {
                 return AddParagraph(model);
             }
-            else if (Request.Form["Publish"] != null)
-            {
+            else if(Request.Form["Publish"] != null) {
                 PublishTravelogue(model);
                 return Index();
             }
-            else if (Request.Form["Save"] != null)
-            {
+            else if(Request.Form["Save"] != null) {
                 SaveTravelogue(model);
-            return Index();
-        }
+                return Index();
+            }
             return Index();
         }
 
@@ -78,12 +69,10 @@ namespace ColombusWebapplicatie.Controllers
             // Deserialize Json to list of Travel objects.
             model = JsonConvert.DeserializeObject<Travelogue>(streamReader.ReadToEnd());
             //Travelogue model = HTTPManager.WebserviceGetRequest<Travelogue>("Travelogue/" + id, Request);
-            if (model.Title.Length >= maxTitleLenght + 20)
-            {
+            if(model.Title.Length >= maxTitleLenght + 20) {
                 model.Title = model.Title.Substring(0, maxTitleLenght + 17) + "...";
             }
-            foreach (Paragraph par in model.Paragraphs)
-            {
+            foreach(Paragraph par in model.Paragraphs) {
                 par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
             }
             return View(model);
@@ -91,8 +80,7 @@ namespace ColombusWebapplicatie.Controllers
 
         private ActionResult AddParagraph(Travelogue model)
         {
-            if (model.Paragraphs != null)
-            {
+            if(model.Paragraphs != null) {
                 model.Paragraphs.Add(new Paragraph());
             }
             return View("CreateTravelogue", model);
@@ -100,15 +88,12 @@ namespace ColombusWebapplicatie.Controllers
 
         private void PublishTravelogue(Travelogue model)
         {
-            if (model.ID != 0)
-            {
+            if(model.ID != 0) {
                 HttpManager.WebservicePostRequest<Travelogue>("Travelogue?travelogueId=" + model.ID + "&isPublic=true", Request, model);
             }
-            else
-            {
+            else {
                 Travelogue savedTravelogue = SaveTravelogue(model);
-                if (savedTravelogue != null)
-                {
+                if(savedTravelogue != null) {
                     PublishTravelogue(savedTravelogue);
                 }
             }
@@ -120,6 +105,7 @@ namespace ColombusWebapplicatie.Controllers
         }
 
         #region Helpers
+
         private List<Travelogue> ShortenTitles(List<Travelogue> travelogues)
         {
             if(travelogues != null) {
@@ -131,7 +117,8 @@ namespace ColombusWebapplicatie.Controllers
             }
             return travelogues;
         }
-        #endregion
+
+        #endregion Helpers
 
         public enum SearchType
         {

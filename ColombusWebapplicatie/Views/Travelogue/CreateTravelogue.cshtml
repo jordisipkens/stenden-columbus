@@ -12,13 +12,15 @@
     @Html.HiddenFor(x => x.Travel)
     
     <h2>@ViewBag.Title</h2>
-    foreach (var location in Model.Travel.Locations)
-    {
-        <div class="orange-block">
-            <div class="container">
-                location.Note
+    if(Model.Travel != null) { 
+        foreach (var location in Model.Travel.Locations)
+        {
+            <div class="orange-block">
+                <div class="container">
+                    location.Note
+                </div>
             </div>
-        </div>
+        }
     }
 
     <div class="container">

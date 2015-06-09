@@ -40,7 +40,7 @@ namespace ColombusWebapplicatie.Classes.Http
         /// <param name="baseUrl"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static T WebserviceGetRequest<T>(string url, HttpRequestBase request, Dictionary<string, string> headers = null, Dictionary<string, string> parameters = null, string baseUrl = AZURE_BASE_URL)
+        public static T WebserviceGetRequest<T>(string url, HttpRequestBase request, Dictionary<string, string> headers = null, Dictionary<string, string> parameters = null, string baseUrl = LOCAL_BASE_URL)
         {
             return ReadResponse<T>(CreateRequest(baseUrl + url, parameters, headers, request));
         }
@@ -53,7 +53,7 @@ namespace ColombusWebapplicatie.Classes.Http
         /// <param name="objectToPost"></param>
         /// <param name="baseUrl"></param>
         /// <returns></returns>
-        public static T WebservicePostRequest<T>(string url, HttpRequestBase request, T objectToPost, string baseUrl = AZURE_BASE_URL)
+        public static T WebservicePostRequest<T>(string url, HttpRequestBase request, T objectToPost, string baseUrl = LOCAL_BASE_URL)
         {
             HttpWebRequest httpWebRequest = (HttpWebRequest)CreateRequest(baseUrl + url, null, request);
             httpWebRequest.ContentType = "application/json";
@@ -120,13 +120,19 @@ namespace ColombusWebapplicatie.Classes.Http
         private static T ReadResponse<T>(WebRequest request)
         {
             try {
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream data = response.GetResponseStream();
-                using(StreamReader sr = new StreamReader(data)) {
-                    return JsonConvert.DeserializeObject<T>(sr.ReadToEnd());
+                using(HttpWebResponse response = (HttpWebResponse)request.GetResponse()) {
+                    using(Stream data = response.GetResponseStream()) {
+                        using(StreamReader sr = new StreamReader(data)) {
+                            return JsonConvert.DeserializeObject<T>(sr.ReadToEnd());
+                        }
+                    }
                 }
             }
-            catch(WebException) {
+            catch(WebException ex) {
+                string error = GetWebExDetail(ex);
+                return default(T);
+            }
+            catch(Exception ex) {
                 return default(T);
             }
         }
@@ -148,5 +154,16 @@ namespace ColombusWebapplicatie.Classes.Http
             }
             return url;
         }
+
+        #region Helpers
+        private static string GetWebExDetail(WebException ex)
+        {
+            WebResponse errResp = ex.Response;
+            using(Stream respStream = errResp.GetResponseStream()) {
+                StreamReader reader = new StreamReader(respStream);
+                return reader.ReadToEnd();
+            }
+        }
+        #endregion
     }
 }

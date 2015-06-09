@@ -33,8 +33,5 @@
                 </tr>
             }
         </table>
-        @if(!Convert.ToBoolean(Session["LoggedIn"])) { 
-            @Html.ActionLink("Nieuw verslag", "CreateTravelogue", "Travelogue", new { }, new { @class = "button orange float right" })
-        }
     </div>
 </div>
