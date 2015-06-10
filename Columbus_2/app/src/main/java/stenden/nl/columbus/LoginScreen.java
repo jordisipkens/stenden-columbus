@@ -44,7 +44,7 @@ public class LoginScreen extends Activity implements View.OnClickListener {
         SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(settings.getString("loginResponse", null));
-        if(loginResponse.getToken() != null){
+        if (loginResponse.getToken() != null) {
             MainActivity.loginResponse = loginResponse;
             startActivity(new Intent(this, MainActivity.class));
             finish();
@@ -79,7 +79,7 @@ public class LoginScreen extends Activity implements View.OnClickListener {
 
     @Override
     protected void onStop() {
-        if(MainActivity.loginResponse != null){
+        if (MainActivity.loginResponse != null) {
             SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
 
@@ -101,7 +101,7 @@ public class LoginScreen extends Activity implements View.OnClickListener {
                 String username = mUser.getText().toString();
                 String password = mPass.getText().toString();
 
-                if(!username.equalsIgnoreCase("") && !password.equalsIgnoreCase("") && username != null && password != null) {
+                if (!username.equalsIgnoreCase("") && !password.equalsIgnoreCase("") && username != null && password != null) {
                     Login(username, password);
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(), "Please fill in all fields.", Toast.LENGTH_SHORT);
@@ -112,26 +112,26 @@ public class LoginScreen extends Activity implements View.OnClickListener {
 
     private void Login(String user, String pass) {
         pass = Encrypt(pass);
-        pass = pass.substring(0, pass.length() -1);
+        pass = pass.substring(0, pass.length() - 1);
 
         String fullHeader = user + ":" + pass;
         fullHeader = Base64(fullHeader);
         fullHeader = fullHeader.substring(0, fullHeader.length() - 1);
 
-        if(fullHeader != null){
+        if (fullHeader != null) {
             apiRequest(fullHeader);
         }
 
     }
 
-    private void apiRequest(String header){
+    private void apiRequest(String header) {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Basic " + header);
         String FULL_URL = MainActivity.BASE_URL + MainActivity.LOGIN_URL;
         VolleyHelper.getInstance(getApplicationContext()).addToRequestQueue(
                 new GsonRequest<>(FULL_URL, LoginResponse.class, headers, new Response.Listener<LoginResponse>() {
                     public void onResponse(LoginResponse loginResponse) {
-                        if(loginResponse.getToken() != null){
+                        if (loginResponse.getToken() != null) {
                             // Sharedpreferences
                             SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
                             SharedPreferences.Editor editor = settings.edit();
@@ -146,16 +146,16 @@ public class LoginScreen extends Activity implements View.OnClickListener {
                             finish();
                         }
                     }
-                }));
+                }, this));
     }
 
-    private String Base64(String plainText){
+    private String Base64(String plainText) {
         try {
             //CryptLib crypt = new CryptLib();
             String output = plainText;
             output = Base64.encodeToString(output.getBytes(), Base64.DEFAULT);
             return output;
-        } catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
@@ -177,6 +177,9 @@ public class LoginScreen extends Activity implements View.OnClickListener {
 
     @Override
     public void onBackPressed() {
-        System.exit(0);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
