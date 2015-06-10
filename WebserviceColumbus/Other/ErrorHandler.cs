@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.IO;
 
 namespace WebserviceColumbus.Other
@@ -27,8 +28,8 @@ namespace WebserviceColumbus.Other
         private void Log()
         {
 #if DEBUG
-            Console.WriteLine(Message + " | " + ThrownException.Message);
-            Console.WriteLine(ThrownException.ToString());
+            Debug.WriteLine(Message + " | " + ThrownException.Message);
+            Debug.WriteLine(ThrownException.ToString());
 #else
             WriteToLog();
 #endif

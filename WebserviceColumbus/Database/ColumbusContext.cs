@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 using System.Data.Entity;
-using System.Data.SqlClient;
 using WebserviceColumbus.Authorization;
 using WebserviceColumbus.Models.Other;
 using WebserviceColumbus.Models.Travel;
@@ -13,7 +12,6 @@ namespace WebserviceColumbus.Database
         public ColumbusDbContext() :
             base(GetConnectionString())
         {
-            
         }
 
         /// <summary>

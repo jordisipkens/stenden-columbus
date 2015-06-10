@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.WindowsAzure;
+﻿using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
-using WebserviceColumbus.Models.Other;
-using System.IO;
+using System;
+using System.Web;
 using WebserviceColumbus.Database;
+using WebserviceColumbus.Models.Other;
 
 namespace WebserviceColumbus.Other
 {
@@ -49,13 +45,11 @@ namespace WebserviceColumbus.Other
                     CloudBlockBlob blob = (CloudBlockBlob)item;
 
                     Console.WriteLine("Block blob of length {0}: {1}", blob.Properties.Length, blob.Uri);
-
                 }
                 else if(item.GetType() == typeof(CloudPageBlob)) {
                     CloudPageBlob pageBlob = (CloudPageBlob)item;
 
                     Console.WriteLine("Page blob of length {0}: {1}", pageBlob.Properties.Length, pageBlob.Uri);
-
                 }
                 else if(item.GetType() == typeof(CloudBlobDirectory)) {
                     CloudBlobDirectory directory = (CloudBlobDirectory)item;
