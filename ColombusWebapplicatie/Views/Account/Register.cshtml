@@ -22,7 +22,14 @@
                 <td>@Html.PasswordFor(user => user.Password, new { @placeholder = "Wachtwoord", @class = "form input" })</td>
             </tr>
             <tr>
+                <th>Wachtwoord (ter bevestiging):</th>
+                <td>@Html.PasswordFor(user => user.PasswordRepeat, new { @placeholder = "Wachtwoord", @class = "form input" })</td>
+            </tr>
+            <tr>
                 <td colspan="2">@Html.ValidationMessageFor(x => x.Password)</td>
+            </tr>
+            <tr>
+                <td colspan="2">@Html.ValidationMessageFor(x => x.PasswordRepeat)</td>
             </tr>
             <tr>
                 <th>Voornaam:</th>
