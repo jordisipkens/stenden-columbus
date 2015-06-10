@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<style>
+    body {
+        background-image: url("http://www.animaatjes.nl/achtergronden/achtergronden/glitter-paars/animaatjes-glitter-paars-14610.gif");
+    }
+
+    @keyframes epilepsy {
+        from {
+            background: red;
+            color: blue;
+        }
+
+        to {
+            background: blue;
+            color: red;
+        }
+    }
+
+    .default {
+        margin-top: 400px;
+        padding: 20px;
+        text-align: center;
+        animation-duration: 0.3s;
+        animation-name: epilepsy;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+    }
+
+    div#container {
+        height: 500px;
+        width: 500px;
+    }
+
+    div.a {
+        width: 50px;
+        height: 50px;
+        background-color: red;
+        position: fixed;
+    }
+
+    div.b {
+        width: 50px;
+        height: 50px;
+        background-color: blue;
+        position: fixed;
+    }
+
+    div.c {
+        width: 50px;
+        height: 50px;
+        background-color: green;
+        position: fixed;
+    }
+</style>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="25; url=http://stenden-columbus.azurewebsites.net" />
+    <title>Coloumbus - Not Found</title>
+
+    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+    <style type='text/css'>
+        div#container {
+            height: 1000px;
+            width: 100%;
+            background-color: transparent;
+        }
+
+        div.a {
+            width: 200px;
+            height: 200px;
+            position: fixed;
+            background-color: transparent;
+        }
+
+        div.b {
+            width: 200px;
+            height: 200px;
+            position: fixed;
+            background-color: transparent;
+        }
+
+        div.c {
+            width: 200px;
+            height: 200px;
+            position: fixed;
+            background-color: transparent;
+        }
+    </style>
+
+    <script type='text/javascript'>
+        //<![CDATA[
+        $(window).load(function () {
+            $(document).ready(function () {
+                animateDiv($('.a'));
+                animateDiv($('.b'));
+                animateDiv($('.c'));
+
+            });
+
+            function makeNewPosition($container) {
+
+                // Get viewport dimensions (remove the dimension of the div)
+                var h = $container.height() - 50;
+                var w = $container.width() - 50;
+
+                var nh = Math.floor(Math.random() * h);
+                var nw = Math.floor(Math.random() * w);
+
+                return [nh, nw];
+
+            }
+
+            function animateDiv($target) {
+                var newq = makeNewPosition($target.parent());
+                var oldq = $target.offset();
+                var speed = calcSpeed([oldq.top, oldq.left], newq);
+
+                $target.animate({
+                    top: newq[0],
+                    left: newq[1]
+                }, speed, function () {
+                    animateDiv($target);
+                });
+
+            };
+
+            function calcSpeed(prev, next) {
+
+                var x = Math.abs(prev[1] - next[1]);
+                var y = Math.abs(prev[0] - next[0]);
+
+                var greatest = x > y ? x : y;
+
+                var speedModifier = 0.5;
+
+                var speed = Math.ceil(greatest / speedModifier);
+
+                return speed;
+
+            }
+        });//]]>
+    </script>
+</head>
+<body>
+    <img src="http://www.animaatjes.nl/glitter-plaatjes/s/sterren/animaatjes-sterren-548618.gif" style="float: left; position: fixed; left: 400px; top: 370px">
+    <h1 class="default">404 - Not Found</h1>
+    <img src="http://www.animaatjes.nl/glitter-plaatjes/s/sterren/animaatjes-sterren-548618.gif" style="float: right; position:fixed; right: 400px; top: 370px">
+    <img src="http://www.animaatjes.nl/glitter-plaatjes/b/beautiful/animaatjes-beautiful-1308328.gif" style="margin-left: auto; margin-right: auto; display: block; margin-top: 50px">
+    <div id="container">
+        <div class='a'><img src="http://www.plotnickov-nickita2013.narod.ru/other/memes/troll/Trollface_960.png" style="width:100%; height:100%;"></div>
+        <div class='b'><img src="http://i.imgur.com/Rm1SHOF.png" style="width:100%; height:100%;"></div>
+        <div class='c'><img src="http://fc05.deviantart.net/fs70/f/2013/031/c/5/nicolas_cage_meme_3__by_chicapanda-d5te4xx.jpg#nicolas%20cage%20meme%20550x308" style="width:100%; height:100%;"></div>
+    </div>
+
+    <iframe width="420" height="315" src="https://www.youtube.com/embed/I_izvAbhExY?autoplay=1&loop=1" frameborder="0" allowfullscreen hidden="hidden"></iframe>
+</body>
+</html>
