@@ -1,5 +1,7 @@
 package stenden.nl.columbus.GSON;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -15,6 +17,9 @@ import com.google.gson.JsonSyntaxException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+import stenden.nl.columbus.LoginScreen;
+import stenden.nl.columbus.MainActivity;
+
 /**
  * Created by Jordi on 18/05/15.
  */
@@ -27,15 +32,21 @@ public class GsonRequest<T> extends Request<T> {
     /**
      * Make a GET request and return a parsed object from JSON.
      *
-     * @param url URL of the request to make
-     * @param clazz Relevant class object, for Gson's reflection
+     * @param url     URL of the request to make
+     * @param clazz   Relevant class object, for Gson's reflection
      * @param headers Map of request headers
      */
     public GsonRequest(String url, Class<T> clazz, Map<String, String> headers,
-                       Response.Listener<T> listener) {
+                       Response.Listener<T> listener, final Activity activity) {
         super(Request.Method.GET, url, new Response.ErrorListener() {
             public void onErrorResponse(VolleyError volleyError) {
-                if(volleyError != null) Log.e("GsonRequest", "" + volleyError.getMessage());
+                if (volleyError != null) {
+                    activity.startActivity(new Intent(activity, LoginScreen.class));
+                    MainActivity.user = null;
+                    MainActivity.travels = null;
+                    MainActivity.loginResponse = null;
+                    Log.e("GsonRequest", "" + volleyError.getMessage());
+                }
             }
         });
         this.clazz = clazz;
