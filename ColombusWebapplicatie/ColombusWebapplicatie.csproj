@@ -152,6 +152,7 @@
     <Content Include="Content\Images\Logo\logo_transparant.png" />
     <Content Include="Content\Images\Logo\logo_highres.png" />
     <Content Include="Content\Images\Logo\logo.png" />
+    <Content Include="Content\Scripts\header.js" />
     <Content Include="Content\Scripts\JQuery\jquery-1.11.3.min.js" />
     <Content Include="Content\Scripts\Less\Less.js" />
     <Content Include="favicon.ico" />
