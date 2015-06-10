@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="white-block">
+<div class="container">
     <h2>@ViewBag.Title</h2>
-    <div class="container">
+    <div class="white-block">
         <table cellspacing="0" cellpadding="0" id="travels">
             <tr>
                 <th>Titel</th>
@@ -32,6 +32,6 @@
                 </tr>
             }
         </table>
-        @Html.ActionLink("Nieuw", "Create", "Travel", new {},new {@class="button orange float right"})
+        @Html.ActionLink("Nieuw", "Create", "Travel", new {},new {@class="button orange float right", @style="margin-top:2em"})
     </div>
 </div>
