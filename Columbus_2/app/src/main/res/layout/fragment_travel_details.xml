@@ -8,29 +8,41 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="right"
         android:orientation="horizontal">
 
-        <TextView
+        <stenden.nl.columbus.CustomViews.ResizingTextView
             android:id="@+id/travel_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:layout_weight="7"
+            android:layout_weight="4"
             android:gravity="center"
             android:padding="10dp"
             android:text="title"
             android:textColor="#000000"
             android:textSize="22sp" />
 
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:text="Reisverslag"
+            android:id="@+id/travelogue"
+            android:background="#FF7200"
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"/>
+
         <TextView
             android:id="@+id/travel_date"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
+            android:paddingRight="10dp"
             android:singleLine="false"
-            android:layout_weight="5"
+            android:layout_weight="4"
             android:textSize="13sp"
             android:gravity="center|right"
             android:text="24-01-2015 / 28-01-2015" />
