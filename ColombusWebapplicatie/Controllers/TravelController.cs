@@ -1,5 +1,4 @@
 ﻿using ColombusWebapplicatie.Classes.Http;
-using ColombusWebapplicatie.Models;
 using ColombusWebapplicatie.Models.Google.Details;
 using ColombusWebapplicatie.Models.Google.Search;
 using ColombusWebapplicatie.Models.Travel;
@@ -13,9 +12,8 @@ namespace ColombusWebapplicatie.Controllers
     {
         public ActionResult Index()
         {
-            if(Session["User"] != null && (Session["User"]).GetType() == typeof(User)) {
-                int userID = (Session["User"] as User).ID;
-                List<Travel> travels = HttpManager.WebserviceGetRequest<List<Travel>>("Travel/GetAll", Request, null, new Dictionary<string, string>() { { "userID", userID.ToString() } });
+            if(GetCurrentUser() != null) {
+                List<Travel> travels = HttpManager.WebserviceGetRequest<List<Travel>>("Travel/GetAll", Request, null, new Dictionary<string, string>() { { "userID", GetCurrentUser().ID.ToString() } });
                 return View(travels);
             }
             return View();
@@ -40,13 +38,13 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult CreateTravel(Travel travel)
         {
             if(ModelState.IsValid) {
-                travel.UserID = (Session["User"] as User).ID;
-                Travel addedTravel = HttpManager.WebservicePostRequest<Travel>("Travel", Request, travel);
-                return RedirectToAction("Index", "Travel");
+                if(GetCurrentUser() != null) {
+                    travel.UserID = GetCurrentUser().ID;
+                    Travel addedTravel = HttpManager.WebservicePostRequest<Travel>("Travel", Request, travel);
+                    return RedirectToAction("Index", "Travel");
+                }
             }
-            else {
-                return View("Create", travel);
-            }
+            return View("Create", travel);
         }
 
         public ActionResult SearchLocation(int travelID)

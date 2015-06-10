@@ -1,8 +1,7 @@
 ﻿using ColombusWebapplicatie.Classes.Http;
 using ColombusWebapplicatie.Models.Travel.Travelogue;
-using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Web.Mvc;
 
 namespace ColombusWebapplicatie.Controllers
@@ -13,10 +12,9 @@ namespace ColombusWebapplicatie.Controllers
 
         public ActionResult Index()
         {
-            Models.User user = Session["User"] as Models.User;
-            if(user != null) {
+            if(GetCurrentUser() != null) {
                 ViewBag.Title = "Mijn Reisverslagen";
-                List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/GetAll", Request, null, new Dictionary<string, string>() { { "userID", user.ID.ToString() } });
+                List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/GetAll", Request, null, new Dictionary<string, string>() { { "userID", GetCurrentUser().ID.ToString() } });
                 return View("Index", ShortenTitles(travelogues));
             }
             return Error(RedirectToAction("Index", "Home"), "Er is een fout opgetreden");
@@ -27,6 +25,18 @@ namespace ColombusWebapplicatie.Controllers
             ViewBag.Title = "Alle Reisverslagen";
             List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/Display", Request, null, new Dictionary<string, string>() { { "filter", sortBy.ToString() }, { "limit", "20" } });
             return View("Index", ShortenTitles(travelogues));
+        }
+
+        public ActionResult EditTravelogue(int travelogueID = 0)
+        {
+            if(travelogueID != 0) {
+                Travelogue travelogue = HttpManager.WebserviceGetRequest<Travelogue>(string.Format("Travelogue/{0}", travelogueID), Request);
+                if(travelogue != null) {
+                    return View("CreateTravelogue", travelogue);
+                }
+                return Error(RedirectToAction("Index"), "Deze Travelogue bestaat niet (meer)");
+            }
+            return Error(RedirectToAction("Index", "Travel"), "Er is een fout opgetreden");
         }
 
         [HttpPost]
@@ -43,6 +53,27 @@ namespace ColombusWebapplicatie.Controllers
             return Error(RedirectToAction("Index", "Travel"), "Er is een fout opgetreden");
         }
 
+        public ActionResult DeleteTravelogue(int travelogueID = 0)
+        {
+            throw new NotImplementedException();
+        }
+
+        //Method for viewing 1 travelogue
+        public ActionResult ViewTravelogue(int travelogueID = 0)
+        {
+            if(travelogueID != 0) {
+                Travelogue travelogue = HttpManager.WebserviceGetRequest<Travelogue>(string.Format("Travelogue/{0}", travelogueID), Request);
+                if(travelogue.Title != null && travelogue.Title.Length >= maxTitleLenght + 20) {
+                    travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght + 17) + "...";
+                }
+                foreach(Paragraph par in travelogue.Paragraphs) {
+                    par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
+                }
+                return View(travelogue);
+            }
+            return Error(RedirectToAction("Index"), "Deze Travelogue bestaat niet (meer)");
+        }
+
         [HttpPost]
         public ActionResult SubmitButton(Travelogue model)
         {
@@ -54,35 +85,18 @@ namespace ColombusWebapplicatie.Controllers
                 return Index();
             }
             else if(Request.Form["Save"] != null) {
-                SaveTravelogue(model);
+                Travelogue travelogue = SaveTravelogue(model);
                 return Index();
             }
             return Index();
         }
 
-        //Method for viewing 1 travelogue
-        public ActionResult ViewTravelogue(int? id)
-        {
-            Travelogue model = new Travelogue();
-            // Load Json file.
-            StreamReader streamReader = new StreamReader(Server.MapPath("~/Content/json/Travelogue.json"));
-            // Deserialize Json to list of Travel objects.
-            model = JsonConvert.DeserializeObject<Travelogue>(streamReader.ReadToEnd());
-            //Travelogue model = HTTPManager.WebserviceGetRequest<Travelogue>("Travelogue/" + id, Request);
-            if(model.Title.Length >= maxTitleLenght + 20) {
-                model.Title = model.Title.Substring(0, maxTitleLenght + 17) + "...";
-            }
-            foreach(Paragraph par in model.Paragraphs) {
-                par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
-            }
-            return View(model);
-        }
-
         private ActionResult AddParagraph(Travelogue model)
         {
-            if(model.Paragraphs != null) {
-                model.Paragraphs.Add(new Paragraph());
+            if(model.Paragraphs == null) {
+                model.Paragraphs = new List<Paragraph>();
             }
+            model.Paragraphs.Add(new Paragraph());
             return View("CreateTravelogue", model);
         }
 
@@ -110,7 +124,7 @@ namespace ColombusWebapplicatie.Controllers
         {
             if(travelogues != null) {
                 foreach(Travelogue travelogue in travelogues) {
-                    if(travelogue.Title.Length >= maxTitleLenght) {
+                    if(travelogue.Title != null && travelogue.Title.Length >= maxTitleLenght) {
                         travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght - 3) + "...";
                     }
                 }
