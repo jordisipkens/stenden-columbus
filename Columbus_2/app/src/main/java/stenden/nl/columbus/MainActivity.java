@@ -20,12 +20,17 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import stenden.nl.columbus.Fragments.AboutFragment;
 import stenden.nl.columbus.Fragments.AccountFragment;
 import stenden.nl.columbus.Fragments.HomeFragment;
 import stenden.nl.columbus.Fragments.MapFragment;
 import stenden.nl.columbus.GSON.Objects.LoginResponse;
+import stenden.nl.columbus.GSON.Objects.Paragraph;
 import stenden.nl.columbus.GSON.Objects.Travel;
+import stenden.nl.columbus.GSON.Objects.Travelogue;
 import stenden.nl.columbus.GSON.Objects.User;
 
 
@@ -51,6 +56,7 @@ public class MainActivity extends ActionBarActivity
     public final static String PREFS_NAME = "C0lumbus";
     public static User user = null;
     public static Travel[] travels = null;
+    public static List<Travelogue> travelogues = null;
 
 
 
@@ -68,6 +74,15 @@ public class MainActivity extends ActionBarActivity
         // Get user logged in.
         user = new Gson().fromJson(settings.getString("user", null), User.class);
         travels = new Gson().fromJson(settings.getString("travels", null), Travel[].class);
+        Travelogue[] logues = new Gson().fromJson(settings.getString("travelogues", null), Travelogue[].class);
+
+        travelogues = new ArrayList<Travelogue>();
+
+        if(logues != null){
+            for (Travelogue x : logues) {
+                travelogues.add(x);
+            }
+        }
 
         // Get token and set loginresponse.
         if(loginResponse == null) {
@@ -101,11 +116,6 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onBackPressed() {
-        // When the current fragment is Home, pop all fragments until home fragment.
-        if(!MyApplication.isActivityVisible()){
-            System.exit(0);
-        }
-
         if(getSupportFragmentManager().getBackStackEntryCount() >0){
             String currentBackStackLayer = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
             if(currentBackStackLayer.equals("home")){
@@ -130,6 +140,14 @@ public class MainActivity extends ActionBarActivity
             editor.putString("loginResponse", loginResponse.getToken()).commit();
             editor.putString("user", new Gson().toJson(user)).commit();
             editor.putString("travels", new Gson().toJson(travels)).commit();
+
+            Travelogue[] logues = new Travelogue[travelogues.size()];
+            for(int i = 0 ; i < travelogues.size(); i++){
+                logues[i] = travelogues.get(i);
+            }
+            if(logues.length != 0) {
+                editor.putString("travelogues", new Gson().toJson(logues)).commit();
+            }
         }
         super.onStop();
     }
@@ -195,6 +213,8 @@ public class MainActivity extends ActionBarActivity
                 SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
                 settings.edit().putString("loginResponse", null).commit();
                 settings.edit().putString("user", null);
+                settings.edit().putString("travels", null);
+                settings.edit().putString("travelogues", null);
                 startActivity(new Intent(this, LoginScreen.class));
                 break;
         }

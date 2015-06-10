@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:background="#FF7200"
-                android:text="Cancel"
+                android:text="Annuleren"
                 android:textColor="#FFFFFF" />
 
         </LinearLayout>
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:background="#FF7200"
-                android:text="Submit"
+                android:text="Opslaan"
                 android:textColor="#FFFFFF" />
 
         </LinearLayout>

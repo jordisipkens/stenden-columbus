@@ -85,7 +85,15 @@ public class TravelDetailFragment extends Fragment {
             travelogue.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Fragment frag = new TravelogueFragment();
 
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("travelID", travelID);
+                    frag.setArguments(bundle);
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, frag)
+                            .addToBackStack("Travelogue").commit();
                 }
             });
         }
