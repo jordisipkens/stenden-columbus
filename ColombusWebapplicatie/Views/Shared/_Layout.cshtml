@@ -55,6 +55,7 @@
                     else
                     {
                         <li class="menu-item">@Html.ActionLink("Mijn reizen", "Index", "Travel")</li>
+                        <li class="menu-item">@Html.ActionLink("Account", "EditUser", "Account")</li>
                         <li class="menu-item">@Html.ActionLink("Logout", "Logout", "Account")</li>
                     }
                 </ul>
@@ -81,8 +82,8 @@
                 <h2>Lorem Ipsum</h2>
                 <ul>
                     <li>@Html.ActionLink("Verslagen", "/")</li>
-                    <li>@Html.ActionLink("Over ons", "/")</li>
-                    <li>@Html.ActionLink("Android app", "/")</li>
+                    <li>@Html.ActionLink("Over ons", "About","Home")</li>
+                    <li>@Html.ActionLink("Android app", "Android", "Home")</li>
                 </ul>
             </div>
         </div>

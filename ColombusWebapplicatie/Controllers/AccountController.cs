@@ -1,6 +1,7 @@
 ﻿using ColombusWebapplicatie.Classes;
 using ColombusWebapplicatie.Classes.Http;
 using ColombusWebapplicatie.Models;
+using System;
 using System.Web.Mvc;
 
 namespace ColombusWebapplicatie.Controllers
@@ -9,7 +10,7 @@ namespace ColombusWebapplicatie.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("EditUser", "Account");
         }
 
         public ActionResult Login(User user)
@@ -42,6 +43,42 @@ namespace ColombusWebapplicatie.Controllers
             }
             else {
                 return View("Register", user);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditUser(User user)
+        {
+            if (Convert.ToBoolean(Session["LoggedIn"]))
+            {
+                if (ModelState.IsValid) {
+                    user.Password = Encryption.Encrypt(user.Password);
+                    User addedUser = HttpManager.WebservicePostRequest<User>("User", Request, user);
+                    if (addedUser!=null) {
+                        Session["User"] = addedUser;
+                    }
+                    return MessageToIndex("Gebruikersgegevens zijn succesvol aangepast.");
+                }
+                return View(user);
+            }
+            else
+            {
+                return Error(RedirectToAction("Index", "Home"), "U bent niet ingelogd.");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult EditUser()
+        {
+            if(Convert.ToBoolean(Session["LoggedIn"]))
+            {
+                User user = (User) Session["User"];
+
+                return View(user);
+            }
+            else
+            {
+                return Error(RedirectToAction("Index", "Home"), "U bent niet ingelogd.");
             }
         }
 
