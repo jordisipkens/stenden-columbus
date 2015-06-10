@@ -6,38 +6,29 @@
 <div class="container">
     <h2>@Model.Title</h2>
 
-    @{foreach (var par in Model.Paragraphs)
-    {
+    @{foreach(var par in Model.Paragraphs) {
         <div class="paragraph">
 
             @* Paragraph Header*@
-            @if (!String.IsNullOrWhiteSpace(par.Header))
-            {
+            @if(!String.IsNullOrWhiteSpace(par.Header)) {
                 <h3>@par.Header</h3>
             }
             @* Fullwidth Image *@
-            @if (par.FullWidth == true)
-            {
-
+            @if(par.FullWidth == true) {
                 <img src="http://d2hv3zvds9z8pu.cloudfront.net/img/112367_320x240_4890.jpg" class="TL_image full" />
-
             }
             @*Normal image*@
-            else
-            {
-                if (@par.AlignImageLeft == true)
-                {
+            else {
+                if(@par.AlignImageLeft == true) {
                     <img src="http://d2hv3zvds9z8pu.cloudfront.net/img/112367_320x240_4890.jpg" class="TL_image left" />
                 }
-                else
-                {
+                else {
                     <img src="http://d2hv3zvds9z8pu.cloudfront.net/img/112367_320x240_4890.jpg" class="TL_image right" />
                 }
             }
 
             @* Paragraph text *@
-            @if (!String.IsNullOrWhiteSpace(par.Text))
-            {
+            @if(!String.IsNullOrWhiteSpace(par.Text)) {
                 <p>
                     @par.Text
                 </p>

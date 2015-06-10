@@ -6,28 +6,33 @@
 }
 
 
-<div class="white-block">
+<div class="container">
     <h2>@ViewBag.Title</h2>
     <div class="container">
             @Html.ActionLink("Mijn Travelogues", "Index", null, new { @class = "button orange float left" }) @Html.ActionLink("Alle Travelogues", "Display", new { sortBy = "Best" }, new { @class = "button orange float right" })
-        <table cellspacing="0" cellpadding="0" id="travels">
+         <table cellspacing="0" cellpadding="0" id="travels" class="white-block">
             <tr>
                 <th>Titel</th>
                 <th>Gepubliceerd</th>
                 <th>Beoordeling</th>
+                <th>Bewerking</th>
+                <th>Verwijderen</th>
             </tr>
-            @if (Model != null && Model.Count > 0)
-            {
-                foreach (var travelogue in Model) {
+            @if(Model != null && Model.Count > 0) {
+                foreach(var travelogue in Model) {
                     <tr>
-                        <td>@Html.ActionLink(@travelogue.Title , "ViewTravelogue", new { id = travelogue.ID })</td>
+                        @if(travelogue.Title == null) {
+                            travelogue.Title = "Geen Titel";
+                        }
+                        <td>@Html.ActionLink(@travelogue.Title, "ViewTravelogue", new { travelogueID = travelogue.ID })</td>
                         <td>@travelogue.PublishedTime.Day-@travelogue.PublishedTime.Month-@travelogue.PublishedTime.Year</td>
-                        <td>@travelogue.Ratings</td>
+                        <td>@travelogue.AvarageRating</td>
+                        <td>@Html.ActionLink("-", "EditTravelogue", new { travelogueID = travelogue.ID })</td>
+                        <td>@Html.ActionLink("X", "DeleteTravelogue", new { travelogueID = travelogue.ID })</td>
                     </tr>
                 }
             }
-            else
-            {
+            else {
                 <tr>
                     <td colspan="3">Er zijn geen reisverslagen beschikbaar.</td>
                 </tr>

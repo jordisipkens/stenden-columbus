@@ -12,27 +12,29 @@
         $('.datepicker').datepicker()({ dateFormat: "dd-mm-yy" }).val();
     });
 </script>
-    <div class="container">
-            <h2>@ViewBag.Title</h2>
-            @using (Html.BeginForm("CreateTravel", "Travel", FormMethod.Post))
-            {
-                <table cellspacing="0" cellpadding="0" id="travels">
-                    <tr>
-                        <th>@Html.LabelFor(travel => travel.Title, "Titel")</th>
-                        <td>@Html.TextBoxFor(travel => travel.Title, new { @placeholder = "Titel", @style = "width: 96%; padding: 1em;" })</td>
-                        <td>@Html.ValidationMessageFor(x => x.Title)</td>
-                    </tr>
-                    <tr>
-                        <th>@Html.LabelFor(travel => travel.StartDate, "Start Datum")</th>
-                        <td>@Html.TextBoxFor(model => model.StartDate, new { @class = "form-control datepicker", @style = "width: 96%; padding: 1em;" })</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th>@Html.LabelFor(travel => travel.EndDate, "Eind Datum")</th>
-                        <td>@Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker", @style = "width: 96%; padding: 1em;" })</td>
-                        <td></td>
-                    </tr>
-                </table>
-                <input class="button orange float right" type="submit" name="add" value="Toevoegen">
-            }
-    </div>
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    @using (Html.BeginForm("CreateTravel", "Travel", FormMethod.Post))
+    {
+        <table cellspacing="0" cellpadding="0" id="travels">
+            <tr>
+                <th>@Html.LabelFor(travel => travel.Title, "Titel")</th>
+                <td>@Html.TextBoxFor(travel => travel.Title, new { @placeholder = "Titel", @style = "width: 96%; padding: 1em;" })</td>
+                <td>@Html.ValidationMessageFor(x => x.Title)</td>
+            </tr>
+            <tr>
+                <th>@Html.LabelFor(travel => travel.StartDate, "Start Datum")</th>
+                <td>@Html.TextBoxFor(model => model.StartDate, new { @class = "form-control datepicker", @style = "width: 96%; padding: 1em;" })</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>@Html.LabelFor(travel => travel.EndDate, "Eind Datum")</th>
+                <td>@Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker", @style = "width: 96%; padding: 1em;" })</td>
+                <td></td>
+            </tr>
+        </table>
+        <div class="white-block">
+            <input class="button orange float right" type="submit" name="add" value="Toevoegen">
+        </div>
+    }
+</div>

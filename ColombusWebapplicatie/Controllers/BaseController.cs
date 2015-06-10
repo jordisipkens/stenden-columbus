@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
+﻿using ColombusWebapplicatie.Models;
 using System.Web.Mvc;
-using ColombusWebapplicatie.Models;
 
 namespace ColombusWebapplicatie.Controllers
 {
@@ -32,6 +25,15 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult MessageToIndex(params string[] messages)
         {
             return Message(RedirectToAction("Index"), messages);
+        }
+
+        public User GetCurrentUser()
+        {
+            var user = Session["User"];
+            if(user != null && user.GetType() == typeof(User)) {
+                return user as User;
+            }
+            return null;
         }
     }
 }

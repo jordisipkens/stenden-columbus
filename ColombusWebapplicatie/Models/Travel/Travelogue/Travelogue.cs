@@ -21,6 +21,21 @@ namespace ColombusWebapplicatie.Models.Travel.Travelogue
 
         public virtual IList<Rating> Ratings { get; set; }
 
+        public double AvarageRating
+        {
+            get
+            {
+                if(Ratings.Count > 0) {
+                    double total = 0;
+                    foreach(Rating rating in Ratings) {
+                        total += rating.RatingValue;
+                    }
+                    return total / Ratings.Count;
+                }
+                return 0;
+            }
+        }
+
         public virtual IList<Paragraph> Paragraphs { get; set; }
 
         [JsonIgnore]
@@ -29,7 +44,8 @@ namespace ColombusWebapplicatie.Models.Travel.Travelogue
         [JsonIgnore]
         public Travel Travel { get; set; }
 
-        public Travelogue() {
+        public Travelogue()
+        {
             PublishedTime = new DateTime(1970, 1, 1);
         }
     }

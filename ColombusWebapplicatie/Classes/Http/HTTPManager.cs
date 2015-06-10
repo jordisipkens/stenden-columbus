@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -129,10 +130,10 @@ namespace ColombusWebapplicatie.Classes.Http
                 }
             }
             catch(WebException ex) {
-                string error = GetWebExDetail(ex);
+                Debug.WriteLine(GetWebExDetail(ex));
                 return default(T);
             }
-            catch(Exception ex) {
+            catch(Exception) {
                 return default(T);
             }
         }
@@ -156,14 +157,19 @@ namespace ColombusWebapplicatie.Classes.Http
         }
 
         #region Helpers
+
         private static string GetWebExDetail(WebException ex)
         {
             WebResponse errResp = ex.Response;
-            using(Stream respStream = errResp.GetResponseStream()) {
-                StreamReader reader = new StreamReader(respStream);
-                return reader.ReadToEnd();
+            if(errResp != null) {
+                using(Stream respStream = errResp.GetResponseStream()) {
+                    StreamReader reader = new StreamReader(respStream);
+                    return reader.ReadToEnd();
+                }
             }
+            return null;
         }
-        #endregion
+
+        #endregion Helpers
     }
 }
