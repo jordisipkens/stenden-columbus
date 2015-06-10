@@ -5,11 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="white-block">
+
+<div class="container">
     <h2>@ViewBag.Title</h2>
     <div class="container">
-        @Html.ActionLink("Mijn Travelogues", "Index", null, new { @class = "button orange float left" }) @Html.ActionLink("Alle Travelogues", "Display", new { sortBy = "Best" }, new { @class = "button orange float right" })
-        <table cellspacing="0" cellpadding="0" id="travels">
+            @Html.ActionLink("Mijn Travelogues", "Index", null, new { @class = "button orange float left" }) @Html.ActionLink("Alle Travelogues", "Display", new { sortBy = "Best" }, new { @class = "button orange float right" })
+         <table cellspacing="0" cellpadding="0" id="travels" class="white-block">
             <tr>
                 <th>Titel</th>
                 <th>Gepubliceerd</th>
