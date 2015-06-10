@@ -55,7 +55,6 @@
                     else
                     {
                         <li class="menu-item">@Html.ActionLink("Mijn reizen", "Index", "Travel")</li>
-                        <li class="menu-item">@Html.ActionLink("Account", "EditUser", "Account")</li>
                         <li class="menu-item">@Html.ActionLink("Logout", "Logout", "Account")</li>
                     }
                 </ul>
@@ -68,22 +67,22 @@
     <footer>
         <div class="container">
             <div class="half">
-                <h2>Lorem Ipsum</h2>
+                <h2>Informatie</h2>
                 <ul>
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Over ons", "About", "Home")</li>
+                </ul>
+            </div>
+            <div class="half">
+                <h2>Aan de slag</h2>
+                <ul>
+                    <li>@Html.ActionLink("Reisverslagen", "Index", "Travelogue")</li>
+                    <li>@Html.ActionLink("Android app", "Android", "Home")</li>
                     @if (Convert.ToBoolean(Session["LoggedIn"]))
                     {
                         <li>@Html.ActionLink("Mijn reizen", "Index", "Travel")</li>
                         <li>@Html.ActionLink("Account", "/")</li>
                     }
-                </ul>
-            </div>
-            <div class="half">
-                <h2>Lorem Ipsum</h2>
-                <ul>
-                    <li>@Html.ActionLink("Verslagen", "/")</li>
-                    <li>@Html.ActionLink("Over ons", "About","Home")</li>
-                    <li>@Html.ActionLink("Android app", "Android", "Home")</li>
                 </ul>
             </div>
         </div>

@@ -146,6 +146,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\Images\Android\screen-1.png" />
+    <Content Include="Content\Images\Android\screen-2.png" />
+    <Content Include="Content\Images\Android\screen-3.png" />
+    <Content Include="Content\Images\Android\screen-4.png" />
+    <Content Include="Content\Images\Android\screen-5.png" />
     <Content Include="Content\Images\Background\balloons.jpg" />
     <Content Include="Content\Images\Background\bridge.jpg" />
     <Content Include="Content\Images\Background\sunset.jpg" />
