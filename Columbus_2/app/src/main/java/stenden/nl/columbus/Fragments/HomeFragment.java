@@ -17,6 +17,9 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +58,7 @@ public class HomeFragment extends Fragment {
         mTravelList = (ListView) v.findViewById(R.id.travel_list);
 
         // Call all travels from user.
-        if(MainActivity.loginResponse.getUser() != null) {
+        if(MainActivity.loginResponse.getUser() != null && MainActivity.travels == null) {
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("Token", MainActivity.loginResponse.getToken());
 
@@ -69,16 +72,20 @@ public class HomeFragment extends Fragment {
                         public void onResponse(Travel[] tempTravel) {
                             if (tempTravel != null) {
                                 // Show the desired lists.
-                                mTravels = tempTravel;
-                                MainActivity.travels = mTravels;
+                                MainActivity.travels = tempTravel;
 
-                                mAdapter = new TravelAdapter(mTravels, getActivity());
+                                mAdapter = new TravelAdapter( MainActivity.travels, getActivity());
                                 mTravelList.setAdapter(mAdapter);
 
                                 setAdapterListener();
                             }
                         }
-                    }));
+                    }, getActivity()));
+        } else if(MainActivity.travels != null){
+            mAdapter = new TravelAdapter(MainActivity.travels, getActivity());
+            mTravelList.setAdapter(mAdapter);
+
+            setAdapterListener();
         }
 
         return v;
@@ -122,8 +129,8 @@ public class HomeFragment extends Fragment {
                 Fragment frag = new TravelDetailFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("travel", new Gson().toJson(mTravels[i]));
-                bundle.putInt("TravelID", mTravels[i].getId());
+                bundle.putString("travel", new Gson().toJson(MainActivity.travels[i]));
+                bundle.putInt("TravelID", MainActivity.travels[i].getId());
                 frag.setArguments(bundle);
 
                 trans.replace(R.id.container, frag);
@@ -137,7 +144,7 @@ public class HomeFragment extends Fragment {
         private Travel[] list;
         private Context ctx;
         private View v;
-        private TextView startDate, endDate;
+        private TextView startDate, endDate, title;
 
         public TravelAdapter(Travel[] list, Context ctx) {
             this.list = list;
@@ -165,9 +172,22 @@ public class HomeFragment extends Fragment {
                     parent, false);
             startDate = (TextView) v.findViewById(R.id.travel_start_date);
             endDate = (TextView) v.findViewById(R.id.travel_end_date);
+            title = (TextView) v.findViewById(R.id.travels_title);
 
-            startDate.setText(list[position].getStartDate());
-            endDate.setText(list[position].getEndDate());
+            title.setText(list[position].getTitle());
+
+            //Format dateTime
+            SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat sForm = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                Date sDate = form.parse(list[position].getStartDate());
+                Date eDate = form.parse(list[position].getEndDate());
+
+                startDate.setText(startDate.getText() + sForm.format(sDate));
+                endDate.setText(endDate.getText() + sForm.format(eDate));
+            } catch (ParseException e){
+                e.printStackTrace();
+            }
 
             return v;
         }

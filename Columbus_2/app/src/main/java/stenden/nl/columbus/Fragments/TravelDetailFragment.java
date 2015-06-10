@@ -14,6 +14,10 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import stenden.nl.columbus.GSON.Objects.Location;
 import stenden.nl.columbus.GSON.Objects.Travel;
 import stenden.nl.columbus.R;
@@ -27,6 +31,7 @@ public class TravelDetailFragment extends Fragment {
 
     private ListView locationList;
     private TextView travelTitle, travelDate;
+    private Button travelogue;
 
     private LocationAdapter adapter;
 
@@ -45,6 +50,7 @@ public class TravelDetailFragment extends Fragment {
         locationList = (ListView) v.findViewById(R.id.travel_locations);
         travelTitle = (TextView) v.findViewById(R.id.travel_title);
         travelDate = (TextView) v.findViewById(R.id.travel_date);
+        travelogue = (Button) v.findViewById(R.id.travelogue);
 
         Bundle bundle = getArguments();
         mTravel = new Gson().fromJson(bundle.getString("travel"), Travel.class);
@@ -53,7 +59,20 @@ public class TravelDetailFragment extends Fragment {
         if (mTravel != null) {
             // Set title and date
             travelTitle.setText(mTravel.getTitle());
-            travelDate.setText(mTravel.getStartDate() + " / " + mTravel.getEndDate());
+
+            //Format dateTime
+            SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat sForm = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                Date sDate = form.parse(mTravel.getStartDate());
+                Date eDate = form.parse(mTravel.getEndDate());
+
+                travelDate.setText(sForm.format(sDate) + " - " + sForm.format(eDate));
+            } catch (ParseException e){
+                e.printStackTrace();
+            }
+
+
 
             // Fill list of locations.
             Location[] loc = mTravel.getLocations();
@@ -61,6 +80,14 @@ public class TravelDetailFragment extends Fragment {
             adapter = new LocationAdapter(loc, getActivity());
 
             locationList.setAdapter(adapter);
+
+            // Set onClickListener for button travelogue (Reisverslag)
+            travelogue.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
 
         return v;
@@ -128,7 +155,18 @@ public class TravelDetailFragment extends Fragment {
             phoneNumber = (TextView) v.findViewById(R.id.location_phonenumber);
             note = (Button) v.findViewById(R.id.location_note);
 
-            date.setText(date.getText() + list[position].getDate());
+            //Format dateTime
+            SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat sForm = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                Date sDate = form.parse(list[position].getDate());
+
+                date.setText(date.getText() + sForm.format(sDate));
+            } catch (ParseException e){
+                e.printStackTrace();
+            }
+
+
             title.setText(list[position].getLocationDetails().getName());
             address.setText(address.getText() + list[position].getLocationDetails().getAddress());
             phoneNumber.setText(phoneNumber.getText() + list[position].getLocationDetails().getPhone());
