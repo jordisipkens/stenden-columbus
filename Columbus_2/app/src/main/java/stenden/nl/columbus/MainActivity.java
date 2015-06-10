@@ -61,12 +61,13 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
         // Get SharedPreferences file.
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
         // Get user logged in.
         user = new Gson().fromJson(settings.getString("user", null), User.class);
+        travels = new Gson().fromJson(settings.getString("travels", null), Travel[].class);
 
         // Get token and set loginresponse.
         if(loginResponse == null) {
@@ -79,7 +80,6 @@ public class MainActivity extends ActionBarActivity
             Intent intent = new Intent(this, LoginScreen.class);
             startActivity(intent);
         }
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -102,10 +102,17 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onBackPressed() {
         // When the current fragment is Home, pop all fragments until home fragment.
+        if(!MyApplication.isActivityVisible()){
+            System.exit(0);
+        }
+
         if(getSupportFragmentManager().getBackStackEntryCount() >0){
             String currentBackStackLayer = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
             if(currentBackStackLayer.equals("home")){
-               System.exit(0);
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             } else {
                 super.onBackPressed();
             }
@@ -122,8 +129,18 @@ public class MainActivity extends ActionBarActivity
 
             editor.putString("loginResponse", loginResponse.getToken()).commit();
             editor.putString("user", new Gson().toJson(user)).commit();
+            editor.putString("travels", new Gson().toJson(travels)).commit();
         }
         super.onStop();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     /**
