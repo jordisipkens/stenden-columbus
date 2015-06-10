@@ -142,6 +142,8 @@ namespace WebserviceColumbus.Database
 
         #endregion Delete
 
+        #region Other
+
         /// <summary>
         /// Tries to update or insert an entity. The action is determined by the value of the ID.
         /// </summary>
@@ -163,8 +165,10 @@ namespace WebserviceColumbus.Database
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to GET all " + typeof(T) + "s in database", true);
-                return default(T);
+                return null;
             }
         }
+
+        #endregion Other
     }
 }

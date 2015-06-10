@@ -39,20 +39,22 @@ namespace WebserviceColumbus.Database
             if(limit > 100) {
                 limit = 100;
             }
-            using(var db = new ColumbusDbContext()) {
-                try {
-                    List<Travel> travels = db.Travels.Include("Locations.LocationDetails.Coordinates").Where(a => a.UserID == userID).ToList();
-
-                    if(offset + limit > travels.Count) {
-                        limit = travels.Count - offset;
-                    }
-                    return travels.GetRange(offset, limit);
-                }
-                catch(Exception ex) {
-                    new ErrorHandler(ex, "Failed to GET a collection of Travels in the database", true);
-                    return null;
+            List<Travel> travels;
+            try {
+                using(var db = new ColumbusDbContext()) {
+                    travels = db.Travels.Include("Locations.LocationDetails.Coordinates").Include("User").Where(a => a.UserID == userID).ToList();
                 }
             }
+            catch(Exception ex) {
+                new ErrorHandler(ex, "Failed to GET a collection of Travels in the database", true);
+                return null;
+            }
+
+            if(travels != null && offset + limit > travels.Count) {
+                limit = travels.Count - offset;
+                return travels.GetRange(offset, limit);
+            }
+            return travels;     //TODO Check if correct number of travels is returned
         }
 
         public override bool UpdateEntity(Travel entity)
@@ -90,16 +92,16 @@ namespace WebserviceColumbus.Database
         public override Travel UpdateOrInsertEntity(Travel travel)
         {
             try {
-                using(var db = new ColumbusDbContext()) {
-                    if(travel.ID == 0) {
+                if(travel.ID == 0) {
+                    using(var db = new ColumbusDbContext()) {
+                        db.SaveChanges();
                         db.Entry(travel).State = EntityState.Added;
                     }
-                    else {
-                        UpdateEntity(travel);
-                    }
-                    db.SaveChanges();
-                    return travel;
                 }
+                else {
+                    UpdateEntity(travel);
+                }
+                return travel;
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to INSERT or UPDATE Travel in database", true);

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Web.Http;
 using WebserviceColumbus.Authorization;
 using WebserviceColumbus.Database;
+using WebserviceColumbus.Models.Travel;
 using WebserviceColumbus.Models.Travel.Travelogue;
 
 namespace WebserviceColumbus.Controllers
@@ -44,6 +45,27 @@ namespace WebserviceColumbus.Controllers
         {
             if(travelogue != null) {
                 return Request.CreateResponse(HttpStatusCode.Accepted, new TravelogueDbManager().UpdateOrInsertEntity(travelogue));
+            }
+            return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
+        }
+
+        //GET: api/Travelogue/Delete?travelogueID=..
+        [HttpGet, TokenRequired, Route("api/Travelogue/Delete")]
+        public HttpResponseMessage Delete(int travelogueID)
+        {
+            TravelogueDbManager dbManager = new TravelogueDbManager();
+            Travelogue travelogue = dbManager.GetEntity(travelogueID);
+            if(travelogue != null) {
+                Travel travel = new TravelDbManager().GetEntity(travelogue.TravelID);
+                if(travel != null) {
+                    if(travel.User.Username.Equals(TokenManager.GetUsernameFromToken())) {
+                        if(dbManager.DeleteEntity(travelogue)) {
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        return Request.CreateResponse(HttpStatusCode.Conflict);
+                    }
+                    return Request.CreateResponse(HttpStatusCode.Forbidden);
+                }
             }
             return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }

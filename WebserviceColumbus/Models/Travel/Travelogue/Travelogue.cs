@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WebserviceColumbus.Model;
 
 namespace WebserviceColumbus.Models.Travel.Travelogue
@@ -23,5 +24,21 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
         public virtual ICollection<Rating> Ratings { get; set; }
 
         public virtual ICollection<Paragraph> Paragraphs { get; set; }
+
+        [NotMapped, JsonIgnore]
+        public double RatingFactor { get; set; }
+
+        [NotMapped, JsonIgnore]
+        public double TotalRating
+        {
+            get
+            {
+                double total = 0;
+                foreach(Rating rating in Ratings) {
+                    total += rating.RatingValue;
+                }
+                return total;
+            }
+        }
     }
 }

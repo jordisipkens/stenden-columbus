@@ -76,12 +76,23 @@ namespace WebserviceColumbus.Database
                 using(var db = new ColumbusDbContext()) {
                     db.Entry(entity).State = EntityState.Modified;
                     foreach(Paragraph paragraph in entity.Paragraphs) {
-                        db.Entry(paragraph).State = EntityState.Modified;
+                        if(paragraph.ID == 0) {
+                            db.Entry(paragraph).State = EntityState.Added;
+                        }
+                        else {
+                            db.Entry(paragraph).State = EntityState.Modified;
+                        }
                     }
                     foreach(Rating rating in entity.Ratings) {
-                        db.Entry(rating).State = EntityState.Modified;
+                        if(rating.ID == 0) {
+                            db.Entry(rating).State = EntityState.Added;
+                        }
+                        else {
+                            db.Entry(rating).State = EntityState.Modified;
+                        }
                     }
-                    return db.SaveChanges() == 1;
+                    db.SaveChanges();
+                    return true;
                 }
             }
             catch(Exception ex) {
@@ -98,19 +109,16 @@ namespace WebserviceColumbus.Database
         public override Travelogue UpdateOrInsertEntity(Travelogue travelogue)
         {
             try {
-                using(var db = new ColumbusDbContext()) {
-                    if(travelogue.ID == 0) {
+                if(travelogue.ID == 0) {
+                    using(var db = new ColumbusDbContext()) {
                         db.Entry(travelogue).State = EntityState.Added;
+                        db.SaveChanges();
                     }
-                    else {
-                        db.Entry(travelogue).State = EntityState.Modified;
-                        foreach(Paragraph paragraph in travelogue.Paragraphs) {
-                            db.Entry(paragraph).State = EntityState.Modified;
-                        }
-                    }
-                    db.SaveChanges();
-                    return travelogue;
                 }
+                else {
+                    UpdateEntity(travelogue);
+                }
+                return travelogue;
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to INSERT or UPDATE Travelogue in database", true);
@@ -136,7 +144,7 @@ namespace WebserviceColumbus.Database
                 }
 
                 if(foundTravelogues != null && foundTravelogues.Count > limit) {
-                    return foundTravelogues.GetRange(0, limit);
+                    foundTravelogues = foundTravelogues.GetRange(0, limit);
                 }
                 return foundTravelogues;
             }
@@ -145,6 +153,7 @@ namespace WebserviceColumbus.Database
                 return null;
             }
         }
+
         /// <summary>
         /// Rates the travelogue
         /// </summary>
@@ -157,6 +166,25 @@ namespace WebserviceColumbus.Database
             if(travelogue != null) {
                 travelogue.Ratings.Add(new Rating() { RatingValue = rating });
                 return UpdateEntity(travelogue);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Published a Travelogue. Also checks if the publish request is valid.
+        /// </summary>
+        /// <param name="travelOgueID"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool Publish(int travelOgueID, bool value = true)
+        {
+            Travelogue travelogue = GetEntity(travelOgueID);
+            if(travelogue != null) {
+                Travel correspondingTravel = new TravelDbManager().GetEntity(travelogue.TravelID);
+                if(correspondingTravel != null && new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), correspondingTravel.UserID)) {
+                    travelogue.Published = value;
+                    return UpdateEntity(travelogue);
+                }
             }
             return false;
         }
@@ -210,7 +238,14 @@ namespace WebserviceColumbus.Database
         /// <returns></returns>
         private List<Travelogue> GetBest(int offset, int limit)
         {
-            List<Travelogue> travelogues = GetEntities();    //TODO Rating algorithm
+            List<Travelogue> travelogues = GetEntities();
+            foreach(Travelogue travelogue in travelogues) {
+                TimeSpan diff = DateTime.Now - travelogue.PublishedTime;
+                travelogue.RatingFactor = Math.Pow(travelogue.TotalRating / diff.TotalHours, 1.5);
+                //travelogue.Rating = Math.Pow((travelogue.TotalRating - 1) / (diff.TotalHours + 2), 1.5);  //Orginal
+            }
+            travelogues = travelogues.OrderByDescending(t => t.RatingFactor).ToList();
+
             if(travelogues != null) {
                 if(offset + limit > travelogues.Count) {
                     limit = travelogues.Count - offset;
@@ -221,29 +256,6 @@ namespace WebserviceColumbus.Database
         }
 
         #endregion Display
-
-        #region Publish
-
-        /// <summary>
-        /// Published a Travelogue. Also checks if the publish request is valid.
-        /// </summary>
-        /// <param name="travelOgueID"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public bool Publish(int travelOgueID, bool value = true)
-        {
-            Travelogue travelogue = GetEntity(travelOgueID);
-            if(travelogue != null) {
-                Travel correspondingTravel = new TravelDbManager().GetEntity(travelogue.TravelID);
-                if(correspondingTravel != null && new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), correspondingTravel.UserID)) {
-                    travelogue.Published = value;
-                    return UpdateEntity(travelogue);
-                }
-            }
-            return false;
-        }
-
-        #endregion Publish
     }
 
     public enum SearchType
