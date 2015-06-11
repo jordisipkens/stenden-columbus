@@ -1,6 +1,5 @@
 ﻿using ColombusWebapplicatie.Classes.Http;
 using ColombusWebapplicatie.Models.Travel.Travelogue;
-using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -8,8 +7,10 @@ namespace ColombusWebapplicatie.Controllers
 {
     public class TravelogueController : BaseController
     {
-        private static int maxTitleLenght = 30;
-
+        /// <summary>
+        /// Gives an overview of all Travelogues.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             if(GetCurrentUser() != null) {
@@ -20,6 +21,11 @@ namespace ColombusWebapplicatie.Controllers
             return Error(RedirectToAction("Index", "Home"), "Er is een fout opgetreden");
         }
 
+        /// <summary>
+        /// Displays a list of Travelogues sorted by the given SearchType.
+        /// </summary>
+        /// <param name="sortBy"></param>
+        /// <returns></returns>
         public ActionResult Display(SearchType sortBy)
         {
             ViewBag.Title = "Alle Reisverslagen";
@@ -27,6 +33,11 @@ namespace ColombusWebapplicatie.Controllers
             return View("Index", ShortenTitles(travelogues));
         }
 
+        /// <summary>
+        /// Opens a existing travelogue and goes to a View to edit the travelogue.
+        /// </summary>
+        /// <param name="travelogueID"></param>
+        /// <returns></returns>
         public ActionResult EditTravelogue(int travelogueID = 0)
         {
             if(travelogueID != 0) {
@@ -39,6 +50,11 @@ namespace ColombusWebapplicatie.Controllers
             return Error(RedirectToAction("Index", "Travel"), "Er is een fout opgetreden");
         }
 
+        /// <summary>
+        /// Creates a new Travelogue to edit
+        /// </summary>
+        /// <param name="travelID"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult CreateTravelogue(int travelID = 0)
         {
@@ -53,14 +69,24 @@ namespace ColombusWebapplicatie.Controllers
             return Error(RedirectToAction("Index", "Travel"), "Er is een fout opgetreden");
         }
 
+        /// <summary>
+        /// Deletes the given Travelogue and returns to the overview.
+        /// </summary>
+        /// <param name="travelogueID"></param>
+        /// <returns></returns>
         public ActionResult DeleteTravelogue(int travelogueID = 0)
         {
             HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Delete/" + travelogueID, Request);
             return MessageToIndex("Het reisverslag is verwijderd");
         }
 
-        //Method for viewing 1 travelogue
-        public ActionResult ViewTravelogue(int travelogueID = 0)
+        /// <summary>
+        /// View a single Travelogue without editing options,
+        /// </summary>
+        /// <param name="travelogueID"></param>
+        /// <param name="maxTitleLenght"></param>
+        /// <returns></returns>
+        public ActionResult ViewTravelogue(int travelogueID = 0, int maxTitleLenght = 30)
         {
             if(travelogueID != 0) {
                 Travelogue travelogue = HttpManager.WebserviceGetRequest<Travelogue>(string.Format("Travelogue/{0}", travelogueID), Request);
@@ -75,6 +101,11 @@ namespace ColombusWebapplicatie.Controllers
             return Error(RedirectToAction("Index"), "Deze Travelogue bestaat niet (meer)");
         }
 
+        /// <summary>
+        /// Checks which button is pressed and handles accordingly.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult SubmitButton(Travelogue model)
         {
@@ -86,12 +117,17 @@ namespace ColombusWebapplicatie.Controllers
                 return Index();
             }
             else if(Request.Form["Save"] != null) {
-                Travelogue travelogue = SaveTravelogue(model);
+                Travelogue travelogue = HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
                 return Index();
             }
             return Index();
         }
 
+        /// <summary>
+        /// Adds a paragraph to the Travelogue and returns a new View with a new Paraghraph.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private ActionResult AddParagraph(Travelogue model)
         {
             if(model.Paragraphs == null) {
@@ -101,27 +137,32 @@ namespace ColombusWebapplicatie.Controllers
             return View("CreateTravelogue", model);
         }
 
+        /// <summary>
+        /// Publishes a Travelogue. If the Travelogue is new, it create the Travelogue instead(and
+        /// it's already published).
+        /// </summary>
+        /// <param name="model"></param>
         private void PublishTravelogue(Travelogue model)
         {
             if(model.ID != 0) {
-                HttpManager.WebservicePostRequest<Travelogue>("Travelogue?travelogueId=" + model.ID + "&isPublic=true", Request, model);
+                HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Publish", Request, null, new Dictionary<string, string>() { { "travelogueID", model.ID.ToString() }, { "isPublic", true.ToString() } });
             }
             else {
-                Travelogue savedTravelogue = SaveTravelogue(model);
+                Travelogue savedTravelogue = HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
                 if(savedTravelogue != null) {
                     PublishTravelogue(savedTravelogue);
                 }
             }
         }
 
-        private Travelogue SaveTravelogue(Travelogue model)
-        {
-            return HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
-        }
-
         #region Helpers
 
-        private List<Travelogue> ShortenTitles(List<Travelogue> travelogues)
+        /// <summary>
+        /// Shortens the titles in case of overflow.
+        /// </summary>
+        /// <param name="travelogues"></param>
+        /// <returns></returns>
+        private List<Travelogue> ShortenTitles(List<Travelogue> travelogues, int maxTitleLenght = 30)
         {
             if(travelogues != null) {
                 foreach(Travelogue travelogue in travelogues) {
@@ -135,6 +176,9 @@ namespace ColombusWebapplicatie.Controllers
 
         #endregion Helpers
 
+        /// <summary>
+        /// Enum used for Search Filters/Sorting
+        /// </summary>
         public enum SearchType
         {
             Best,
