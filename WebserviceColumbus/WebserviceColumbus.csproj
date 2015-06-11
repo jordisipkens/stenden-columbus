@@ -105,7 +105,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Default.html" />
+    <Content Include="404.html" />
     <Content Include="Global.asax" />
     <Content Include="ErrorLog.txt" />
     <Content Include="Web.config">
