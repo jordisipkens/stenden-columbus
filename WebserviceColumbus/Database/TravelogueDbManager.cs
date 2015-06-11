@@ -75,26 +75,30 @@ namespace WebserviceColumbus.Database
             try {
                 using(var db = new ColumbusDbContext()) {
                     db.Entry(entity).State = EntityState.Modified;
-                    foreach(Paragraph paragraph in entity.Paragraphs) {
-                        if(paragraph.ID == 0) {
-                            db.Entry(paragraph).State = EntityState.Added;
-                        }
-                        else if(paragraph.ID == -1) {
-                            db.Entry(paragraph).State = EntityState.Deleted;
-                        }
-                        else {
-                            db.Entry(paragraph).State = EntityState.Modified;
+                    if(entity.Paragraphs != null) {
+                        foreach(Paragraph paragraph in entity.Paragraphs) {
+                            if(paragraph.ID == 0) {
+                                db.Entry(paragraph).State = EntityState.Added;
+                            }
+                            else if(paragraph.ID == -1) {
+                                db.Entry(paragraph).State = EntityState.Deleted;
+                            }
+                            else {
+                                db.Entry(paragraph).State = EntityState.Modified;
+                            }
                         }
                     }
-                    foreach(Rating rating in entity.Ratings) {
-                        if(rating.ID == 0) {
-                            db.Entry(rating).State = EntityState.Added;
-                        }
-                        else if(rating.ID == -1) {
-                            db.Entry(rating).State = EntityState.Deleted;
-                        }
-                        else {
-                            db.Entry(rating).State = EntityState.Modified;
+                    if(entity.Ratings != null) {
+                        foreach(Rating rating in entity.Ratings) {
+                            if(rating.ID == 0) {
+                                db.Entry(rating).State = EntityState.Added;
+                            }
+                            else if(rating.ID == -1) {
+                                db.Entry(rating).State = EntityState.Deleted;
+                            }
+                            else {
+                                db.Entry(rating).State = EntityState.Modified;
+                            }
                         }
                     }
                     db.SaveChanges();
