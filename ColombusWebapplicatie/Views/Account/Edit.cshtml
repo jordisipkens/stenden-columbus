@@ -8,9 +8,8 @@
 <div class="container white-block">
     <div class="container">
         <h2>@ViewBag.Title</h2>
-        @using (Html.BeginForm("EditUser", "Account", FormMethod.Post))
-        {
-            @Html.HiddenFor(user=>user.ID);
+        @using(Html.BeginForm("EditUser", "Account", FormMethod.Post)) {
+            @Html.HiddenFor(user => user.ID);
             <table cellspacing="0" cellpadding="0">
                 <tr>
                     <th>Gebruikersnaam:</th>

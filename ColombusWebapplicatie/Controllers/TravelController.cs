@@ -148,6 +148,13 @@ namespace ColombusWebapplicatie.Controllers
             return Message(RedirectToAction("ViewTravel", new { travelID = travel.ID }), "De Locatie is verwijderd");
         }
 
+        /// <summary>
+        /// Creates a note and save the corresponding Travelogue. Redirect to the Travelogue detail View.
+        /// </summary>
+        /// <param name="travelID"></param>
+        /// <param name="locationID"></param>
+        /// <param name="note"></param>
+        /// <returns></returns>
         public ActionResult CreateNote(int travelID, int locationID, string note)
         {
             Travel travel = HttpManager.WebserviceGetRequest<Travel>("travel/" + travelID, Request);
@@ -158,7 +165,7 @@ namespace ColombusWebapplicatie.Controllers
                     return Message(RedirectToAction("ViewTravel", "Travel", new { id = travelID }), "Notitie toegevoegd");
                 }
             }
-            return Error(RedirectToAction("ViewTravel", "Travel", new { id = travelID }), "Er is iets fout gegaan.");
+            return Error(RedirectToAction("ViewTravel", "Travel", new { id = travelID }), "Er is iets fout gegaan");
         }
 
         #region Helpers

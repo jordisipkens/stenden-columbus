@@ -68,15 +68,14 @@ namespace ColombusWebapplicatie.Controllers
         /// Shows a View to edit the current user's details.
         /// </summary>
         /// <returns></returns>
-        public ActionResult EditUser()
+        public ActionResult Edit()
         {
             if(Convert.ToBoolean(Session["LoggedIn"])) {
                 User user = (User)Session["User"];
-
                 return View(user);
             }
             else {
-                return Error(RedirectToAction("Index", "Home"), "U bent niet ingelogd.");
+                return Error(RedirectToAction("Index", "Home"), "U bent niet ingelogd");
             }
         }
 
@@ -95,12 +94,12 @@ namespace ColombusWebapplicatie.Controllers
                     if(addedUser != null) {
                         Session["User"] = addedUser;
                     }
-                    return MessageToIndex("Gebruikersgegevens zijn succesvol aangepast.");
+                    return Message(RedirectToAction("Edit"), "Gebruikersgegevens zijn succesvol aangepast");
                 }
                 return View(user);
             }
             else {
-                return Error(RedirectToAction("Index", "Home"), "U bent niet ingelogd.");
+                return Error(RedirectToAction("Index", "Home"), "U bent niet ingelogd");
             }
         }
 

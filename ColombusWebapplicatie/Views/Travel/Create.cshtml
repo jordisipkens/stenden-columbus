@@ -9,13 +9,12 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript">
     $(function () {
-        $('.datepicker').datepicker()({ dateFormat: "dd-mm-yy" }).val();
+        $('.datepicker').datepicker().val();
     });
 </script>
 <div class="container">
     <h2>@ViewBag.Title</h2>
-    @using (Html.BeginForm("CreateTravel", "Travel", FormMethod.Post))
-    {
+    @using(Html.BeginForm("CreateTravel", "Travel", FormMethod.Post)) {
         <table cellspacing="0" cellpadding="0" id="travels">
             <tr>
                 <th>@Html.LabelFor(travel => travel.Title, "Titel")</th>
