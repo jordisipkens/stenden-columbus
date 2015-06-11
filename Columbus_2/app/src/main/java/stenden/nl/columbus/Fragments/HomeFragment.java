@@ -19,12 +19,14 @@ import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import stenden.nl.columbus.GSON.GsonRequest;
 import stenden.nl.columbus.GSON.Objects.Travel;
+import stenden.nl.columbus.GSON.Objects.Travelogue;
 import stenden.nl.columbus.GSON.VolleyHelper;
 import stenden.nl.columbus.MainActivity;
 import stenden.nl.columbus.R;
@@ -48,6 +50,30 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Call all travels from user.
+        if (MainActivity.loginResponse.getUser() != null && MainActivity.travelogues == null) {
+            Map<String, String> headers = new HashMap<String, String>();
+            headers.put("Token", MainActivity.loginResponse.getToken());
+
+
+            String full_url = MainActivity.BASE_URL + MainActivity.ALL_TRAVELOGUE_URL
+                    + "?userID=" + MainActivity.loginResponse.getUser().getId();
+
+            // Get all travelogues from the user.
+            VolleyHelper.getInstance(getActivity()).addToRequestQueue(
+                    new GsonRequest<>(full_url,
+                            Travelogue[].class, headers, new Response.Listener<Travelogue[]>() {
+                        public void onResponse(Travelogue[] tempTravel) {
+                            // Revert the array to a arraylist for global usage benefits.
+                            if (tempTravel != null) {
+                                MainActivity.travelogues = new ArrayList<>();
+                                for (Travelogue x : tempTravel) {
+                                    MainActivity.travelogues.add(x);
+                                }
+                            }
+                        }
+                    }, getActivity()));
+        }
     }
 
     @Nullable
@@ -57,8 +83,8 @@ public class HomeFragment extends Fragment {
 
         mTravelList = (ListView) v.findViewById(R.id.travel_list);
 
-        // Call all travels from user.
-        if(MainActivity.loginResponse.getUser() != null && MainActivity.travels == null) {
+        // If travels is already filled, avoid the api call.
+        if (MainActivity.loginResponse.getUser() != null && MainActivity.travels == null) {
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("Token", MainActivity.loginResponse.getToken());
 
@@ -74,14 +100,14 @@ public class HomeFragment extends Fragment {
                                 // Show the desired lists.
                                 MainActivity.travels = tempTravel;
 
-                                mAdapter = new TravelAdapter( MainActivity.travels, getActivity());
+                                mAdapter = new TravelAdapter(MainActivity.travels, getActivity());
                                 mTravelList.setAdapter(mAdapter);
 
                                 setAdapterListener();
                             }
                         }
                     }, getActivity()));
-        } else if(MainActivity.travels != null){
+        } else if (MainActivity.travels != null) {
             mAdapter = new TravelAdapter(MainActivity.travels, getActivity());
             mTravelList.setAdapter(mAdapter);
 
@@ -185,7 +211,7 @@ public class HomeFragment extends Fragment {
 
                 startDate.setText(startDate.getText() + sForm.format(sDate));
                 endDate.setText(endDate.getText() + sForm.format(eDate));
-            } catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 

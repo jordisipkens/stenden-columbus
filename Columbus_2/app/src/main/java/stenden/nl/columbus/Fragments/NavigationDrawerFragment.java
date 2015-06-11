@@ -1,4 +1,4 @@
-package stenden.nl.columbus;
+package stenden.nl.columbus.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,6 +24,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import stenden.nl.columbus.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -128,6 +130,8 @@ public class NavigationDrawerFragment extends Fragment {
                 getString(R.string.title_section3),
                 getString(R.string.title_section4),
                 getString(R.string.title_section5),
+                getString(R.string.title_section6),
+
         }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

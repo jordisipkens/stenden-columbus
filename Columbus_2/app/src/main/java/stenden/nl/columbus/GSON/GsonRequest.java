@@ -25,7 +25,8 @@ import stenden.nl.columbus.MainActivity;
  */
 public class GsonRequest<T> extends Request<T> {
     private final Gson gson = new Gson();
-    private final Class<T> clazz;
+    private Class<T> clazz;
+    private Map<String, String> params;
     private final Map<String, String> headers;
     private final Response.Listener<T> listener;
 
@@ -37,7 +38,7 @@ public class GsonRequest<T> extends Request<T> {
      * @param headers Map of request headers
      */
     public GsonRequest(String url, Class<T> clazz, Map<String, String> headers,
-                       Response.Listener<T> listener, final Activity activity) {
+                        Response.Listener<T> listener, final Activity activity) {
         super(Request.Method.GET, url, new Response.ErrorListener() {
             public void onErrorResponse(VolleyError volleyError) {
                 if (volleyError != null) {
@@ -54,9 +55,34 @@ public class GsonRequest<T> extends Request<T> {
         this.listener = listener;
     }
 
+    /**
+     * Make a POST request.
+     * @param url URL of the api call.
+     * @param params Params which are send with the POST request.
+     * @param headers Headers which are sent with the POST request.
+     */
+    public GsonRequest(String url, Map<String, String> params, Map<String, String> headers,
+                       Response.Listener<T> listener) {
+        super(Request.Method.POST, url, new Response.ErrorListener() {
+            public void onErrorResponse(VolleyError volleyError) {
+                if (volleyError != null) {
+                    Log.e("GsonRequest", "" + volleyError.getMessage());
+                }
+            }
+        });
+        this.headers = headers;
+        this.listener = listener;
+        this.params = params;
+    }
+
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         return headers;
+    }
+
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+        return params;
     }
 
     @Override

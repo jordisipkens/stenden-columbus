@@ -17,21 +17,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.android.volley.Response;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import stenden.nl.columbus.Fragments.AboutFragment;
 import stenden.nl.columbus.Fragments.AccountFragment;
 import stenden.nl.columbus.Fragments.HomeFragment;
 import stenden.nl.columbus.Fragments.MapFragment;
+import stenden.nl.columbus.Fragments.NavigationDrawerFragment;
+import stenden.nl.columbus.GSON.GsonRequest;
 import stenden.nl.columbus.GSON.Objects.LoginResponse;
-import stenden.nl.columbus.GSON.Objects.Paragraph;
 import stenden.nl.columbus.GSON.Objects.Travel;
 import stenden.nl.columbus.GSON.Objects.Travelogue;
 import stenden.nl.columbus.GSON.Objects.User;
+import stenden.nl.columbus.GSON.VolleyHelper;
 
 
 public class MainActivity extends ActionBarActivity
@@ -58,12 +64,16 @@ public class MainActivity extends ActionBarActivity
     public static Travel[] travels = null;
     public static List<Travelogue> travelogues = null;
 
-
-
-    // Api requests
+    // API URL
     public static String BASE_URL = "http://columbus-webservice.azurewebsites.net/api/";
+
+    // GET requests
     public static String LOGIN_URL = "User/Login";
     public static String ALL_TRAVELS_URL = "Travel/GetAll";
+    public static String ALL_TRAVELOGUE_URL = "Travelogue/GetAll";
+
+    // POST requests
+    private static String POST_TRAVELS_URL = "Travelogue/GetAll";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,10 +213,12 @@ public class MainActivity extends ActionBarActivity
                 newFragment = new AboutFragment();
                 tag = "over_ons";
                 break;
+            // Google Map item.
             case 3:
                 newFragment = new MapFragment();
                 tag = "map";
                 break;
+            // Log out item.
             case 4:
                 loginResponse = null;
                 user = null;
@@ -216,6 +228,10 @@ public class MainActivity extends ActionBarActivity
                 settings.edit().putString("travels", null);
                 settings.edit().putString("travelogues", null);
                 startActivity(new Intent(this, LoginScreen.class));
+                break;
+            // Upload your date to database item.
+            case 5:
+                synchData();
                 break;
         }
         if(mCurrentFragment == null){
@@ -331,4 +347,22 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+
+    public void synchData(){ // HTTP Request ombouwen
+        Map<String, String> params = new HashMap<String, String>(), headers = new HashMap<String, String>();
+        for(Travel x: MainActivity.travels) {
+            params.put("travel", new Gson().toJson(x));
+            headers.put("token", MainActivity.loginResponse.getToken());
+
+        VolleyHelper.getInstance(this).addToRequestQueue(
+                new GsonRequest<>(BASE_URL + POST_TRAVELS_URL, params, headers, new Response.Listener<Travel>() {
+                    public void onResponse(Travel tempTravel) {
+                        if (tempTravel != null) {
+                            // Show the desired lists.
+                            Toast toast = new Toast(getApplicationContext()).makeText(getApplicationContext(), "Uplaoden werkt!", Toast.LENGTH_LONG);
+                        }
+                    }
+                }));
+    }
+    }
 }

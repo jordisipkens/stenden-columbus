@@ -24,7 +24,8 @@
             android:label="@string/app_name" >
         </activity>
         <activity android:name="stenden.nl.columbus.MainActivity"
-            android:label="Columbus" >
+            android:label="Columbus"
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

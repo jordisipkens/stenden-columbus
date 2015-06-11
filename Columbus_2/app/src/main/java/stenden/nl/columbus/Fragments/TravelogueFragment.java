@@ -4,26 +4,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.GridView;
-import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import stenden.nl.columbus.GSON.Objects.Paragraph;
-import stenden.nl.columbus.GSON.Objects.Travel;
 import stenden.nl.columbus.GSON.Objects.Travelogue;
 import stenden.nl.columbus.MainActivity;
 import stenden.nl.columbus.R;
@@ -71,9 +63,11 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
         grid = (GridView) v.findViewById(R.id.travelogue_grid);
 
         ArrayList<Paragraph> graphs = new ArrayList<>();
-       try {
-           for (Paragraph x : travelogue.getParagraphs()) {
-               graphs.add(x);
+        try {
+           int size = travelogue.getParagraphs().length;
+
+           for (int i = 0; i < size; i++){
+               graphs.add(travelogue.getParagraphs()[i]);
            }
        } catch( NullPointerException e){
            e.printStackTrace();
@@ -118,24 +112,69 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
             case R.id.cancel:
                 getActivity().getSupportFragmentManager().popBackStack();
                 break;
-            case R.id.submit:
-                List<Paragraph> graphs = ((ParagraphAdapter) grid.getAdapter()).getParagraphs();
-                Paragraph[] graphsArray = new Paragraph[graphs.size()];
-                for(int i = 0 ; i < graphs.size(); i++){
-                    graphsArray[i] = graphs.get(i);
+            case R.id.travelogue_save:
+                // Create array from the size of the childs of Gridview.
+                Paragraph[] graphsArray = new Paragraph[grid.getCount()];
+
+                // For loop to fill the array of Paragraphs.
+                for(int i = 0; i < grid.getCount(); i++){
+                    // Get EditText from the current child.
+                    View view = grid.getChildAt(i);
+                    EditText title = (EditText) view.findViewById(R.id.paragraph_title);
+                    EditText text = (EditText) view.findViewById(R.id.paragraph_text);
+
+                    // Create new Paragraph from the current child.
+                    Paragraph graph = new Paragraph();
+                    graph.setText(text.getText().toString());
+                    graph.setHeader(title.getText().toString());
+
+                    // Fill array on current index.
+                    graphsArray[i] = graph;
                 }
                 if(graphsArray.length != 0) {
-                    travelogue.setTravelId(travelID);
-                    travelogue.setParagraphs(graphsArray);
-                    for(Travelogue x: MainActivity.travelogues){
-                        if(x.getId() == travelID){
-                            x = travelogue;
+                    Travelogue logue = new Travelogue();
+                    logue.setTravelId(travelID);
+                    logue.setParagraphs(graphsArray);
+                    if(MainActivity.travelogues.size() == 0){
+                        Travelogue tTravelogue = new Travelogue();
+                        tTravelogue.setId(travelID);
+                        tTravelogue.setParagraphs(graphsArray);
+                        MainActivity.travelogues.add(tTravelogue);
+                    }
+                    for(int j = 0; j < MainActivity.travelogues.size(); j++){
+                        if( MainActivity.travelogues.get(j).getId() == travelID){
+                            MainActivity.travelogues.set(j, logue);
+                        } else {
+                            Travelogue tLogue = new Travelogue();
+                            tLogue.setId(travelID);
+                            tLogue.setParagraphs(graphsArray);
+                            MainActivity.travelogues.add(tLogue);
                         }
                     }
                 }
                 break;
             case R.id.add_paragraph:
-                ((ParagraphAdapter) grid.getAdapter()).addParagraph();
+                // Create arraylist from the size of the childs of Gridview.
+                ArrayList<Paragraph> graphList = new ArrayList<>();
+
+                // For loop to fill the array of Paragraphs.
+                for(int i = 0; i < grid.getCount(); i++){
+                    // Get EditText from the current child.
+                    View view = grid.getChildAt(i);
+                    EditText title = (EditText) view.findViewById(R.id.paragraph_title);
+                    EditText text = (EditText) view.findViewById(R.id.paragraph_text);
+
+                    // Create new Paragraph from the current child.
+                    Paragraph graph = new Paragraph();
+                    graph.setText(text.getText().toString());
+                    graph.setHeader(title.getText().toString());
+
+                    // Fill array on current index.
+                    graphList.add(graph);
+                }
+                if(graphList.size() > 0){
+                    ((ParagraphAdapter) grid.getAdapter()).addParagraph(graphList);
+                }
                 break;
         }
     }
@@ -185,53 +224,11 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
                 pText.setText(graph.getText());
             }
 
-            pTitle.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Paragraph graph = new Paragraph();
-                    graph.setHeader(s.toString());
-                    graph.setText(pText.getText().toString());
-
-                    array.set(position, graph);
-                }
-            });
-
-            pText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                    Paragraph graph = new Paragraph();
-                    graph.setHeader(pTitle.getText().toString());
-                    graph.setText(s.toString());
-
-                    array.set(position, graph);
-                }
-            });
-
             return v;
         }
 
-        public void addParagraph(){
+        public void addParagraph(ArrayList<Paragraph> graphs){
+            array = graphs;
             array.add(new Paragraph());
             ((BaseAdapter) grid.getAdapter()).notifyDataSetChanged();
         }
