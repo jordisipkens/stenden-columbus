@@ -13,6 +13,7 @@
                 <th>Titel</th>
                 <th>Begindatum</th>
                 <th>Einddatum</th>
+                <th>Verwijderen</th>
             </tr>
             @if (Model != null && Model.Count > 0)
             {
@@ -22,6 +23,7 @@
                         <td>@Html.ActionLink(travel.Title, "ViewTravel", new { travelID = travel.ID })</td>
                         <td>@travel.StartDate.Day-@travel.StartDate.Month-@travel.StartDate.Year</td>
                         <td>@travel.EndDate.Day-@travel.EndDate.Month-@travel.EndDate.Year</td>
+                        <td>@Html.ActionLink("x", "DeleteTravel", new { travelID = travel.ID })</td>
                     </tr>
                 }
             }

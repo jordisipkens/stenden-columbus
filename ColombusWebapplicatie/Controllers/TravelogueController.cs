@@ -55,7 +55,8 @@ namespace ColombusWebapplicatie.Controllers
 
         public ActionResult DeleteTravelogue(int travelogueID = 0)
         {
-            throw new NotImplementedException();
+            HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Delete/" + travelogueID, Request);
+            return MessageToIndex("Het reisverslag is verwijderd");
         }
 
         //Method for viewing 1 travelogue

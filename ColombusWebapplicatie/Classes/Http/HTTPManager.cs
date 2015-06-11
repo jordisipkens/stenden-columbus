@@ -41,7 +41,7 @@ namespace ColombusWebapplicatie.Classes.Http
         /// <param name="baseUrl"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static T WebserviceGetRequest<T>(string url, HttpRequestBase request, Dictionary<string, string> headers = null, Dictionary<string, string> parameters = null, string baseUrl = AZURE_BASE_URL)
+        public static T WebserviceGetRequest<T>(string url, HttpRequestBase request, Dictionary<string, string> headers = null, Dictionary<string, string> parameters = null, string baseUrl = LOCAL_BASE_URL)
         {
             return ReadResponse<T>(CreateRequest(baseUrl + url, parameters, headers, request));
         }
@@ -54,7 +54,7 @@ namespace ColombusWebapplicatie.Classes.Http
         /// <param name="objectToPost"></param>
         /// <param name="baseUrl"></param>
         /// <returns></returns>
-        public static T WebservicePostRequest<T>(string url, HttpRequestBase request, T objectToPost, string baseUrl = AZURE_BASE_URL)
+        public static T WebservicePostRequest<T>(string url, HttpRequestBase request, T objectToPost, string baseUrl = LOCAL_BASE_URL)
         {
             HttpWebRequest httpWebRequest = (HttpWebRequest)CreateRequest(baseUrl + url, null, request);
             httpWebRequest.ContentType = "application/json";

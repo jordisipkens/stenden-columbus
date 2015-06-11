@@ -47,6 +47,12 @@ namespace ColombusWebapplicatie.Controllers
             return View("Create", travel);
         }
 
+        public ActionResult DeleteTravel(int travelID)
+        {
+            HttpManager.WebserviceGetRequest<Travel>("Travel/Delete/" + travelID, Request);
+            return MessageToIndex("De reis is verwijderd");
+        }
+
         public ActionResult SearchLocation(int travelID)
         {
             if(travelID != 0) {
@@ -80,6 +86,18 @@ namespace ColombusWebapplicatie.Controllers
 
             Travel postedTravel = HttpManager.WebservicePostRequest<Travel>("travel", Request, travel);
             return RedirectToAction("ViewTravel", "Travel", new { travelID = travelID });
+        }
+
+        public ActionResult DeleteLocation(Travel travel, int locationID)
+        {
+            foreach(Location location in travel.Locations) {
+                if(location.ID == locationID) {
+                    locationID = -1;
+                    break;
+                }
+            }
+            HttpManager.WebservicePostRequest<Travel>("Travel", Request, travel);
+            return Message(RedirectToAction("ViewTravel", new { travelID = travel.ID }), "De Locatie is verwijderd");
         }
 
         public ActionResult CreateNote(int travelID, int locationID, string note)
