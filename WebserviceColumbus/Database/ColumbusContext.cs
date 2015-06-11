@@ -1,9 +1,11 @@
-﻿using System.Configuration;
+using System.Configuration;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using WebserviceColumbus.Authorization;
 using WebserviceColumbus.Models.Other;
 using WebserviceColumbus.Models.Travel;
 using WebserviceColumbus.Models.Travel.Travelogue;
+//ALWAYS HAVE System.Data.SqlClient!! OTHERWISE IT THROWS DATAEXCEPTION
 
 namespace WebserviceColumbus.Database
 {
