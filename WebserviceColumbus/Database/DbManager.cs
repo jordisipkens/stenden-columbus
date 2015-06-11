@@ -60,11 +60,8 @@ namespace WebserviceColumbus.Database
             try {
                 using(var db = new ColumbusDbContext()) {
                     db.Set<T>().Add(entity);
-                    bool succes = db.SaveChanges() == 1;
-                    if(succes) {
-                        return entity;
-                    }
-                    return null;
+                    db.SaveChanges();
+                    return entity;
                 }
             }
             catch(Exception ex) {
@@ -78,19 +75,20 @@ namespace WebserviceColumbus.Database
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>Value if inserts were succesfull</returns>
-        public virtual bool AddEntities(ICollection<T> entities)
+        public virtual ICollection<T> AddEntities(ICollection<T> entities)
         {
             try {
                 using(var db = new ColumbusDbContext()) {
                     foreach(T entity in entities) {
                         db.Set<T>().Add(entity);
                     }
-                    return db.SaveChanges() == entities.Count;
+                    db.SaveChanges();
+                    return entities;
                 }
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to CREATE list of " + typeof(T) + "s in database", true);
-                return false;
+                return default(ICollection<T>);
             }
         }
 
@@ -108,7 +106,8 @@ namespace WebserviceColumbus.Database
             try {
                 using(var db = new ColumbusDbContext()) {
                     db.Entry<T>(entity).State = EntityState.Modified;
-                    return db.SaveChanges() == 1;
+                    db.SaveChanges();
+                    return true;
                 }
             }
             catch(Exception ex) {
@@ -131,7 +130,8 @@ namespace WebserviceColumbus.Database
             try {
                 using(var db = new ColumbusDbContext()) {
                     db.Entry<T>(entity).State = EntityState.Deleted;
-                    return db.SaveChanges() == 1;
+                    db.SaveChanges();
+                    return true;
                 }
             }
             catch(Exception ex) {

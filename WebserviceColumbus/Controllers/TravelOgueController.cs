@@ -50,7 +50,7 @@ namespace WebserviceColumbus.Controllers
         }
 
         //GET: api/Travelogue/Delete?travelogueID=..
-        [HttpGet, TokenRequired, Route("api/Travelogue/Delete")]
+        [HttpGet, TokenRequired, Route("api/Travelogue/Delete/{travelogueID}")]
         public HttpResponseMessage Delete(int travelogueID)
         {
             TravelogueDbManager dbManager = new TravelogueDbManager();

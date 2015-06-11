@@ -67,6 +67,9 @@ namespace WebserviceColumbus.Database
                         if(location.ID == 0) {
                             state = EntityState.Added;
                         }
+                        else if(location.ID == -1) {
+                            state = EntityState.Deleted;
+                        }
                         else {
                             state = EntityState.Modified;
                         }
