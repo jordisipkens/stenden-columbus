@@ -88,6 +88,7 @@ table {
     th {
         background-color: @orange;
         color: @font_color_light;
+        font-weight: normal;
     }
 
     td {
@@ -213,6 +214,44 @@ table {
     &.orange:hover {
         background-color: lighten(@orange, 10%);
         color: @white;
+        padding: 1em;
+        box-shadow: 0 0 0;
+        -webkit-box-shadow: inset 0 0 #e8930c;
+        text-decoration: none;
+        border-width: 0px;
+    }
+
+    &.white, a&.white {
+        background-color: @white;
+        color: @orange;
+        padding: 1em;
+        box-shadow: 0 0 0;
+        -webkit-box-shadow: inset 0 0 #e8930c;
+        text-decoration: none;
+        border: 1px solid @orange;
+    }
+
+     &.white:hover, a&.white:hover {
+        background-color: darken(@white,2%);
+        color: @orange;
+        padding: 1em;
+        box-shadow: 0 0 0;
+        -webkit-box-shadow: inset 0 0 #e8930c;
+        text-decoration: none;
+        border: 1px solid @orange;
+    }
+
+
+    &.trans {
+        padding: 1em;
+        box-shadow: 0 0 0;
+        -webkit-box-shadow: inset 0 0 #e8930c;
+        text-decoration: none;
+        border-width: 0px;
+    }
+
+    &.trans:hover {
+        background-color: darken(@white, 20%);
         padding: 1em;
         box-shadow: 0 0 0;
         -webkit-box-shadow: inset 0 0 #e8930c;
@@ -543,5 +582,23 @@ footer {
         &:hover {
             color: lighten(@font_color,15%);
         }
+    }
+}
+
+.location {
+    margin: 0 0 0 0;
+
+    h2 {
+        color: @font_color;
+    }
+}
+
+.table-fix {
+    th {
+        padding: 1em;
+    }
+
+    td {
+        padding: 1em;
     }
 }

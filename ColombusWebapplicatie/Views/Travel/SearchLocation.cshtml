@@ -5,23 +5,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="white-block">
-    <div class="container">
-        <h2>@ViewBag.Title</h2>
-        @using(Html.BeginForm("ShowFoundLocation", "Travel", FormMethod.Post, new { travelID = ViewBag.TravelID })) {
-            @Html.Hidden("travelID", null, new { travelID = ViewBag.TravelID })
-            @Html.TextBox("query");
-            <input class="button orange" type="submit" name="search" value="Zoeken">
+<div class="container">
+    <h2>@ViewBag.Title</h2>
+    <div class="white-block">
+        @using (Html.BeginForm("ShowFoundLocation", "Travel", FormMethod.Post, new { travelID = ViewBag.TravelID }))
+        {
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <th>
+                        @Html.TextBox("query", null, new { @style = "padding:1em; width:96%;" })
+                    </th>
+                    <td>
+                        <input class="button orange" type="submit" name="search" value="Zoeken" style="width:96%">
+                    </td>
+                </tr>
+                @Html.Hidden("travelID", null, new { travelID = ViewBag.TravelID })
+            </table>
         }
-        @if(Model != null && Model.Count > 0) {
-            <table cellspacing="0" cellpadding="0" id="travels">
-                @foreach(var result in Model) {
+        @if (Model != null && Model.Count > 0)
+        {
+            <table cellspacing="0" cellpadding="0" id="travels" class="white-block">
+                @foreach (var result in Model)
+                {
                     <tr>
                         <td>
                             @result.Name <br />
                             @result.Address
                         </td>
-                        <td>@Html.ActionLink("+", "ViewLocation", new { travelID = ViewBag.TravelID, placeID = result.PlaceID})</td>
+                        <td>@Html.ActionLink("+", "ViewLocation", new { travelID = ViewBag.TravelID, placeID = result.PlaceID })</td>
                     </tr>
                 }
             </table>
