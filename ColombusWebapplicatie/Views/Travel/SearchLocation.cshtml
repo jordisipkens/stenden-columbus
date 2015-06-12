@@ -5,14 +5,64 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles
+{
+    <style>
+    #map-canvas
+    {
+        margin: 1em 0px;
+    }
+    </style>
+}
+
+@section Scripts
+{
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script>
+        var marker = null;
+
+        function initialize()
+        {
+            var myLatlng = new google.maps.LatLng(0, 0);
+            var mapOptions = {
+                zoom: 1,
+                center: myLatlng
+            }
+            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            google.maps.event.addListener(map, "click", function (event) {
+                if (marker != null) {
+                    marker.setMap(null);
+                }
+                marker = new google.maps.Marker({
+                    position: event.latLng,
+                    draggable: true,
+                    map: map
+                });
+                document.getElementById("lat").value = marker.getPosition().lat();
+                document.getElementById("lng").value = marker.getPosition().lng();
+            });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+}
+
 <div class="white-block">
     <div class="container">
         <h2>@ViewBag.Title</h2>
+        <p>@ViewBag.Lat</p>
+        <p>@ViewBag.Lng</p>
+        <p>Vul hieronder een locatie in of klik op een locatie in op de kaart. Klik daarna op 'Zoeken'.</p>
         @using(Html.BeginForm("ShowFoundLocation", "Travel", FormMethod.Post, new { travelID = ViewBag.TravelID })) {
+            @Html.Hidden("lat")
+            @Html.Hidden("lng")
             @Html.Hidden("travelID", null, new { travelID = ViewBag.TravelID })
-            @Html.TextBox("query");
+            @Html.TextBox("query")
             <input class="button orange" type="submit" name="search" value="Zoeken">
         }
+    </div>
+    <div id="map-canvas"></div>
+    <div class="container">
         @if(Model != null && Model.Count > 0) {
             <table cellspacing="0" cellpadding="0" id="travels">
                 @foreach(var result in Model) {
