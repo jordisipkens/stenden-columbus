@@ -71,7 +71,7 @@ namespace WebserviceColumbus.Controllers
         }
 
         //GET: api/Travelogue/Display?filter=..&offset=..&limit=..
-        [HttpGet]
+        [HttpGet, Route("api/Travelogue/Display")]
         public HttpResponseMessage Display(SearchType filter = SearchType.Latest, int offset = 0, int limit = 20)
         {
             return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().Display(filter, offset, limit));
