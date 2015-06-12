@@ -8,7 +8,7 @@
 <div class="container">
     <h2>@ViewBag.Title</h2>
     <div class="white-block">
-        <table cellspacing="0" cellpadding="0" id="travels">
+        <table cellspacing="0" cellpadding="0" id="travels" class="table-fix">
             <tr>
                 <th>Titel</th>
                 <th>Begindatum</th>
@@ -23,7 +23,7 @@
                         <td>@Html.ActionLink(travel.Title, "ViewTravel", new { travelID = travel.ID })</td>
                         <td>@travel.StartDate.Day-@travel.StartDate.Month-@travel.StartDate.Year</td>
                         <td>@travel.EndDate.Day-@travel.EndDate.Month-@travel.EndDate.Year</td>
-                        <td>@Html.ActionLink("x", "DeleteTravel", new { travelID = travel.ID })</td>
+                        <td style="width:1em;">@Html.ActionLink("x", "DeleteTravel", new { travelID = travel.ID })</td>
                     </tr>
                 }
             }

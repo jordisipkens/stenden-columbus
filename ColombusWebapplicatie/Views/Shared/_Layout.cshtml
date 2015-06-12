@@ -74,7 +74,7 @@
                     <li>@Html.ActionLink("Android app", "Android", "Home")</li>
                     @if(Convert.ToBoolean(Session["LoggedIn"])) {
                         <li>@Html.ActionLink("Mijn reizen", "Index", "Travel")</li>
-                        <li>@Html.ActionLink("Account", "Edit", "Account")</li>
+                        <li>@Html.ActionLink("Account", "EditUser", "Account", null, null)</li>
                     }
                 </ul>
             </div>

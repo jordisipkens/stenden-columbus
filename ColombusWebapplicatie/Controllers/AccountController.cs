@@ -68,7 +68,7 @@ namespace ColombusWebapplicatie.Controllers
         /// Shows a View to edit the current user's details.
         /// </summary>
         /// <returns></returns>
-        public ActionResult Edit()
+        public ActionResult EditUser()
         {
             if(Convert.ToBoolean(Session["LoggedIn"])) {
                 User user = (User)Session["User"];
@@ -94,7 +94,7 @@ namespace ColombusWebapplicatie.Controllers
                     if(addedUser != null) {
                         Session["User"] = addedUser;
                     }
-                    return Message(RedirectToAction("Edit"), "Gebruikersgegevens zijn succesvol aangepast");
+                    return Message(RedirectToAction("EditUser"), "Gebruikersgegevens zijn succesvol aangepast");
                 }
                 return View(user);
             }
