@@ -144,14 +144,25 @@ namespace WebserviceColumbus.Database
         /// <returns></returns>
         public List<Travelogue> Search(string value, int limit = 20)
         {
-            if(limit < 0 || limit > 100) {
+            if(limit < 0 || limit > 100) {                                      
                 limit = 100;
             }
             try {
-                List<Travelogue> foundTravelogues;
-                using(var db = new ColumbusDbContext()) {
-                    foundTravelogues = db.Travelogues.Where(t => t.Published == true && t.Paragraphs.Any(p => p.Header.Contains(value) || p.Text.Contains(value))).ToList();
+                List<Travelogue> foundTravelogues = GetEntities();
+                List<Travelogue> filteredTravelogues = new List<Travelogue>();
+                foreach(Travelogue travelogue in foundTravelogues) {
+                    if(travelogue.Title != null && travelogue.Title.Contains(value)) {
+                        filteredTravelogues.Add(travelogue);
+                        continue;
+                    }
+
+                    foreach(Paragraph paragraph in travelogue.Paragraphs) {
+                        if((paragraph.Header != null && paragraph.Header.ToLower().Contains(value)) || (paragraph.Text != null && paragraph.Text.ToLower().Contains(value))) {
+                            filteredTravelogues.Add(travelogue);
+                        }
+                    }
                 }
+                foundTravelogues = filteredTravelogues;
 
                 if(foundTravelogues != null && foundTravelogues.Count > limit) {
                     foundTravelogues = foundTravelogues.GetRange(0, limit);
@@ -193,6 +204,7 @@ namespace WebserviceColumbus.Database
                 Travel correspondingTravel = new TravelDbManager().GetEntity(travelogue.TravelID);
                 if(correspondingTravel != null && new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), correspondingTravel.UserID)) {
                     travelogue.Published = value;
+                    travelogue.PublishedTime = DateTime.Now;        
                     return UpdateEntity(travelogue);
                 }
             }
@@ -230,7 +242,7 @@ namespace WebserviceColumbus.Database
         /// <returns></returns>
         private List<Travelogue> GetLatest(int offset, int limit)
         {
-            List<Travelogue> travelogues = GetEntities().OrderBy(t => t.PublishedTime).ToList();
+            List<Travelogue> travelogues = GetEntities().Where(t => t.Published.Equals(true)).OrderByDescending(t => t.PublishedTime).ToList();  
             if(travelogues != null) {
                 if(offset + limit > travelogues.Count) {
                     limit = travelogues.Count - offset;
@@ -248,11 +260,10 @@ namespace WebserviceColumbus.Database
         /// <returns></returns>
         private List<Travelogue> GetBest(int offset, int limit)
         {
-            List<Travelogue> travelogues = GetEntities();
+            List<Travelogue> travelogues = GetEntities().Where(t => t.Published.Equals(true)).ToList();
             foreach(Travelogue travelogue in travelogues) {
                 TimeSpan diff = DateTime.Now - travelogue.PublishedTime;
                 travelogue.RatingFactor = Math.Pow(travelogue.TotalRating / diff.TotalHours, 1.5);
-                //travelogue.Rating = Math.Pow((travelogue.TotalRating - 1) / (diff.TotalHours + 2), 1.5);  //Orginal
             }
             travelogues = travelogues.OrderByDescending(t => t.RatingFactor).ToList();
 

@@ -15,12 +15,9 @@ namespace WebserviceColumbus.Controllers
         [HttpGet, TokenRequired, Route("api/Travelogue/{travelogueID}")]
         public HttpResponseMessage Get(int travelogueID)
         {
-            Travelogue travelogue = new TravelogueDbManager().GetEntity(travelogueID);
+            Travelogue travelogue = new TravelogueDbManager().GetEntity(travelogueID); 
             if(travelogue != null) {
-                if(new UserDbManager().ValidateUser(TokenManager.GetUsernameFromToken(), new TravelDbManager().GetEntity(travelogue.TravelID).UserID)) {
-                    return Request.CreateResponse(HttpStatusCode.OK, travelogue);
-                }
-                return Request.CreateResponse(HttpStatusCode.Forbidden);
+                return Request.CreateResponse(HttpStatusCode.OK, travelogue);
             }
             return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }
@@ -44,7 +41,7 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Update([FromBody]Travelogue travelogue)
         {
             if(travelogue != null) {
-                return Request.CreateResponse(HttpStatusCode.Accepted, new TravelogueDbManager().UpdateOrInsertEntity(travelogue));
+                return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().UpdateOrInsertEntity(travelogue));
             }
             return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }

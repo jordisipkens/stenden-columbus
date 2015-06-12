@@ -54,7 +54,7 @@ namespace WebserviceColumbus.Database
                 limit = travels.Count - offset;
                 return travels.GetRange(offset, limit);
             }
-            return travels;     //TODO Check if correct number of travels is returned
+            return travels; 
         }
 
         public override bool UpdateEntity(Travel entity)
