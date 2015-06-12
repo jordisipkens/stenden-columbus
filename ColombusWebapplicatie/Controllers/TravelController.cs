@@ -10,6 +10,10 @@ namespace ColombusWebapplicatie.Controllers
 {
     public class TravelController : BaseController
     {
+        /// <summary>
+        /// Overview of all Travels.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             if(GetCurrentUser() != null) {
@@ -19,6 +23,11 @@ namespace ColombusWebapplicatie.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Display a single detailed Travel.
+        /// </summary>
+        /// <param name="travelID"></param>
+        /// <returns></returns>
         public ActionResult ViewTravel(int travelID = 0)
         {
             if(travelID != 0) {
@@ -32,9 +41,14 @@ namespace ColombusWebapplicatie.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            return View();  //Vertel Roy wanneer deze breakpoint wordt geraakt :D
         }
 
+        /// <summary>
+        /// Creates a new Travel and returns to the Index.
+        /// </summary>
+        /// <param name="travel"></param>
+        /// <returns></returns>
         public ActionResult CreateTravel(Travel travel)
         {
             if(ModelState.IsValid) {
@@ -47,6 +61,22 @@ namespace ColombusWebapplicatie.Controllers
             return View("Create", travel);
         }
 
+        /// <summary>
+        /// Deletes the travel with the given corresponding travelID and returns to the overview.
+        /// </summary>
+        /// <param name="travelID"></param>
+        /// <returns></returns>
+        public ActionResult DeleteTravel(int travelID)
+        {
+            HttpManager.WebserviceGetRequest<Travel>("Travel/Delete/" + travelID, Request);
+            return MessageToIndex("De reis is verwijderd");
+        }
+
+        /// <summary>
+        /// Search locations to add to the travel.
+        /// </summary>
+        /// <param name="travelID"></param>
+        /// <returns></returns>
         public ActionResult SearchLocation(int travelID)
         {
             if(travelID != 0) {
@@ -56,6 +86,12 @@ namespace ColombusWebapplicatie.Controllers
             return ErrorToIndex("Deze reis bestaat niet (meer)");
         }
 
+        /// <summary>
+        /// Shows the found location by the query.
+        /// </summary>
+        /// <param name="travelID"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public ActionResult ShowFoundLocation(int travelID, string query)
         {
             List<LocationDetails> locations = RequestGooglePlaces("textsearch", new Dictionary<string, string>() { { "query", query } });
@@ -66,6 +102,12 @@ namespace ColombusWebapplicatie.Controllers
             return Error(RedirectToAction("ViewTravel", travelID), "Er is een fout opgetreden tijdens het zoeken naar locaties");
         }
 
+        /// <summary>
+        /// Shows a detailed overview of a single Location.
+        /// </summary>
+        /// <param name="travelID"></param>
+        /// <param name="placeID"></param>
+        /// <returns></returns>
         public ActionResult ViewLocation(int travelID, string placeID)
         {
             ViewBag.TravelID = travelID;
@@ -73,6 +115,12 @@ namespace ColombusWebapplicatie.Controllers
             return View(response.Result);
         }
 
+        /// <summary>
+        /// Adds a Location to the Travel. Returns to the Travel detailed overview.
+        /// </summary>
+        /// <param name="travelID"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public ActionResult AddLocation(int travelID, string date)
         {
             Travel travel = HttpManager.WebserviceGetRequest<Travel>("travel/" + travelID, Request);
@@ -80,6 +128,24 @@ namespace ColombusWebapplicatie.Controllers
 
             Travel postedTravel = HttpManager.WebservicePostRequest<Travel>("travel", Request, travel);
             return RedirectToAction("ViewTravel", "Travel", new { travelID = travelID });
+        }
+
+        /// <summary>
+        /// Deletes the given Location from the Travel.
+        /// </summary>
+        /// <param name="travel"></param>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
+        public ActionResult DeleteLocation(Travel travel, int locationID)
+        {
+            foreach(Location location in travel.Locations) {
+                if(location.ID == locationID) {
+                    locationID = -1;
+                    break;
+                }
+            }
+            HttpManager.WebservicePostRequest<Travel>("Travel", Request, travel);
+            return Message(RedirectToAction("ViewTravel", new { travelID = travel.ID }), "De Locatie is verwijderd");
         }
 
         public ActionResult CreateNote(int travelID, int locationID, string note)
@@ -97,6 +163,12 @@ namespace ColombusWebapplicatie.Controllers
 
         #region Helpers
 
+        /// <summary>
+        /// A simple method to request GooglePlaces and converts them to usable LocationDetails
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         private List<LocationDetails> RequestGooglePlaces(string url, Dictionary<string, string> parameters)
         {
             GoogleSearchResponse response = HttpManager.GoogleGetRequest<GoogleSearchResponse>(url, parameters);

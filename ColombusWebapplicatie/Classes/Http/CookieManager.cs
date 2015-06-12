@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web;
+﻿using System.Web;
 
 namespace ColombusWebapplicatie.Classes.Http
 {
     public static class CookieManager
     {
         /// <summary>
-        /// Creates a cookie with the given name and value
+        /// Creates a cookie with the given name and value.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="name"></param>
@@ -24,7 +20,7 @@ namespace ColombusWebapplicatie.Classes.Http
         }
 
         /// <summary>
-        /// Returns the cookie with the given name
+        /// Returns the cookie with the given name.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="name"></param>

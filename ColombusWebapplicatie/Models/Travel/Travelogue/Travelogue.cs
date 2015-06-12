@@ -25,7 +25,7 @@ namespace ColombusWebapplicatie.Models.Travel.Travelogue
         {
             get
             {
-                if(Ratings.Count > 0) {
+                if(Ratings != null && Ratings.Count > 0) {
                     double total = 0;
                     foreach(Rating rating in Ratings) {
                         total += rating.RatingValue;

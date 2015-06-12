@@ -54,9 +54,9 @@ namespace ColombusWebapplicatie.Classes.Http
         /// <param name="objectToPost"></param>
         /// <param name="baseUrl"></param>
         /// <returns></returns>
-        public static T WebservicePostRequest<T>(string url, HttpRequestBase request, T objectToPost, string baseUrl = AZURE_BASE_URL)
+        public static T WebservicePostRequest<T>(string url, HttpRequestBase request, T objectToPost, Dictionary<string, string> headers = null, Dictionary<string, string> parameters = null, string baseUrl = AZURE_BASE_URL)
         {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)CreateRequest(baseUrl + url, null, request);
+            HttpWebRequest httpWebRequest = (HttpWebRequest)CreateRequest(baseUrl + url, parameters, headers, request);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
@@ -107,6 +107,14 @@ namespace ColombusWebapplicatie.Classes.Http
             return req;
         }
 
+        /// <summary>
+        /// Creates the request and adds headers and parameters if necessary.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="parameters"></param>
+        /// <param name="headers"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
         private static WebRequest CreateRequest(string url, Dictionary<string, string> parameters = null, Dictionary<string, string> headers = null, HttpRequestBase request = null)
         {
             return CreateRequest(BuildUrl(url, parameters), headers, request);
@@ -158,6 +166,11 @@ namespace ColombusWebapplicatie.Classes.Http
 
         #region Helpers
 
+        /// <summary>
+        /// Gets detailed message from the Webexception.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         private static string GetWebExDetail(WebException ex)
         {
             WebResponse errResp = ex.Response;
