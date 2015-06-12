@@ -138,14 +138,14 @@ namespace ColombusWebapplicatie.Controllers
         }
 
         /// <summary>
-        /// Publishes a Travelogue. If the Travelogue is new, it create the Travelogue instead(and
-        /// it's already published).
+        /// Publishes or makes a Travelogue private. It depends on the current state of the Travelogue. 
+        /// If the Travelogue is new, it create the Travelogue instead(and it's already published).
         /// </summary>
         /// <param name="model"></param>
         private void PublishTravelogue(Travelogue model)
         {
             if(model.ID != 0) {
-                HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Publish", Request, null, new Dictionary<string, string>() { { "travelogueID", model.ID.ToString() }, { "isPublic", true.ToString() } });
+                HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Publish", Request, null, new Dictionary<string, string>() { { "travelogueID", model.ID.ToString() }, { "isPublic", (!model.Published).ToString() } });
             }
             else {
                 Travelogue savedTravelogue = HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);

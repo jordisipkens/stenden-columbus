@@ -74,7 +74,12 @@
         </div>
         <div class="white-block">
             <input type="submit" name="Save" value="Opslaan" class="button orange float right" style="margin-left:1em;" />
-            <input type="submit" name="Publish" value="Publiseer" class="button orange float right" />
+            @if(Model.Published) {
+                <input type="submit" name="Publish" value="Maak Privé" class="button orange float right" />
+            }
+            else {
+                <input type="submit" name="Publish" value="Publiseer" class="button orange float right" />
+            }
         </div>
     </div>
 }
