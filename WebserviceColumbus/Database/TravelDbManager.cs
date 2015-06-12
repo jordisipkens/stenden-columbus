@@ -97,8 +97,8 @@ namespace WebserviceColumbus.Database
             try {
                 if(travel.ID == 0) {
                     using(var db = new ColumbusDbContext()) {
-                        db.SaveChanges();
                         db.Entry(travel).State = EntityState.Added;
+                        db.SaveChanges();
                     }
                 }
                 else {

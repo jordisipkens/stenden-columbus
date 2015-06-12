@@ -34,8 +34,10 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
             get
             {
                 double total = 0;
-                foreach(Rating rating in Ratings) {
-                    total += rating.RatingValue;
+                if(Ratings != null) {
+                    foreach(Rating rating in Ratings) {
+                        total += rating.RatingValue;
+                    }
                 }
                 return total;
             }
