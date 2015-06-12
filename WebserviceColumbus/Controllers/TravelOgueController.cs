@@ -78,14 +78,14 @@ namespace WebserviceColumbus.Controllers
         }
 
         //GET: api/Travelogue/Search?value=..&limit=..
-        [HttpGet, Route("api/Travel/Search")]
+        [HttpGet, Route("api/Travelogue/Search")]
         public HttpResponseMessage Search(string value, int limit = 20)
         {
             return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().Search(value, limit));
         }
 
         //GET: api/Travelogue?travelogueID=..&isPublic=..
-        [HttpGet, TokenRequired, Route("api/Travel/Publish")]
+        [HttpGet, TokenRequired, Route("api/Travelogue/Publish")]
         public HttpResponseMessage Publish(int travelogueID, bool isPublic = true)
         {
             if(new TravelogueDbManager().Publish(travelogueID, isPublic)) {
@@ -95,7 +95,7 @@ namespace WebserviceColumbus.Controllers
         }
 
         //POST: api/Travelogue/Rate?travelogueID=..&rating=..
-        [HttpGet]
+        [HttpGet, Route("api/Travelogue/Rate")]
         public HttpResponseMessage Rate(int travelogueID, double rating)
         {
             return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().Rate(travelogueID, rating));
