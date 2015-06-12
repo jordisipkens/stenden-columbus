@@ -3,6 +3,24 @@
 @{
     ViewBag.Title = "Reisverslagen";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<SelectListItem> listItems= new List<SelectListItem>();
+   listItems.Add(new SelectListItem
+        {
+          Text = "Beste",
+          Value = "Best"
+        });
+   listItems.Add(new SelectListItem
+        {
+            Text = "Nieuwste",
+            Value = "Latest",
+            Selected = true
+        });
+   listItems.Add(new SelectListItem
+        {
+            Text = "Oudste",
+            Value = "Oldest"
+        });
 }
 
 <div class="orange-block container">
@@ -19,7 +37,11 @@
         <!--TEMP DIV -->
         <div class="container">
             @using(Html.BeginForm("Search", "Travelogue", FormMethod.Post)) {
-                @Html.TextBox("searchQuery")
+                @Html.TextBox("searchQuery", null, new { @class = "tab float left" })
+                <input class="button orange float left" type="submit" name="add" value="Zoeken">
+            }
+            @using(Html.BeginForm("Display", "Travelogue", FormMethod.Post)) {
+                @Html.DropDownList("sortBy", listItems, new { @class = "tab float right" })
                 <input class="button orange float right" type="submit" name="add" value="Zoeken">
             }
         </div>

@@ -198,7 +198,8 @@ namespace ColombusWebapplicatie.Controllers
         public enum SearchType
         {
             Best,
-            Latest
+            Latest,
+            Oldest,
         }
     }
 }
