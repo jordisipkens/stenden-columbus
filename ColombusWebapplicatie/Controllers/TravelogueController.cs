@@ -17,10 +17,13 @@ namespace ColombusWebapplicatie.Controllers
             if (GetCurrentUser() != null)
             {
                 ViewBag.Title = "Mijn Reisverslagen";
+                ViewBag.Public = false;
                 List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/GetAll", Request, null, new Dictionary<string, string>() { { "userID", GetCurrentUser().ID.ToString() } });
                 return View("Index", ShortenTitles(travelogues));
             }
-            return Error(RedirectToAction("Index", "Home"), "Er is een fout opgetreden");
+            else {
+                return Display(SearchType.Best);
+        }
         }
 
         /// <summary>
@@ -30,8 +33,19 @@ namespace ColombusWebapplicatie.Controllers
         /// <returns></returns>
         public ActionResult Display(SearchType sortBy)
         {
+            ViewBag.Public = GetCurrentUser() == null;
             ViewBag.Title = "Alle Reisverslagen";
+            ViewBag.DisplayAll = true;
             List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/Display", Request, null, new Dictionary<string, string>() { { "filter", sortBy.ToString() }, { "limit", "20" } });
+            return View("Index", ShortenTitles(travelogues));
+        }
+
+        public ActionResult Search(string searchQuery)
+        {
+            ViewBag.Public = GetCurrentUser() == null;
+            ViewBag.Title = "Alle Reisverslagen";
+            ViewBag.DisplayAll = true;
+            List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/Search", Request, null, new Dictionary<string, string>() { { "value", searchQuery }, { "limit", "20" } });
             return View("Index", ShortenTitles(travelogues));
         }
 
@@ -95,8 +109,8 @@ namespace ColombusWebapplicatie.Controllers
             if (travelogueID != 0)
             {
                 Travelogue travelogue = HttpManager.WebserviceGetRequest<Travelogue>(string.Format("Travelogue/{0}", travelogueID), Request);
-                if (travelogue.Title != null && travelogue.Title.Length >= maxTitleLenght + 20)
-                {
+                if(travelogue != null) {
+                    if(travelogue.Title != null && travelogue.Title.Length >= maxTitleLenght + 20) {
                     travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght + 17) + "...";
                 }
                 foreach (Paragraph par in travelogue.Paragraphs)
@@ -104,6 +118,7 @@ namespace ColombusWebapplicatie.Controllers
                     par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
                 }
                 return View(travelogue);
+            }
             }
             return Error(RedirectToAction("Index"), "Deze Travelogue bestaat niet (meer)");
         }
@@ -149,15 +164,14 @@ namespace ColombusWebapplicatie.Controllers
         }
 
         /// <summary>
-        /// Publishes a Travelogue. If the Travelogue is new, it create the Travelogue instead(and
-        /// it's already published).
+        /// Publishes or makes a Travelogue private. It depends on the current state of the
+        /// Travelogue. If the Travelogue is new, it create the Travelogue instead(and it's already published).
         /// </summary>
         /// <param name="model"></param>
         private void PublishTravelogue(Travelogue model)
         {
-            if (model.ID != 0)
-            {
-                HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Publish", Request, null, new Dictionary<string, string>() { { "travelogueID", model.ID.ToString() }, { "isPublic", true.ToString() } });
+            if(model.ID != 0) {
+                HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Publish", Request, null, new Dictionary<string, string>() { { "travelogueID", model.ID.ToString() }, { "isPublic", (!model.Published).ToString() } });
             }
             else
             {
