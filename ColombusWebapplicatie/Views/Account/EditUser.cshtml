@@ -6,40 +6,40 @@
 }
 
 
-<div class="container">
-    <h2>@ViewBag.Title</h2>
+    <div class="container">
+        <h2>@ViewBag.Title</h2>
     @using (Html.BeginForm("EditUser", "Account", FormMethod.Post))
     {
         @Html.HiddenFor(user => user.ID);
         <table cellspacing="0" cellpadding="0" class="table-fix">
-            <tr>
+                <tr>
                 <th style="padding:0px;">Gebruikersnaam:</th>
                 <td>@Html.TextBoxFor(user => user.Username, new { @placeholder = "Gebruikersnaam" })</td>
-            </tr>
-            <tr>
-                <td colspan="2">@Html.ValidationMessageFor(x => x.Username)</td>
-            </tr>
-            <tr>
+                </tr>
+                <tr>
+                    <td colspan="2">@Html.ValidationMessageFor(x => x.Username)</td>
+                </tr>
+                <tr>
                 <th style="padding:0px;">Voornaam:</th>
                 <td>@Html.TextBoxFor(user => user.FirstName, new { @placeholder = "Voornaam" })</td>
-            </tr>
-            <tr>
+                </tr>
+                <tr>
                 <th style="padding:0px;">Achternaam:</th>
                 <td>@Html.TextBoxFor(user => user.LastName, new { @placeholder = "Achternaam" })</td>
-            </tr>
-            <tr>
+                </tr>
+                <tr>
                 <th style="padding:0px;">E-mailadres:</th>
                 <td>@Html.TextBoxFor(user => user.Email, new { @placeholder = "E-mailadres" })</td>
-            </tr>
-            <tr>
+                </tr>
+                <tr>
                 <th style="padding:0px;">Wachtwoord:</th>
                 <td>@Html.PasswordFor(user => user.Password, new { @placeholder = "Wachtwoord" })</td>
-            </tr>
-            <tr>
+                </tr>
+                <tr>
                 <th style="padding:0px;">Wachtwoord (ter bevestiging):</th>
                 <td>@Html.PasswordFor(user => user.PasswordRepeat, new { @placeholder = "Wachtwoord" })</td>
-            </tr>
-        </table>
+                </tr>
+            </table>
 
   
             <div class="white-block">
@@ -50,5 +50,5 @@
                 <p>@Html.ValidationMessageFor(x => x.Email)</p>
             <input type="submit" name="submit" value="Opslaan" class="button orange float right">
         </div>
-    }
-</div>
+        }
+    </div>

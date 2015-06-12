@@ -224,7 +224,7 @@
     <Content Include="Views\Travel\ViewLocation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\EditUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\About.cshtml" />
