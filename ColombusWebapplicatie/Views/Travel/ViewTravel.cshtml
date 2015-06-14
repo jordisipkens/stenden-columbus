@@ -42,12 +42,6 @@
                 }
             map.setCenter(latLngBounds.getCenter());
             map.fitBounds(latLngBounds);
-            zoomChangeBoundsListener = google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
-                if (this.getZoom()){
-                    this.setZoom(6);
-                }
-            });
-            setTimeout(function(){google.maps.event.removeListener(zoomChangeBoundsListener)}, 2000);
         }
         google.maps.event.addDomListener(window, 'load', initialize);
     </script>

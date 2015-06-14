@@ -97,7 +97,8 @@ namespace ColombusWebapplicatie.Controllers
         {
             string searchType;
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            if (lat!=null&&lng!=null)
+            // If a marker is placed and query is empty
+            if (query.Length==0&&lat!=null&&lng!=null)
             {
                 // Add parameters for nearby search
                 searchType = "nearbysearch";
