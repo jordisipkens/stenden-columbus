@@ -84,9 +84,9 @@ namespace ColombusWebapplicatie.Controllers
                     travelogue.Travel = HttpManager.WebserviceGetRequest<Travel>(string.Format("Travel/{0}", travelogue.TravelID), Request);
                     return View("CreateTravelogue", travelogue);
                 }
-                return Error(RedirectToAction("Index"), "Deze Travelogue bestaat niet (meer)");
+                return ErrorToIndex("Deze Travelogue bestaat niet (meer)");
             }
-            return Error(RedirectToAction("Index", "Travel"), "Er is een fout opgetreden");
+            return ErrorToIndex("Er is een fout opgetreden");
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace ColombusWebapplicatie.Controllers
                     return View(travelogue);
                 }
             }
-            return Error(RedirectToAction("Index"), "Deze Travelogue bestaat niet (meer)");
+            return ErrorToIndex("Deze Travelogue bestaat niet (meer)");
         }
 
         /// <summary>
@@ -177,24 +177,6 @@ namespace ColombusWebapplicatie.Controllers
             return View("CreateTravelogue", model);
         }
 
-        /// <summary>
-        /// Publishes or makes a Travelogue private. It depends on the current state of the
-        /// Travelogue. If the Travelogue is new, it create the Travelogue instead(and it's already published).
-        /// </summary>
-        /// <param name="model"></param>
-        private void PublishTravelogue(Travelogue model)
-        {
-            if(model.ID != 0) {
-                HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Publish", Request, null, new Dictionary<string, string>() { { "travelogueID", model.ID.ToString() }, { "isPublic", (!model.Published).ToString() } });
-            }
-            else {
-                Travelogue savedTravelogue = HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
-                if(savedTravelogue != null) {
-                    PublishTravelogue(savedTravelogue);
-                }
-            }
-        }
-
         #region Helpers
 
         /// <summary>
@@ -226,6 +208,24 @@ namespace ColombusWebapplicatie.Controllers
                 return Convert.ToInt32(travelogue.Ratings.First(r => r.userID.Equals(userID)).RatingValue);
             }
             return 0;
+        }
+
+        /// <summary>
+        /// Publishes or makes a Travelogue private. It depends on the current state of the
+        /// Travelogue. If the Travelogue is new, it create the Travelogue instead(and it's already published).
+        /// </summary>
+        /// <param name="model"></param>
+        private void PublishTravelogue(Travelogue model)
+        {
+            if(model.ID != 0) {
+                HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Publish", Request, null, new Dictionary<string, string>() { { "travelogueID", model.ID.ToString() }, { "isPublic", (!model.Published).ToString() } });
+            }
+            else {
+                Travelogue savedTravelogue = HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
+                if(savedTravelogue != null) {
+                    PublishTravelogue(savedTravelogue);
+                }
+            }
         }
 
         #endregion Helpers

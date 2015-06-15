@@ -33,7 +33,6 @@ namespace ColombusWebapplicatie.Controllers
                     Session.Timeout = 180;
                     return RedirectToAction("Index", "Home");
                 }
-                return Error(RedirectToAction("Index", "Home"), "Username of wachtwoord is incorrect");
             }
             return Error(RedirectToAction("Index", "Home"), "Username of wachtwoord is vereist");
         }
