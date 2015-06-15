@@ -5,26 +5,110 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <h2>@ViewBag.Title</h2>
-    <div class="white-block">
+
+<style>
+    #map-canvas {
+        margin: 1em 0px;
+    }
+</style>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+@if (Model != null && Model.Count > 0)
+{
+    <script>
+        function foundResults() {
+            var markers = [];
+            var infoWindows = [];
+            var mapCanvas = document.getElementById('map-canvas');
+            var mapOptions = {
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+            var markerId = 0;
+            var latLngBounds = new google.maps.LatLngBounds();
+            @foreach (var locationDetails in Model)
+            {
+            <text>
+            infoWindows[markerId] = new google.maps.InfoWindow({
+                content: '<h4>@locationDetails.Name</h4>'
+                +'@(locationDetails.Address.IsEmpty() == false ? Html.Raw("<div>" + locationDetails.Address + "</div>") : Html.Raw(""))'
+                +'@(locationDetails.PhoneNumber.IsEmpty() == false ? Html.Raw("<div>" + locationDetails.PhoneNumber + "</div>") : Html.Raw(""))'
+                +'@Html.Raw(Html.ActionLink("Locatie toevoegen", "ViewLocation", new { travelID = ViewBag.TravelID, placeID = locationDetails.PlaceID }))'
+            });
+            markers[markerId] = new google.maps.Marker({
+                id: markerId,
+                position: new google.maps.LatLng(@locationDetails.Coordinates.Latitude, @locationDetails.Coordinates.Longitude),
+                title: "@Html.Raw(locationDetails.Name)"
+            });
+            markers[markerId].setMap(map);
+            latLngBounds.extend(markers[markerId].position);
+            google.maps.event.addListener(markers[markerId], 'click', function() {
+                infoWindows[this.id].open(map,markers[this.id]);
+            });
+            markerId++;
+            </text>
+            }
+            map.setCenter(latLngBounds.getCenter());
+            map.fitBounds(latLngBounds);
+        }
+        google.maps.event.addDomListener(window, 'load', foundResults);
+    </script>
+}
+else
+{
+    <script>
+        function initializeSearch() {
+            var marker = null;
+            var myLatlng = new google.maps.LatLng(0, 0);
+            var mapOptions = {
+                zoom: 1,
+                center: myLatlng
+            }
+            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            google.maps.event.addListener(map, "click", function (event) {
+                if (marker != null) {
+                    marker.setMap(null);
+                }
+                marker = new google.maps.Marker({
+                    position: event.latLng,
+                    draggable: true,
+                    map: map
+                });
+                document.getElementById("lat").value = marker.getPosition().lat();
+                document.getElementById("lng").value = marker.getPosition().lng();
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initializeSearch);
+    </script>
+}
+
+<div class="white-block">
+    <div class="container">
+        <h2>@ViewBag.Title</h2>
+        <p class="float left" style="text-align:center; width:100%; margin-bottom:1em;">Zoek uw locatie via het zoekveld of klik deze aan op de kaart. Klik vervolgens op de knop "zoeken". Klik op het "+"-icoon om de locatie aan de reis toe te voegen.</p>
+        <div id="map-canvas"></div>
         @using (Html.BeginForm("ShowFoundLocation", "Travel", FormMethod.Post, new { travelID = ViewBag.TravelID }))
         {
-            <table cellpadding="0" cellspacing="0">
+            @Html.Hidden("lat")
+            @Html.Hidden("lng")
+            @Html.Hidden("travelID", null, new { travelID = ViewBag.TravelID })
+            <table cellpadding="0" cellspacing="0" class="white-block table-fix" style="margin-top:1em; padding-top:0px;">
                 <tr>
-                    <th>
-                        @Html.TextBox("query", null, new { @style = "padding:1em; width:94%;" })
-                    </th>
                     <td>
-                        <input class="button orange" type="submit" name="search" value="Zoeken" style="width:96%">
+                        @Html.TextBox("query", null, new { @style = "width:100%" })
                     </td>
+                    <td>
+                        <input class="button orange" type="submit" name="search" value="Zoeken">
+                    </td>
+
                 </tr>
-                @Html.Hidden("travelID", null, new { travelID = ViewBag.TravelID })
             </table>
         }
+    </div>
+    <div class="container">
         @if (Model != null && Model.Count > 0)
         {
-            <table cellspacing="0" cellpadding="0" id="travels" class="white-block">
+            <table cellspacing="0" cellpadding="0" id="travels">
                 @foreach (var result in Model)
                 {
                     <tr>
