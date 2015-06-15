@@ -58,6 +58,7 @@
     <table cellspacing="0" cellpadding="0" id="travels" class="white-block">
         <tr>
             <th style="padding:1em;">Titel</th>
+            <th style="padding:1em;">Auteur</th>
             <th style="padding:1em;">Gepubliceerd</th>
             <th style="padding:1em;">Beoordeling</th>
             @if (!Convert.ToBoolean(ViewBag.DisplayAll))
@@ -76,7 +77,13 @@
                         travelogue.Title = "Geen Titel";
                     }
                     <td>@Html.ActionLink(@travelogue.Title, "ViewTravelogue", new { travelogueID = travelogue.ID })</td>
-                    <td>@travelogue.PublishedTime.Day-@travelogue.PublishedTime.Month-@travelogue.PublishedTime.Year</td>
+                    <td>Placeholder username</td>
+                    @if(travelogue.Published) {
+                        <td>@travelogue.PublishedTime.Day-@travelogue.PublishedTime.Month-@travelogue.PublishedTime.Year</td>
+                    }
+                    else {
+                        <td>Privé</td>
+                    }
                     <td>@travelogue.AvarageRating</td>
                     @if (!Convert.ToBoolean(ViewBag.DisplayAll))
                     {
