@@ -140,6 +140,28 @@ namespace WebserviceColumbus.Database
             }
         }
 
+        /// <summary>
+        /// Deletes the given entity.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public virtual bool DeleteEntities(List<int> IDs)
+        {
+            try {
+                using(var db = new ColumbusDbContext()) {
+                    foreach(int id in IDs) {
+                        db.Entry<T>(db.Set<T>().Find(id)).State = EntityState.Deleted;
+                    }
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            catch(Exception ex) {
+                new ErrorHandler(ex, "Failed to DELETE " + typeof(T) + "'s in database", true);
+                return false;
+            }
+        }
+
         #endregion Delete
 
         #region Other

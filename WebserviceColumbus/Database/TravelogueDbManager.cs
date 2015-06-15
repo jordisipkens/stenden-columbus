@@ -74,7 +74,6 @@ namespace WebserviceColumbus.Database
         {
             try {
                 using(var db = new ColumbusDbContext()) {
-                    db.Entry(entity).State = EntityState.Modified;
                     if(entity.Paragraphs != null) {
                         foreach(Paragraph paragraph in entity.Paragraphs) {
                             if(paragraph.ID == 0) {
@@ -101,6 +100,7 @@ namespace WebserviceColumbus.Database
                             }
                         }
                     }
+                    db.Entry(entity).State = EntityState.Modified;
                     db.SaveChanges();
                     return true;
                 }

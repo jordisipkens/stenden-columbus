@@ -57,5 +57,12 @@ namespace WebserviceColumbus.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }
+
+        // GET: api/Travel/DeleteLocation?travelID=..&locationID=..
+        [HttpGet, TokenRequired, Route("api/Travel/DeleteLocation")]
+        public HttpResponseMessage DeleteLocation(int travelID, int locationID)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, new TravelDbManager().DeleteLocation(travelID, locationID));
+        }
     }
 }

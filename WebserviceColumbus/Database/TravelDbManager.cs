@@ -60,26 +60,36 @@ namespace WebserviceColumbus.Database
         public override bool UpdateEntity(Travel entity)
         {
             try {
+                List<int> locationsToDelete = new List<int>();
                 using(var db = new ColumbusDbContext()) {
                     db.Entry(entity).State = EntityState.Modified;
-                    foreach(Location location in entity.Locations) {
+                    for(int i = entity.Locations.Count - 1; i >= 0; i--) {      //Sorry :(
+                        Location location = entity.Locations.ElementAt(i);
+
                         EntityState state;
                         if(location.ID == 0) {
                             state = EntityState.Added;
                         }
                         else if(location.ID == -1) {
-                            state = EntityState.Deleted;
+                            locationsToDelete.Add(location.ID);
+                            continue;
                         }
                         else {
                             state = EntityState.Modified;
                         }
+
                         db.Entry(location).State = state;
-                        db.Entry(location.LocationDetails).State = state;
-                        db.Entry(location.LocationDetails.Coordinates).State = state;
+                        if(location.LocationDetails != null) {
+                            db.Entry(location.LocationDetails).State = state;
+                            if(location.LocationDetails.Coordinates != null) {
+                                db.Entry(location.LocationDetails.Coordinates).State = state;
+                            }
+                        }
                     }
                     db.SaveChanges();
-                    return true;
                 }
+                base.DeleteEntities(locationsToDelete);
+                return true;
             }
             catch(Exception ex) {
                 new ErrorHandler(ex, "Failed to UPDATE Travel in database with ID #" + entity.ID, true);
@@ -110,6 +120,25 @@ namespace WebserviceColumbus.Database
                 new ErrorHandler(ex, "Failed to INSERT or UPDATE Travel in database", true);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Flags the location to deleted and updates the Travel.
+        /// </summary>
+        /// <param name="travelID"></param>
+        /// <param name="locationID"></param>
+        /// <returns></returns>
+        public Travel DeleteLocation(int travelID, int locationID)
+        {
+            Travel travel = GetEntity(travelID);
+            foreach(Location location in travel.Locations) {
+                if(location.ID == locationID) {
+                    location.ID = -1;
+                    break;
+                }
+            }
+            UpdateEntity(travel);
+            return travel;
         }
     }
 }
