@@ -1,7 +1,7 @@
 ﻿@model ColombusWebapplicatie.Models.Travel.Travel
 
 @{
-    ViewBag.Title = "Nieuwe Reis Aanmaken";
+    ViewBag.Title = "Nieuwe reis aanmaken";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,12 +9,14 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script type="text/javascript">
     $(function () {
-        $('.datepicker').datepicker().val();
+        $('.datepicker').datepicker();
+        $('.datepicker').datepicker("setDate", new Date());
     });
 </script>
 <div class="container">
     <h2>@ViewBag.Title</h2>
-    @using(Html.BeginForm("CreateTravel", "Travel", FormMethod.Post)) {
+    @using (Html.BeginForm("CreateTravel", "Travel", FormMethod.Post))
+    {
         <table cellspacing="0" cellpadding="0" id="travels">
             <tr>
                 <th>@Html.LabelFor(travel => travel.Title, "Titel")</th>

@@ -4,6 +4,7 @@ using ColombusWebapplicatie.Models.Google.Search;
 using ColombusWebapplicatie.Models.Travel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Web.Mvc;
 
 namespace ColombusWebapplicatie.Controllers
@@ -92,9 +93,27 @@ namespace ColombusWebapplicatie.Controllers
         /// <param name="travelID"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public ActionResult ShowFoundLocation(int travelID, string query)
+        public ActionResult ShowFoundLocation(int travelID, string query, float? lat, float? lng)
         {
-            List<LocationDetails> locations = RequestGooglePlaces("textsearch", new Dictionary<string, string>() { { "query", query } });
+            string searchType;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            // If a marker is placed and query is empty
+            if (query.Length==0&&lat!=null&&lng!=null)
+            {
+                // Add parameters for nearby search
+                searchType = "nearbysearch";
+                parameters.Add("location", lat.ToString() + "," + lng.ToString());
+                parameters.Add("radius", "5000");
+                ModelState.Remove("lat"); // Reset hidden field lat
+                ModelState.Remove("lng"); // Reset hidden field lng
+            }
+            else
+            {
+                // Add parameters for text search
+                searchType = "textsearch";
+                parameters.Add("query", query);
+            }
+            List<LocationDetails> locations = RequestGooglePlaces(searchType, parameters);
             if(locations != null) {
                 ViewBag.TravelID = travelID;
                 return View("SearchLocation", locations);
@@ -108,10 +127,11 @@ namespace ColombusWebapplicatie.Controllers
         /// <param name="travelID"></param>
         /// <param name="placeID"></param>
         /// <returns></returns>
-        public ActionResult ViewLocation(int travelID, string placeID)
+        public ActionResult ViewLocation(int travelID, string placeID, bool newLocation = false)
         {
             ViewBag.TravelID = travelID;
             GoogleDetailResponse response = HttpManager.GoogleGetRequest<GoogleDetailResponse>("details", new Dictionary<string, string>() { { "placeid", placeID } });
+            ViewBag.newLocation = newLocation;
             return View(response.Result);
         }
 
