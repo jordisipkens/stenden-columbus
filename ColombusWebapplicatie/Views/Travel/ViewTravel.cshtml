@@ -123,7 +123,7 @@
                                 @Html.ActionLink("Bekijk locatie", "ViewLocation", "Travel", new { travelID = Model.ID, placeID = location.LocationDetails.PlaceID }, new { @class = "button white" })
                             </td>
                             <td style="width:50%">
-                                @Html.ActionLink("Verwijder locatie", "ViewLocation", "Travel", new { travelID = Model.ID, placeID = location.LocationDetails.PlaceID }, new { @class = "button white", @style = "border-left:0;" })
+                                @Html.ActionLink("Verwijder locatie", "DeleteLocation", "Travel", new { travelID = Model.ID, locationID = location.ID }, new { @class = "button white", @style = "border-left:0;" })
                             </td>
                         </tr>
                     </table>

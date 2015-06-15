@@ -147,16 +147,10 @@ namespace ColombusWebapplicatie.Controllers
         /// <param name="travel"></param>
         /// <param name="locationID"></param>
         /// <returns></returns>
-        public ActionResult DeleteLocation(Travel travel, int locationID)
+        public ActionResult DeleteLocation(int travelID, int locationID)
         {
-            foreach(Location location in travel.Locations) {
-                if(location.ID == locationID) {
-                    locationID = -1;
-                    break;
-                }
-            }
-            HttpManager.WebservicePostRequest<Travel>("Travel", Request, travel);
-            return Message(RedirectToAction("ViewTravel", new { travelID = travel.ID }), "De Locatie is verwijderd");
+            HttpManager.WebserviceGetRequest<Travel>("Travel/DeleteLocation", Request, null, new Dictionary<string, string>() { { "travelID", travelID.ToString() }, { "locationID", locationID.ToString() } } );
+            return Message(RedirectToAction("ViewTravel", new { travelID = travelID }), "De Locatie is verwijderd");
         }
 
         /// <summary>
