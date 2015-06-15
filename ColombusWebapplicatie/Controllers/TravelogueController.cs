@@ -1,7 +1,9 @@
 ﻿using ColombusWebapplicatie.Classes.Http;
 using ColombusWebapplicatie.Models.Travel;
 using ColombusWebapplicatie.Models.Travel.Travelogue;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace ColombusWebapplicatie.Controllers
@@ -14,8 +16,7 @@ namespace ColombusWebapplicatie.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            if (GetCurrentUser() != null)
-            {
+            if(GetCurrentUser() != null) {
                 ViewBag.Title = "Mijn Reisverslagen";
                 ViewBag.Public = false;
                 List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/GetAll", Request, null, new Dictionary<string, string>() { { "userID", GetCurrentUser().ID.ToString() } });
@@ -23,7 +24,7 @@ namespace ColombusWebapplicatie.Controllers
             }
             else {
                 return Display(SearchType.Best);
-        }
+            }
         }
 
         /// <summary>
@@ -62,7 +63,11 @@ namespace ColombusWebapplicatie.Controllers
         /// <returns></returns>
         public ActionResult Rate(int travelogueID, double rating)
         {
-            HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Rate", Request, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() }, { "rating", rating.ToString() } });
+            Rating ratingObj = new Rating() {
+                RatingValue = rating,
+                userID = GetCurrentUser().ID
+            };
+            HttpManager.WebservicePostRequest<Rating>("Travelogue/Rate", Request, ratingObj, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() } });
             return ViewTravelogue(travelogueID);
         }
 
@@ -73,11 +78,9 @@ namespace ColombusWebapplicatie.Controllers
         /// <returns></returns>
         public ActionResult EditTravelogue(int travelogueID = 0)
         {
-            if (travelogueID != 0)
-            {
+            if(travelogueID != 0) {
                 Travelogue travelogue = HttpManager.WebserviceGetRequest<Travelogue>(string.Format("Travelogue/{0}", travelogueID), Request);
-                if (travelogue != null)
-                {
+                if(travelogue != null) {
                     travelogue.Travel = HttpManager.WebserviceGetRequest<Travel>(string.Format("Travel/{0}", travelogue.TravelID), Request);
                     return View("CreateTravelogue", travelogue);
                 }
@@ -94,8 +97,7 @@ namespace ColombusWebapplicatie.Controllers
         [HttpPost]
         public ActionResult CreateTravelogue(int travelID = 0)
         {
-            if (travelID != 0)
-            {
+            if(travelID != 0) {
                 Travelogue travelogue = new Travelogue();
                 travelogue.TravelID = travelID;
                 travelogue.Travel = HttpManager.WebserviceGetRequest<Travel>(string.Format("Travel/{0}", travelID), Request);
@@ -123,19 +125,18 @@ namespace ColombusWebapplicatie.Controllers
         /// <returns></returns>
         public ActionResult ViewTravelogue(int travelogueID = 0, int maxTitleLenght = 30)
         {
-            if (travelogueID != 0)
-            {
+            if(travelogueID != 0) {
                 Travelogue travelogue = HttpManager.WebserviceGetRequest<Travelogue>(string.Format("Travelogue/{0}", travelogueID), Request);
+                ViewBag.Rating = GetRatingCurrentUser(travelogue);
                 if(travelogue != null) {
                     if(travelogue.Title != null && travelogue.Title.Length >= maxTitleLenght + 20) {
-                    travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght + 17) + "...";
+                        travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght + 17) + "...";
+                    }
+                    foreach(Paragraph par in travelogue.Paragraphs) {
+                        par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
+                    }
+                    return View(travelogue);
                 }
-                foreach (Paragraph par in travelogue.Paragraphs)
-                {
-                    par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
-                }
-                return View(travelogue);
-            }
             }
             return Error(RedirectToAction("Index"), "Deze Travelogue bestaat niet (meer)");
         }
@@ -148,17 +149,14 @@ namespace ColombusWebapplicatie.Controllers
         [HttpPost]
         public ActionResult SubmitButton(Travelogue model)
         {
-            if (Request.Form["AddParagraph"] != null)
-            {
+            if(Request.Form["AddParagraph"] != null) {
                 return AddParagraph(model);
             }
-            else if (Request.Form["Publish"] != null)
-            {
+            else if(Request.Form["Publish"] != null) {
                 PublishTravelogue(model);
                 return Index();
             }
-            else if (Request.Form["Save"] != null)
-            {
+            else if(Request.Form["Save"] != null) {
                 Travelogue travelogue = HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
                 return Index();
             }
@@ -172,8 +170,7 @@ namespace ColombusWebapplicatie.Controllers
         /// <returns></returns>
         private ActionResult AddParagraph(Travelogue model)
         {
-            if (model.Paragraphs == null)
-            {
+            if(model.Paragraphs == null) {
                 model.Paragraphs = new List<Paragraph>();
             }
             model.Paragraphs.Add(new Paragraph());
@@ -190,11 +187,9 @@ namespace ColombusWebapplicatie.Controllers
             if(model.ID != 0) {
                 HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Publish", Request, null, new Dictionary<string, string>() { { "travelogueID", model.ID.ToString() }, { "isPublic", (!model.Published).ToString() } });
             }
-            else
-            {
+            else {
                 Travelogue savedTravelogue = HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
-                if (savedTravelogue != null)
-                {
+                if(savedTravelogue != null) {
                     PublishTravelogue(savedTravelogue);
                 }
             }
@@ -209,17 +204,28 @@ namespace ColombusWebapplicatie.Controllers
         /// <returns></returns>
         private List<Travelogue> ShortenTitles(List<Travelogue> travelogues, int maxTitleLenght = 30)
         {
-            if (travelogues != null)
-            {
-                foreach (Travelogue travelogue in travelogues)
-                {
-                    if (travelogue.Title != null && travelogue.Title.Length >= maxTitleLenght)
-                    {
+            if(travelogues != null) {
+                foreach(Travelogue travelogue in travelogues) {
+                    if(travelogue.Title != null && travelogue.Title.Length >= maxTitleLenght) {
                         travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght - 3) + "...";
                     }
                 }
             }
             return travelogues;
+        }
+
+        /// <summary>
+        /// Rets the value of the rating the current user has given.
+        /// </summary>
+        /// <param name="travelogue"></param>
+        /// <returns></returns>
+        private int GetRatingCurrentUser(Travelogue travelogue)
+        {
+            int userID = GetCurrentUser().ID;
+            if(userID != null) {
+                return Convert.ToInt32(travelogue.Ratings.First(r => r.userID.Equals(userID)).RatingValue);
+            }
+            return 0;
         }
 
         #endregion Helpers
