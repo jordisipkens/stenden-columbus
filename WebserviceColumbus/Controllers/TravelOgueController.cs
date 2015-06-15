@@ -12,7 +12,7 @@ namespace WebserviceColumbus.Controllers
     public class TravelOgueController : ApiController
     {
         //GET: api/Travelogue/..
-        [HttpGet, TokenRequired, Route("api/Travelogue/{travelogueID}")]
+        [HttpGet, Route("api/Travelogue/{travelogueID}")]
         public HttpResponseMessage Get(int travelogueID)
         {
             Travelogue travelogue = new TravelogueDbManager().GetEntity(travelogueID); 
