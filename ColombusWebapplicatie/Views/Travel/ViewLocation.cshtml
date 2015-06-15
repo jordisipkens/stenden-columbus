@@ -7,22 +7,23 @@
 
 @section Scripts
 {
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('.datepicker').datepicker();
-        });
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
-    <script>
-        function initialize() {
-            var myLatlng = new google.maps.LatLng(@Model.Geometry.Location.Latitude, @Model.Geometry.Location.Longitude);
-            var mapOptions = {
-                zoom: 11,
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker();
+        $('.datepicker').datepicker("setDate", new Date());
+    });
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+<script>
+    function initialize() {
+        var myLatlng = new google.maps.LatLng(@Model.Geometry.Location.Latitude, @Model.Geometry.Location.Longitude);
+        var mapOptions = {
+            zoom: 11,
                 center: myLatlng,
 
-            }
+        }
         }
         var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
@@ -31,22 +32,22 @@
             map: map,
             title: '@Model.Name'
         });
-        }
-        google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
 }
 @using (Html.BeginForm("AddLocation", "Travel", new { travelID = ViewBag.TravelID, date = DateTime.Now.ToLongDateString() }))
 {
     <div class="container">
-        <div class="white-block">
-            <h2>@ViewBag.Title</h2>
-            <div id="map-canvas"></div> <!-- Google Maps -->
+<div class="white-block">
+    <h2>@ViewBag.Title</h2>
+    <div id="map-canvas"></div> <!-- Google Maps -->
             <table cellspacing="0" cellpadding="0" class="table-fix">
-                <tr>
+        <tr>
                     <th>Naam</th>
-                    <td>@Model.Name</td>
-                </tr>
-                <tr>
+            <td>@Model.Name</td>
+        </tr>
+        <tr>
                     <th>
                         Datum
                     </th>
@@ -58,44 +59,44 @@
                 {
                     <tr>
                         <th>Adres</th>
-                        <td>@Model.FormattedAddress</td>
-                    </tr>
+            <td>@Model.FormattedAddress</td>
+        </tr>
                 }
                 @if (!String.IsNullOrWhiteSpace(Model.FormattedPhoneNumber))
                 {
-                    <tr>
+        <tr>
                         <th>Telefoonnummer</th>
-                        <td>@Model.FormattedPhoneNumber</td>
-                    </tr>
+            <td>@Model.FormattedPhoneNumber</td>
+        </tr>
                 }
                 @if (Model.Rating != 0)
                 {
-                    <tr>
+        <tr>
                         <th>Beoordeling</th>
                         <td>@Model.Rating</td>
-                    </tr>
+        </tr>
                 }
                 @if (Model.Types.Count() != 0 || Model.Types.Count() != null)
                 {
-                    <tr>
+        <tr>
                         <th>Types</th>
-                        <td>
+            <td>
                             @foreach (string type in Model.Types)
                             {
                                 @type  <br />
 
-                            }
-                        </td>
-                    </tr>
+                }
+            </td>
+        </tr>
                 }
                 @if (!String.IsNullOrWhiteSpace(Model.Website))
                 {
-                    <tr>
+                <tr>
                         <th>Website</th>
                         <td style="padding: 0;"><a class="button" href="@Model.Website">@Model.Website</a></td>
-                    </tr>
-                }
-            </table>
+                </tr>
+            }
+    </table>
             @{
     TempData["Place"] = Model;
             }
@@ -105,5 +106,5 @@
             }
 
         </div>
-    </div>
+</div>
 }
