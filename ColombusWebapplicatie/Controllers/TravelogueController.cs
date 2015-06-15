@@ -40,6 +40,11 @@ namespace ColombusWebapplicatie.Controllers
             return View("Index", ShortenTitles(travelogues));
         }
 
+        /// <summary>
+        /// Displays a list of Travelogues that contains the searchQuery.
+        /// </summary>
+        /// <param name="searchQuery"></param>
+        /// <returns></returns>
         public ActionResult Search(string searchQuery)
         {
             ViewBag.Public = GetCurrentUser() == null;
@@ -47,6 +52,18 @@ namespace ColombusWebapplicatie.Controllers
             ViewBag.DisplayAll = true;
             List<Travelogue> travelogues = HttpManager.WebserviceGetRequest<List<Travelogue>>("Travelogue/Search", Request, null, new Dictionary<string, string>() { { "value", searchQuery }, { "limit", "20" } });
             return View("Index", ShortenTitles(travelogues));
+        }
+
+        /// <summary>
+        /// Adds a rating to the given Travelogue.
+        /// </summary>
+        /// <param name="travelogueID"></param>
+        /// <param name="rating"></param>
+        /// <returns></returns>
+        public ActionResult Rate(int travelogueID, double rating)
+        {
+            HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Rate", Request, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() }, { "rating", rating.ToString() } });
+            return ViewTravelogue(travelogueID);
         }
 
         /// <summary>

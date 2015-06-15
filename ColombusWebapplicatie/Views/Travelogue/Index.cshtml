@@ -37,11 +37,11 @@
         <!--TEMP DIV -->
         <div class="container">
             @using(Html.BeginForm("Search", "Travelogue", FormMethod.Post)) {
-                @Html.TextBox("searchQuery", null, new { @class = "tab float left" })
+                @Html.TextBox("searchQuery", null, new { @class = "float left" })
                 <input class="button orange float left" type="submit" name="add" value="Zoeken">
             }
             @using(Html.BeginForm("Display", "Travelogue", FormMethod.Post)) {
-                @Html.DropDownList("sortBy", listItems, new { @class = "tab float right" })
+                @Html.DropDownList("sortBy", listItems, new { @class = "float right" })
                 <input class="button orange float right" type="submit" name="add" value="Zoeken">
             }
         </div>
