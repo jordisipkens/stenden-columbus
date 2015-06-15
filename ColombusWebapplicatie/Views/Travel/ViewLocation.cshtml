@@ -99,9 +99,11 @@
             @{
     TempData["Place"] = Model;
             }
-            <div class="white-block">
-                <input class="button orange float right" type="submit" name="search" value="Voeg toe">
-            </div>
+            @if (ViewBag.newLocation)
+            {
+                <div class="white-block" style="margin-bottom:0px;">
+                    <input class="button orange float right" type="submit" name="search" value="Voeg toe">
+                </div>
             }
 
         </div>

@@ -13,7 +13,7 @@
             <table cellpadding="0" cellspacing="0">
                 <tr>
                     <th>
-                        @Html.TextBox("query", null, new { @style = "padding:1em; width:96%;" })
+                        @Html.TextBox("query", null, new { @style = "padding:1em; width:94%;" })
                     </th>
                     <td>
                         <input class="button orange" type="submit" name="search" value="Zoeken" style="width:96%">
@@ -32,7 +32,7 @@
                             @result.Name <br />
                             @result.Address
                         </td>
-                        <td>@Html.ActionLink("+", "ViewLocation", new { travelID = ViewBag.TravelID, placeID = result.PlaceID })</td>
+                        <td>@Html.ActionLink("+", "ViewLocation", new { travelID = ViewBag.TravelID, placeID = result.PlaceID, newLocation = true })</td>
                     </tr>
                 }
             </table>

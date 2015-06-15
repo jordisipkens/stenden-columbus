@@ -108,10 +108,11 @@ namespace ColombusWebapplicatie.Controllers
         /// <param name="travelID"></param>
         /// <param name="placeID"></param>
         /// <returns></returns>
-        public ActionResult ViewLocation(int travelID, string placeID)
+        public ActionResult ViewLocation(int travelID, string placeID, bool newLocation = false)
         {
             ViewBag.TravelID = travelID;
             GoogleDetailResponse response = HttpManager.GoogleGetRequest<GoogleDetailResponse>("details", new Dictionary<string, string>() { { "placeid", placeID } });
+            ViewBag.newLocation = newLocation;
             return View(response.Result);
         }
 
