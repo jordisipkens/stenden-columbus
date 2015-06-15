@@ -43,7 +43,7 @@
                 markers[markerId] = new google.maps.Marker({
                     id: markerId,
                     position: new google.maps.LatLng(@locationDetails.Coordinates.Latitude, @locationDetails.Coordinates.Longitude),
-                    title: "@Html.Raw(locationDetails.Name)"
+                    title: "@locationDetails.Name"
                 });
                 markers[markerId].setMap(map);
                 latLngBounds.extend(markers[markerId].position);
@@ -91,8 +91,6 @@
 <div class="white-block">
     <div class="container">
         <h2>@ViewBag.Title</h2>
-        <p>@ViewBag.Lat</p>
-        <p>@ViewBag.Lng</p>
         <p>Vul hieronder een locatie in of klik op een locatie in op de kaart. Klik daarna op 'Zoeken'.</p>
         @using(Html.BeginForm("ShowFoundLocation", "Travel", FormMethod.Post, new { travelID = ViewBag.TravelID })) {
             @Html.Hidden("lat")
