@@ -70,6 +70,13 @@ h2, h3 {
     font-weight: lighter;
 }
 
+p {
+    a, a:visited {
+        color: darken(@orange, 5%);
+        text-decoration: none;
+    }
+}
+
 table {
     width: 100%;
     color: @font_color;
@@ -98,6 +105,14 @@ table {
 
     a:hover {
         background-color: lighten(@orange,10%);
+    }
+
+    &.dark-header {
+        th {
+            background-color: darken(@orange,5%);
+            color: @font_color_light;
+            font-weight: normal;
+        }
     }
 }
 

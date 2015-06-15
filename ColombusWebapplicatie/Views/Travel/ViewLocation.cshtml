@@ -10,12 +10,15 @@
 <script type="text/javascript">
     $(function () {
         $('.datepicker').datepicker();
+    });
+
+    $(".datepicker").click(function () {
         $('.datepicker').datepicker("setDate", new Date());
     });
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
 <script>
-    function initialize() {
+    @*function initialize() {
         var myLatlng = new google.maps.LatLng(@Model.Geometry.Location.Latitude, @Model.Geometry.Location.Longitude);
         var mapOptions = {
             zoom: 11,
@@ -31,7 +34,7 @@
         title: '@Model.Name'
     });
     }
-    google.maps.event.addDomListener(window, 'load', initialize);
+    google.maps.event.addDomListener(window, 'load', initialize);*@
 </script>
 
 @using (Html.BeginForm("AddLocation", "Travel", new { travelID = ViewBag.TravelID, date = DateTime.Now.ToLongDateString() }))

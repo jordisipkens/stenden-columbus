@@ -21,10 +21,13 @@
             <h1 style="margin-bottom:1em">Notities</h1>
             foreach (var location in Model.Travel.Locations)
             {
-                <div class="orange-block" style="margin-bottom:1em;padding:0 1em 1em 1em">
-                    <p><h3 style="text-align:left">@location.LocationDetails.Name</h3></p>
-                    <p>@location.Note</p>
-                </div>
+                if (!String.IsNullOrWhiteSpace(location.Note))
+                {
+                    <div class="orange-block" style="margin-bottom:1em;padding:0 1em 1em 1em">
+                        <p><h3 style="text-align:left">@location.LocationDetails.Name</h3></p>
+                        <p>@location.Note</p>
+                    </div>
+                }
             }
         }
 

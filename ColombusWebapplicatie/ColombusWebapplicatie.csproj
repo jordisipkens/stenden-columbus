@@ -250,7 +250,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2224</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2224/</IISUrl>
+          <IISUrl>http://localhost:1212/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
