@@ -181,11 +181,11 @@ namespace WebserviceColumbus.Database
         /// <param name="travelogueID"></param>
         /// <param name="rating"></param>
         /// <returns></returns>
-        public bool Rate(int travelogueID, double rating)
+        public bool Rate(Rating rating, int travelogueID)
         {
             Travelogue travelogue = GetEntity(travelogueID);
             if(travelogue != null) {
-                travelogue.Ratings.Add(new Rating() { RatingValue = rating });
+                travelogue.Ratings.Add(rating);
                 return UpdateEntity(travelogue);
             }
             return false;

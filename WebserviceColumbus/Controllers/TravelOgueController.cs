@@ -92,10 +92,10 @@ namespace WebserviceColumbus.Controllers
         }
 
         //POST: api/Travelogue/Rate?travelogueID=..&rating=..
-        [HttpGet, Route("api/Travelogue/Rate")]
-        public HttpResponseMessage Rate(int travelogueID, double rating)
+        [HttpPost, Route("api/Travelogue/Rate")]
+        public HttpResponseMessage Rate([FromBody]Rating rating, int travelogueID)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().Rate(travelogueID, rating));
+            return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().Rate(rating, travelogueID));
         }
     }
 }

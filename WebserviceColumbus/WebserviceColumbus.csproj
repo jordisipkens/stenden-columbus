@@ -125,6 +125,10 @@
     <Compile Include="Migrations\201506091421468_Init.Designer.cs">
       <DependentUpon>201506091421468_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201506151139598_Rating_Add_UserID.cs" />
+    <Compile Include="Migrations\201506151139598_Rating_Add_UserID.Designer.cs">
+      <DependentUpon>201506151139598_Rating_Add_UserID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Other\LoginResponse.cs" />
     <Compile Include="Models\Travel\Travelogue\Rating.cs" />
     <Compile Include="Other\ErrorHandler.cs" />
@@ -167,6 +171,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201506091421468_Init.resx">
       <DependentUpon>201506091421468_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201506151139598_Rating_Add_UserID.resx">
+      <DependentUpon>201506151139598_Rating_Add_UserID.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -11,6 +11,9 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
         [Required]
         public double RatingValue { get; set; }
 
+        [Required]
+        public int userID { get; set; }
+
         //Navigation
         [JsonIgnore]
         public virtual Travelogue Travelogue { get; set; }
