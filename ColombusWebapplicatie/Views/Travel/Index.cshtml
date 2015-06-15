@@ -7,7 +7,7 @@
 
 <div class="container">
     <h2>@ViewBag.Title</h2>
-    <div class="white-block">
+    <div class="white-block" style="padding-top:0px">
         <table cellspacing="0" cellpadding="0" id="travels" class="table-fix">
             <tr>
                 <th>Titel</th>
@@ -34,6 +34,6 @@
                 </tr>
             }
         </table>
-        @Html.ActionLink("Nieuw", "Create", "Travel", new {},new {@class="button orange float right", @style="margin-top:2em"})
+        @Html.ActionLink("Nieuwe reis", "Create", "Travel", new {},new {@class="button orange float right", @style="margin-top:2em"})
     </div>
 </div>

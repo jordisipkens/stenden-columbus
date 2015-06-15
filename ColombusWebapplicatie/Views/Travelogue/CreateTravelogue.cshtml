@@ -4,7 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using(Html.BeginForm("SubmitButton", "Travelogue", FormMethod.Post)) {
+@using (Html.BeginForm("SubmitButton", "Travelogue", FormMethod.Post))
+{
     @Html.AntiForgeryToken()
     @Html.HiddenFor(x => x.ID)
     @Html.HiddenFor(x => x.Published)
@@ -13,17 +14,20 @@
     @Html.HiddenFor(x => x.TravelID)
 
     <h2>@ViewBag.Title</h2>
-    if(Model.Travel != null && Model.Travel.Locations != null) {
-        foreach(var location in Model.Travel.Locations) {
-            <div class="orange-block">
-                <div class="container">
-                   <p>@location.Note</p>
-                </div>
-            </div>
-        }
-    }
-
     <div class="container">
+
+        @if (Model.Travel != null && Model.Travel.Locations != null)
+        {
+            <h1 style="margin-bottom:1em">Notities</h1>
+            foreach (var location in Model.Travel.Locations)
+            {
+                <div class="orange-block" style="margin-bottom:1em;padding:0 1em 1em 1em">
+                    <p><h3 style="text-align:left">@location.LocationDetails.Name</h3></p>
+                    <p>@location.Note</p>
+                </div>
+            }
+        }
+
         <table cellspacing="0" cellpadding="0">
             <tr>
                 <th>Titel</th>
@@ -33,8 +37,10 @@
         <div class="orange-block" style="margin-top:4em;">
             <h2>Paragrafen</h2>
         </div>
-        @if(Model.Paragraphs != null) {
-            for(var i = 0; i < Model.Paragraphs.Count; i++) {
+        @if (Model.Paragraphs != null)
+        {
+            for (var i = 0; i < Model.Paragraphs.Count; i++)
+            {
                 <div class="new-paragraph">
                     <h3 class="orange-block">Paragraaf #@i</h3>
                     <table cellpadding="0" cellspacing="0">
@@ -74,10 +80,12 @@
         </div>
         <div class="white-block">
             <input type="submit" name="Save" value="Opslaan" class="button orange float right" style="margin-left:1em;" />
-            @if(Model.Published) {
+            @if (Model.Published)
+            {
                 <input type="submit" name="Publish" value="Maak Privé" class="button orange float right" />
             }
-            else {
+            else
+            {
                 <input type="submit" name="Publish" value="Publiseer" class="button orange float right" />
             }
         </div>
