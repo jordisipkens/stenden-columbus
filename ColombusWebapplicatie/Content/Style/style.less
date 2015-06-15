@@ -233,7 +233,7 @@ table {
         -webkit-box-shadow: inset 0 0 #e8930c;
         text-decoration: none;
         border: 1px solid @orange;
-    }
+}
 
     &.white:hover, a&.white:hover {
         background-color: darken(@white,2%);
@@ -611,4 +611,31 @@ footer {
 
 .input-fix {
     padding: 1em;
+}
+
+#rate:not(old){
+    float: right;
+}
+
+#rate:not(old) > input{
+    display: none;
+}
+
+#rate:not(old) > label
+{
+    float: right;
+    display: block;
+}
+
+#rate:not(old) > label:before{
+   content: "\2606";
+   font-size: 1.5em;
+   color: @orange;
+}
+
+#rate:not(old) > label:hover:before,
+#rate:not(old) > label:hover ~ label:before,
+#rate:not(:hover) > :checked ~ label:before{
+  content: "\2605";
+  cursor: pointer;
 }
