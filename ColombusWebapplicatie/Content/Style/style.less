@@ -513,3 +513,30 @@ footer {
 {
     list-style: circle;
 }
+
+#rate:not(old){
+    float: right;
+}
+
+#rate:not(old) > input{
+    display: none;
+}
+
+#rate:not(old) > label
+{
+    float: right;
+    display: block;
+}
+
+#rate:not(old) > label:before{
+   content: "\2606";
+   font-size: 1.5em;
+   color: @orange;
+}
+
+#rate:not(old) > label:hover:before,
+#rate:not(old) > label:hover ~ label:before,
+#rate:not(:hover) > :checked ~ label:before{
+  content: "\2605";
+  cursor: pointer;
+}
