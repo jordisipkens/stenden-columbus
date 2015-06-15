@@ -43,7 +43,8 @@
             {
                 <div class="new-paragraph">
                     <h3 class="orange-block">Paragraaf #@i</h3>
-                    <table cellpadding="0" cellspacing="0">
+                    <table cellpadding="0" cellspacing="0">                        
+                        @Html.HiddenFor(x => x.Paragraphs[i].ID)
                         @Html.HiddenFor(x => x.Paragraphs[i].Height)
                         @Html.HiddenFor(x => x.Paragraphs[i].FullWidth)
                         @Html.HiddenFor(x => x.Paragraphs[i].Width)

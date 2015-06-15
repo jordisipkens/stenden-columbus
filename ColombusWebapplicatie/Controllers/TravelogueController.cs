@@ -206,7 +206,10 @@ namespace ColombusWebapplicatie.Controllers
             if(GetCurrentUser() != null) {
                 int userID = GetCurrentUser().ID;
                 if(userID != 0) {
-                    return Convert.ToInt32(travelogue.Ratings.First(r => r.userID.Equals(userID)).RatingValue);
+                    try {
+                        return Convert.ToInt32(travelogue.Ratings.First(r => r.userID.Equals(userID)).RatingValue);
+                    }
+                    catch(Exception) { }
                 }
             }
             return 0;
