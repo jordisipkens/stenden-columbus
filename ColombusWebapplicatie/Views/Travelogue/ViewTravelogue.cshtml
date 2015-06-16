@@ -3,13 +3,56 @@
     ViewBag.Title = "Reisverslagen";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@section Styles
+{
+    <div>@Model.AvarageRating</div>
+    <style>
+        @for (int i = 1; i <= 5; i++ )
+        {
+            <text>
+            label:nth-of-type(@(6-i)):before
+            {
+                content: "@((i > Model.AvarageRating) ? "\\2606" : "\\2605")";
+            }
+            </text>
+        }
+    </style>
+}
+
+@section Scripts
+{
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('input:radio').change(function () {
+                $(this).parents('form:first').submit();
+            });
+        });
+    </script>
+}
+
 <div class="container">
     <h2>@Model.Title</h2>
+        @*
+        For reuse in Index where i is inside a loop <span>@(((i) > Model.AvarageRating) ? Html.Raw("&#9734;") : Html.Raw("&#9733;"))</span>
+        *@
 
-    @{foreach(var par in Model.Paragraphs) {
+        @using (Html.BeginForm("Rate", "Travelogue", new { travelogueID = Model.ID }, FormMethod.Post, new { id = "rate" }))
+    {
+            <span>Beoordeling:</span>
+        for (int i = 0; i < 5; i++)
+        {
+                @Html.RadioButton("rating", (i + 1), false, new { id = "rating" + (i + 1) })
+            <label for="rating@(i + 1)"></label>
+        }
+    }
+    
+    
+
+    @foreach(var par in Model.Paragraphs) {
         <div class="paragraph">
-
-            @* Paragraph Header*@
+            @* Paragraph Header *@
             @if(!String.IsNullOrWhiteSpace(par.Header)) {
                 <h3>@par.Header</h3>
             }
@@ -34,6 +77,5 @@
                 </p>
             }
         </div>
-    }
     }
 </div>

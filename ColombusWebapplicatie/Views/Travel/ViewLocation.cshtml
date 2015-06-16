@@ -18,14 +18,15 @@
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
 <script>
-    @*function initialize() {
+    function initialize() 
+    {
+
         var myLatlng = new google.maps.LatLng(@Model.Geometry.Location.Latitude, @Model.Geometry.Location.Longitude);
         var mapOptions = {
             zoom: 11,
             center: myLatlng,
-
         }
-    }
+    
     var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
     var marker = new google.maps.Marker({
@@ -41,7 +42,7 @@
 {
     <div class="container">
         <div class="white-block">
-            <h2>@ViewBag.Title</h2>
+            <h2>@Model.Name</h2>
             <div id="map-canvas"></div> <!-- Google Maps -->
             <table cellspacing="0" cellpadding="0" class="table-fix">
                 <tr>
@@ -101,7 +102,7 @@
             @{
     TempData["Place"] = Model;
             }
-            @if (ViewBag.newLocation)
+            @if (Convert.ToBoolean(ViewBag.newLocation))
             {
                 <div class="white-block" style="margin-bottom:0px;">
                     <input class="button orange float right" type="submit" name="search" value="Voeg toe">
