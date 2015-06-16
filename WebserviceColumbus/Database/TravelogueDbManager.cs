@@ -20,7 +20,9 @@ namespace WebserviceColumbus.Database
         {
             try {
                 using(var db = new ColumbusDbContext()) {
-                    return db.Travelogues.Include("Paragraphs").Include("Ratings").Where(a => a.ID == ID).First();
+                    Travelogue travelogue = db.Travelogues.Include("Paragraphs").Include("Ratings").Where(a => a.ID == ID).First();
+                    travelogue.Author = new TravelDbManager().GetEntity(travelogue.TravelID).User.Username;
+                    return travelogue;
                 }
             }
             catch(Exception ex) {

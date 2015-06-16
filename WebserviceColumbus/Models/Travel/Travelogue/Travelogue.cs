@@ -25,6 +25,9 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
 
         public virtual ICollection<Paragraph> Paragraphs { get; set; }
 
+        [NotMapped]
+        public string Author { get; set; }
+
         [NotMapped, JsonIgnore]
         public double RatingFactor { get; set; }
 
