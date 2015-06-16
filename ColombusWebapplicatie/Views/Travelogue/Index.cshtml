@@ -5,22 +5,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     List<SelectListItem> listItems = new List<SelectListItem>();
-   listItems.Add(new SelectListItem
-        {
-          Text = "Beste",
-          Value = "Best"
-        });
-   listItems.Add(new SelectListItem
-        {
-            Text = "Nieuwste",
-            Value = "Latest",
-            Selected = true
-        });
-   listItems.Add(new SelectListItem
-        {
-            Text = "Oudste",
-            Value = "Oldest"
-        });
+    listItems.Add(new SelectListItem
+         {
+             Text = "Beste",
+             Value = "Best"
+         });
+    listItems.Add(new SelectListItem
+         {
+             Text = "Nieuwste",
+             Value = "Latest",
+             Selected = true
+         });
+    listItems.Add(new SelectListItem
+         {
+             Text = "Oudste",
+             Value = "Oldest"
+         });
 }
 
 <div class="orange-block container">
@@ -34,7 +34,7 @@
             @Html.ActionLink("Alle Travelogues", "Display", new { sortBy = "Best" }, new { @class = "tab float right", @name = "allTravelogues" })
         </div>
     }
-        <!--TEMP DIV -->
+    <!--TEMP DIV -->
 </div>
 @if (Convert.ToBoolean(ViewBag.DisplayAll))
 {
@@ -48,15 +48,16 @@
             }
             @using (Html.BeginForm("Display", "Travelogue", FormMethod.Post))
             {
-                @Html.DropDownList("sortBy", listItems, new { @class = "input-fix float right", OnChange = "javascript:this.form.submit()" })
+                @Html.DropDownList("sortBy", listItems, new { @class = "input-fix float right", @onchange="this.form.submit()" })
             }
         </div>
-</div>
+    </div>
 }
 <div class="container">
-    <table cellspacing="0" cellpadding="0" id="travels" class="white-block dark-header">
+    <table cellspacing="0" cellpadding="0" id="travels" class="white-block">
         <tr>
             <th style="padding:1em;">Titel</th>
+            <th style="padding:1em;">Auteur</th>
             <th style="padding:1em;">Gepubliceerd</th>
             <th style="padding:1em;">Beoordeling</th>
             @if (!Convert.ToBoolean(ViewBag.DisplayAll))
@@ -76,13 +77,19 @@
                     }
                     <td>@Html.ActionLink(@travelogue.Title, "ViewTravelogue", new { travelogueID = travelogue.ID })</td>
                     <td>@travelogue.Author</td>
-                    @if(travelogue.Published) {
+                    @if (travelogue.Published)
+                    {
                         <td>@travelogue.PublishedTime.Day-@travelogue.PublishedTime.Month-@travelogue.PublishedTime.Year</td>
+                    }
+                    else
+                    {
+                        <td>Privé</td>
+                    }
                     <td>@travelogue.AvarageRating</td>
                     @if (!Convert.ToBoolean(ViewBag.DisplayAll))
                     {
-                        <td style="width:1em;   margin-right: 0.2em;">@Html.ActionLink(HttpUtility.HtmlDecode("&nbsp;"), "EditTravelogue", new { travelogueID = travelogue.ID }, new { @class = "fa fa-pencil", @style = "width:1em;" })</td>
-                        <td style="width:1em;">@Html.ActionLink(HttpUtility.HtmlDecode("&nbsp;"), "DeleteTravelogue", new { travelogueID = travelogue.ID }, new { @class = "fa fa-trash-o", @style = "width:1em;" })</td>
+                        <td style="width:1em;">@Html.ActionLink(HttpUtility.HtmlDecode("&nbsp;"), "EditTravelogue", new { travelogueID = travelogue.ID }, new { @class = "fa fa-pencil", @style = "width:1em;" })</td>
+                        <td style="width:1em; margin-left:0.5em;">@Html.ActionLink(HttpUtility.HtmlDecode("&nbsp;"), "DeleteTravelogue", new { travelogueID = travelogue.ID }, new { @class = "fa fa-trash-o", @style = "width:1em;" })</td>
                     }
                 </tr>
             }
@@ -91,8 +98,6 @@
         {
             <tr>
                 <td colspan="3">Er zijn geen reisverslagen beschikbaar.</td>
-                <td></td>
-                <td></td>
             </tr>
         }
     </table>
@@ -130,4 +135,3 @@ else
         })
     </script>
 }
-
