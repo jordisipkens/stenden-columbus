@@ -93,7 +93,7 @@ namespace ColombusWebapplicatie.Controllers
         /// <param name="travelID"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public ActionResult ShowFoundLocation(int travelID, string query, float? lat, float? lng)
+        public ActionResult ShowFoundLocation(int travelID, string query, float? lat, float? lng, int? radius)
         {
             string searchType;
             Dictionary<string, string> parameters = new Dictionary<string, string>();
@@ -103,9 +103,9 @@ namespace ColombusWebapplicatie.Controllers
                 // Add parameters for nearby search
                 searchType = "nearbysearch";
                 parameters.Add("location", lat.ToString() + "," + lng.ToString());
-                parameters.Add("radius", "5000");
-                ModelState.Remove("lat"); // Reset hidden field lat
-                ModelState.Remove("lng"); // Reset hidden field lng
+                parameters.Add("radius", radius.ToString());
+                ModelState.Remove("lat");   // Reset hidden field lat
+                ModelState.Remove("lng");   // Reset hidden field lng
             }
             else
             {
