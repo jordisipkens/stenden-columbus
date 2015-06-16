@@ -39,6 +39,11 @@ namespace ColombusWebapplicatie.Controllers
             return ErrorToIndex("Deze reis bestaat niet (meer)");
         }
 
+        public ActionResult Create()
+        {
+            return View();
+        }
+
         /// <summary>
         /// Creates a new Travel and returns to the Index.
         /// </summary>

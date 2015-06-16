@@ -10,7 +10,6 @@
 <script type="text/javascript">
     $(function () {
         $('.datepicker').datepicker();
-        $('.datepicker').datepicker("setDate", new Date());
     });
 </script>
 <div class="container">
@@ -25,12 +24,12 @@
             </tr>
             <tr>
                 <th>@Html.LabelFor(travel => travel.StartDate, "Start Datum")</th>
-                <td>@Html.TextBoxFor(model => model.StartDate, new { @class = "form-control datepicker", @style = "width: 96%; padding: 1em;" })</td>
+                <td>@Html.TextBoxFor(model => model.StartDate, new { Value = DateTime.Now.ToShortDateString(), @class = "form-control datepicker", @style = "width: 96%; padding: 1em;" })</td>
                 <td></td>
             </tr>
             <tr>
                 <th>@Html.LabelFor(travel => travel.EndDate, "Eind Datum")</th>
-                <td>@Html.TextBoxFor(model => model.EndDate, new { @class = "form-control datepicker", @style = "width: 96%; padding: 1em;" })</td>
+                <td>@Html.TextBoxFor(model => model.EndDate, new { Value = DateTime.Now.ToShortDateString(), @class = "form-control datepicker", @style = "width: 96%; padding: 1em;" })</td>
                 <td></td>
             </tr>
         </table>
