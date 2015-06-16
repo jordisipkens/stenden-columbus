@@ -149,7 +149,7 @@ namespace WebserviceColumbus.Database
                     }
                 }
                 else {
-                    return UpdateEntity(travel);
+                    UpdateEntity(travel);
                 }
                 return "TOPPIE";
             }
