@@ -65,7 +65,7 @@ namespace ColombusWebapplicatie.Controllers
         {
             if(GetCurrentUser() != null) {
                 Rating ratingObj = new Rating() {
-                    RatingValue = rating,
+                    RatingValue = (5 + 1) - rating,     //Reverse rating on a scale of 1 to 5
                     userID = GetCurrentUser().ID
                 };
                 HttpManager.WebservicePostRequest<Rating>("Travelogue/Rate", Request, ratingObj, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() } });
