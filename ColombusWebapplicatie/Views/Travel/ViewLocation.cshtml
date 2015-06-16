@@ -11,6 +11,10 @@
     $(function () {
         $('.datepicker').datepicker();
     });
+
+    $(".datepicker").click(function () {
+        $('.datepicker').datepicker("setDate", new Date());
+    });
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
 <script>

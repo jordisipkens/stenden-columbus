@@ -48,23 +48,21 @@
             }
             @using (Html.BeginForm("Display", "Travelogue", FormMethod.Post))
             {
-                <input class="button orange float right" style="margin-left:1em" type="submit" name="add" value="Zoeken">
-                @Html.DropDownList("sortBy", listItems, new { @class = "input-fix float right" })
+                @Html.DropDownList("sortBy", listItems, new { @class = "input-fix float right", OnChange = "javascript:this.form.submit()" })
             }
         </div>
 </div>
 }
 <div class="container">
-    <table cellspacing="0" cellpadding="0" id="travels" class="white-block">
+    <table cellspacing="0" cellpadding="0" id="travels" class="white-block dark-header">
         <tr>
             <th style="padding:1em;">Titel</th>
-            <th style="padding:1em;">Auteur</th>
             <th style="padding:1em;">Gepubliceerd</th>
             <th style="padding:1em;">Beoordeling</th>
             @if (!Convert.ToBoolean(ViewBag.DisplayAll))
             {
-                <th>Bewerking</th>
-                <th>Verwijderen</th>
+                <th></th>
+                <th></th>
             }
         </tr>
         @if (Model != null && Model.Count > 0)
@@ -80,15 +78,11 @@
                     <td>@travelogue.Author</td>
                     @if(travelogue.Published) {
                         <td>@travelogue.PublishedTime.Day-@travelogue.PublishedTime.Month-@travelogue.PublishedTime.Year</td>
-                    }
-                    else {
-                        <td>Privé</td>
-                    }
                     <td>@travelogue.AvarageRating</td>
                     @if (!Convert.ToBoolean(ViewBag.DisplayAll))
                     {
-                        <td>@Html.ActionLink("-", "EditTravelogue", new { travelogueID = travelogue.ID })</td>
-                        <td>@Html.ActionLink("X", "DeleteTravelogue", new { travelogueID = travelogue.ID })</td>
+                        <td style="width:1em;   margin-right: 0.2em;">@Html.ActionLink(HttpUtility.HtmlDecode("&nbsp;"), "EditTravelogue", new { travelogueID = travelogue.ID }, new { @class = "fa fa-pencil", @style = "width:1em;" })</td>
+                        <td style="width:1em;">@Html.ActionLink(HttpUtility.HtmlDecode("&nbsp;"), "DeleteTravelogue", new { travelogueID = travelogue.ID }, new { @class = "fa fa-trash-o", @style = "width:1em;" })</td>
                     }
                 </tr>
             }
@@ -97,6 +91,8 @@
         {
             <tr>
                 <td colspan="3">Er zijn geen reisverslagen beschikbaar.</td>
+                <td></td>
+                <td></td>
             </tr>
         }
     </table>

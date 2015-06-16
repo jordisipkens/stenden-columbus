@@ -8,12 +8,12 @@
 <div class="container">
     <h2>@ViewBag.Title</h2>
     <div class="white-block" style="padding-top:0px">
-        <table cellspacing="0" cellpadding="0" id="travels" class="table-fix">
+        <table cellspacing="0" cellpadding="0" id="travels" class="table-fix dark-header">
             <tr>
                 <th>Titel</th>
                 <th>Begindatum</th>
                 <th>Einddatum</th>
-                <th>Verwijderen</th>
+                <th></th>
             </tr>
             @if (Model != null && Model.Count > 0)
             {
@@ -23,7 +23,7 @@
                         <td>@Html.ActionLink(travel.Title, "ViewTravel", new { travelID = travel.ID })</td>
                         <td>@travel.StartDate.Day-@travel.StartDate.Month-@travel.StartDate.Year</td>
                         <td>@travel.EndDate.Day-@travel.EndDate.Month-@travel.EndDate.Year</td>
-                        <td style="width:1em;">@Html.ActionLink("x", "DeleteTravel", new { travelID = travel.ID })</td>
+                        <td style="width:1em;">@Html.ActionLink(HttpUtility.HtmlDecode("&nbsp;"), "DeleteTravel", new { travelID = travel.ID }, new { @class = "fa fa-trash-o", @style = "width:1em;" })</td>
                     </tr>
                 }
             }
@@ -31,6 +31,7 @@
             {
                 <tr>
                     <td colspan="3">Er zijn geen reizen beschikbaar.</td>
+                    <td></td>
                 </tr>
             }
         </table>
