@@ -57,14 +57,16 @@ namespace ColombusWebapplicatie.Controllers
         /// <returns></returns>
         public ActionResult Rate(int travelogueID, double rating)
         {
-            Rating ratingObj = new Rating();
-
-            ratingObj.RatingValue = rating;
-            ratingObj.userID = GetCurrentUser().ID;
-            
-            HttpManager.WebservicePostRequest<Rating>("Travelogue/Rate", Request, ratingObj, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() } });
-            return ViewTravelogue(travelogueID);
-        }
+            if (GetCurrentUser() != null)
+            {
+                Rating ratingObj = new Rating()
+                {
+                    RatingValue = (5 + 1) - rating,     //Reverses the rating on a scale of 1 to 5
+                    userID = GetCurrentUser().ID
+                };
+                HttpManager.WebservicePostRequest<Rating>("Travelogue/Rate", Request, ratingObj, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() } });
+                return ViewTravelogue(travelogueID);
+            }
             return ErrorToIndex("U moet ingelogd zijn om een beoordeling te plaatsen");
         }
 
@@ -205,41 +207,7 @@ namespace ColombusWebapplicatie.Controllers
         #region Helpers
 
         /// <summary>
-        /// Rets the value of the rating the current user has given.
-        /// </summary>
-        /// <param name="travelogue"></param>
-        /// <returns></returns>
-        private int GetRatingCurrentUser(Travelogue travelogue)
-        {
-            if(GetCurrentUser() != null) {
-                int userID = GetCurrentUser().ID;
-                if(userID != 0) {
-                    try {
-                        return Convert.ToInt32(travelogue.Ratings.First(r => r.userID.Equals(userID)).RatingValue);
-                    }
-                    catch(Exception) { }
-                }
-            }
-            return 0;
-        }
-
-/// </summary>
-        /// <param name="model"></param>
-        private void PublishTravelogue(Travelogue model)
-        {
-            if(model.ID != 0) {
-                HttpManager.WebserviceGetRequest<Travelogue>("Travelogue/Publish", Request, null, new Dictionary<string, string>() { { "travelogueID", model.ID.ToString() }, { "isPublic", (!model.Published).ToString() } });
-            }
-            else {
-                Travelogue savedTravelogue = HttpManager.WebservicePostRequest<Travelogue>("Travelogue", Request, model);
-                if(savedTravelogue != null) {
-                    PublishTravelogue(savedTravelogue);
-                }
-            }
-        }
-
-
-/// Shortens the titles in case of overflow.
+        /// Shortens the titles in case of overflow.
         /// </summary>
         /// <param name="travelogues"></param>
         /// <returns></returns>
@@ -257,7 +225,7 @@ namespace ColombusWebapplicatie.Controllers
             }
             return travelogues;
         }
-       
+
         #endregion Helpers
 
         /// <summary>

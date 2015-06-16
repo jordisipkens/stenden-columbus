@@ -35,7 +35,7 @@
         title: '@Model.Name'
     });
     }
-    google.maps.event.addDomListener(window, 'load', initialize);*@
+    google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 
 @using (Html.BeginForm("AddLocation", "Travel", new { travelID = ViewBag.TravelID, date = DateTime.Now.ToLongDateString() }))
