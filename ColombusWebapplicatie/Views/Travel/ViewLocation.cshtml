@@ -97,9 +97,9 @@
                 }
             </table>
             @{
-    TempData["Place"] = Model;
+            TempData["Place"] = Model;
             }
-            @if (ViewBag.newLocation)
+            @if (Convert.ToBoolean(ViewBag.newLocation))
             {
                 <div class="white-block" style="margin-bottom:0px;">
                     <input class="button orange float right" type="submit" name="search" value="Voeg toe">
