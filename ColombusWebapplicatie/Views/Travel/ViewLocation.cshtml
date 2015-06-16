@@ -54,7 +54,7 @@
                         Datum
                     </th>
                     <td style="padding:0px;">
-                        @Html.TextBoxFor(model => model.Date, new { @class = "form-control datepicker", @style = "padding:1em; width:95%; text-align: center;" })
+                        @Html.TextBoxFor(model => model.Date, new { Value = DateTime.Now.ToShortDateString(), @class = "form-control datepicker", @style = "padding:1em; width:95%; text-align: center;" })
                     </td>
                 </tr>
                 @if (!String.IsNullOrWhiteSpace(Model.FormattedAddress))

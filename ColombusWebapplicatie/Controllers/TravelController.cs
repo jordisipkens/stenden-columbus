@@ -42,7 +42,7 @@ namespace ColombusWebapplicatie.Controllers
 
         public ActionResult Create()
         {
-            return View();  //Vertel Roy wanneer deze breakpoint wordt geraakt :D
+            return View();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace ColombusWebapplicatie.Controllers
                 if(GetCurrentUser() != null) {
                     travel.UserID = GetCurrentUser().ID;
                     Travel addedTravel = HttpManager.WebservicePostRequest<Travel>("Travel", Request, travel);
-                    return RedirectToAction("Index", "Travel");
+                    return MessageToIndex("Reis is aangemaakt");
                 }
             }
             return View("Create", travel);
