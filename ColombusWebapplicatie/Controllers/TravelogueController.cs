@@ -71,6 +71,8 @@ namespace ColombusWebapplicatie.Controllers
             HttpManager.WebservicePostRequest<Rating>("Travelogue/Rate", Request, ratingObj, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() } });
             return ViewTravelogue(travelogueID);
         }
+            return ErrorToIndex("U moet ingelogd zijn om een beoordeling te plaatsen");
+        }
 
         /// <summary>
         /// Opens a existing travelogue and goes to a View to edit the travelogue.
@@ -135,7 +137,7 @@ namespace ColombusWebapplicatie.Controllers
                     foreach(Paragraph par in travelogue.Paragraphs) {
                         par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
                     }
-                    return View(travelogue);
+                    return View("ViewTravelogue", travelogue);
                 }
             }
             return ErrorToIndex("Deze Travelogue bestaat niet (meer)");

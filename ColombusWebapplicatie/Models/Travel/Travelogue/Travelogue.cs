@@ -30,7 +30,7 @@ namespace ColombusWebapplicatie.Models.Travel.Travelogue
                     foreach(Rating rating in Ratings) {
                         total += rating.RatingValue;
                     }
-                    return total / Ratings.Count;
+                    return Math.Round(total / Ratings.Count, 1);
                 }
                 return 0;
             }
