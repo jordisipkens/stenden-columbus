@@ -21,7 +21,7 @@ namespace WebserviceColumbus.Database
             try {
                 using(var db = new ColumbusDbContext()) {
                     Travelogue travelogue = db.Travelogues.Include("Paragraphs").Include("Ratings").Where(a => a.ID == ID).First();
-                    travelogue.Author = new TravelDbManager().GetEntity(travelogue.TravelID).User.Username;
+                    travelogue.Author = new UserDbManager().GetUsername(travelogue.TravelID);
                     return travelogue;
                 }
             }
@@ -40,9 +40,9 @@ namespace WebserviceColumbus.Database
             try {
                 using(var db = new ColumbusDbContext()) {
                     List<Travelogue> travelogues = db.Travelogues.Include("Paragraphs").Include("Ratings").ToList();
-                    TravelDbManager dbManager = new TravelDbManager();
+                    UserDbManager dbManager = new UserDbManager();
                     foreach(Travelogue travelogue in travelogues) {
-                        travelogue.Author = dbManager.GetEntity(travelogue.TravelID).User.Username;
+                        travelogue.Author = dbManager.GetUsername(travelogue.TravelID);
                     }
                     return travelogues;
                 }

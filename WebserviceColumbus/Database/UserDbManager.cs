@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using WebserviceColumbus.Models.Other;
+using WebserviceColumbus.Models.Travel;
 using WebserviceColumbus.Other;
 
 namespace WebserviceColumbus.Database
@@ -18,6 +19,17 @@ namespace WebserviceColumbus.Database
                 new ErrorHandler(ex, "Failed to FIND User in database with corresponding username", true);
                 return null;
             }
+        }
+
+        public string GetUsername(int travelID)
+        {
+            Travel travel = new TravelDbManager().GetEntity(travelID);
+            if(travel.User != null) {
+                if(travel.User.Username != null) {
+                    return travel.User.Username;
+                }
+            }
+            return string.Empty;
         }
 
         public override User AddEntity(User entity)
