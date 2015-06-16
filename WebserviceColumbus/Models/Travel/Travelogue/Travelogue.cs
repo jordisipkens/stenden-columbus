@@ -9,6 +9,8 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
 {
     public class Travelogue : iDbEntity
     {
+        private DateTime publishedTime;
+
         [Key]
         public int ID { get; set; }
 
@@ -19,7 +21,20 @@ namespace WebserviceColumbus.Models.Travel.Travelogue
 
         public bool Published { get; set; }
 
-        public DateTime PublishedTime { get; set; }
+        public DateTime PublishedTime
+        {
+            get
+            {
+                if(publishedTime == null) {
+                    publishedTime = DateTime.Now;
+                }
+                return publishedTime;
+            }
+            set
+            {
+                publishedTime = value;
+            }
+        }
 
         public virtual ICollection<Rating> Ratings { get; set; }
 
