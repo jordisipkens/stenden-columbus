@@ -97,6 +97,70 @@ namespace WebserviceColumbus.Database
             }
         }
 
+        public string TempUpdateEntity(Travel entity)
+        {
+            try {
+                List<int> locationsToDelete = new List<int>();
+                using(var db = new ColumbusDbContext()) {
+                    db.Entry(entity).State = EntityState.Modified;
+                    for(int i = entity.Locations.Count - 1; i >= 0; i--) {      //Sorry :(
+                        Location location = entity.Locations.ElementAt(i);
+
+                        EntityState state;
+                        if(location.ID == 0) {
+                            state = EntityState.Added;
+                        }
+                        else if(location.ID == -1) {
+                            locationsToDelete.Add(location.ID);
+                            continue;
+                        }
+                        else {
+                            state = EntityState.Modified;
+                        }
+
+                        db.Entry(location).State = state;
+                        if(location.LocationDetails != null) {
+                            db.Entry(location.LocationDetails).State = state;
+                            if(location.LocationDetails.Coordinates != null) {
+                                db.Entry(location.LocationDetails.Coordinates).State = state;
+                            }
+                        }
+                    }
+                    db.SaveChanges();
+                }
+                base.DeleteEntities(locationsToDelete);
+                return "Toppie";
+            }
+            catch(Exception ex) {
+                if(ex.InnerException != null && ex.InnerException.InnerException != null) {
+                    return ex.InnerException + "|" + ex.InnerException.InnerException.Message;
+                }
+                return ex.InnerException + "|" + ex.Message;
+            }
+        }
+
+        public string TempUpdateOrInsertEntity(Travel travel)
+        {
+            try {
+                if(travel.ID == 0) {
+                    using(var db = new ColumbusDbContext()) {
+                        db.Entry(travel).State = EntityState.Added;
+                        db.SaveChanges();
+                    }
+                }
+                else {
+                    UpdateEntity(travel);
+                }
+                return "TOPPIE";
+            }
+            catch(Exception ex) {
+                if(ex.InnerException != null && ex.InnerException.InnerException != null) {
+                    return ex.InnerException + "|" + ex.InnerException.InnerException.Message;
+                }
+                return ex.InnerException + "|" + ex.Message;
+            }
+        }
+
         /// <summary>
         /// Tries to update or insert the travel. The action is determined by the value of the ID.
         /// </summary>
