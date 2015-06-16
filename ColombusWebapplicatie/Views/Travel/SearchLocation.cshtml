@@ -11,7 +11,6 @@
         margin: 1em 0px;
     }
     </style>
-
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
     @if (Model != null && Model.Count > 0)
     {
@@ -56,6 +55,23 @@
     }
     else
     {
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script>
+            $(window).load(function () {
+                $("#slider").slider({
+                    value: 10000,
+                    min: 0,
+                    max: 50000,
+                    step: 1000,
+                    slide: function (event, ui) {
+                        $("#radius").val(ui.value);
+                        $("#slider-value").html("Zoeken binnen een straal van: " + ($("#radius").val()/1000) + " kilometer.");
+                    }
+                });
+            });
+        </script>
         <script>
             function initializeSearch() {
                 var marker = null;
@@ -86,9 +102,12 @@
     <div class="container">
         <h2>@ViewBag.Title</h2>
         <p class="float left" style="text-align:center; width:100%; margin-bottom:1em;">Zoek uw locatie via het zoekveld of klik deze aan op de kaart. Klik vervolgens op de knop "zoeken". Klik op het "+"-icoon om de locatie aan de reis toe te voegen.</p>
+        <div id="slider"></div>
+        <div id="slider-value"></div>
         <div id="map-canvas"></div>
         @using (Html.BeginForm("ShowFoundLocation", "Travel", FormMethod.Post, new { travelID = ViewBag.TravelID }))
         {
+            @Html.Hidden("radius");
             @Html.Hidden("lat")
             @Html.Hidden("lng")
             @Html.Hidden("travelID", null, new { travelID = ViewBag.TravelID })

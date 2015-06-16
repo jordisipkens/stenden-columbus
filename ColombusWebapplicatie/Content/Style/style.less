@@ -639,9 +639,20 @@ footer {
    color: @orange;
 }
 
+#rate:hover label:before
+{
+    content: "\2606";
+    cursor: pointer;
+}
+
 #rate:not(old) > label:hover:before,
 #rate:not(old) > label:hover ~ label:before,
 #rate:not(:hover) > :checked ~ label:before{
   content: "\2605";
   cursor: pointer;
+}
+
+#slider
+{
+    clear: both;
 }
