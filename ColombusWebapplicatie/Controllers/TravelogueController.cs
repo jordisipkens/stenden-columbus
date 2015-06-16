@@ -63,14 +63,14 @@ namespace ColombusWebapplicatie.Controllers
         /// <returns></returns>
         public ActionResult Rate(int travelogueID, double rating)
         {
-            Rating ratingObj = new Rating();
-
-            ratingObj.RatingValue = rating;
-            ratingObj.userID = GetCurrentUser().ID;
-            
-            HttpManager.WebservicePostRequest<Rating>("Travelogue/Rate", Request, ratingObj, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() } });
-            return ViewTravelogue(travelogueID);
-        }
+            if(GetCurrentUser() != null) {
+                Rating ratingObj = new Rating() {
+                    RatingValue = (5 + 1) - rating,     //Reverses the rating on a scale of 1 to 5
+                    userID = GetCurrentUser().ID
+                };
+                HttpManager.WebservicePostRequest<Rating>("Travelogue/Rate", Request, ratingObj, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() } });
+                return ViewTravelogue(travelogueID);
+            }
             return ErrorToIndex("U moet ingelogd zijn om een beoordeling te plaatsen");
         }
 

@@ -77,7 +77,7 @@
                         travelogue.Title = "Geen Titel";
                     }
                     <td>@Html.ActionLink(@travelogue.Title, "ViewTravelogue", new { travelogueID = travelogue.ID })</td>
-                    <td>Placeholder username</td>
+                    <td>@travelogue.Author</td>
                     @if(travelogue.Published) {
                         <td>@travelogue.PublishedTime.Day-@travelogue.PublishedTime.Month-@travelogue.PublishedTime.Year</td>
                     }
