@@ -41,7 +41,7 @@ namespace WebserviceColumbus.Controllers
         public HttpResponseMessage Update([FromBody]Travelogue travelogue)
         {
             if(travelogue != null) {
-                return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().UpdateOrInsertEntity(travelogue));
+                return Request.CreateResponse(HttpStatusCode.OK, new TravelogueDbManager().TempUpdateOrInsertEntity(travelogue));
             }
             return Request.CreateResponse(HttpStatusCode.ExpectationFailed);
         }

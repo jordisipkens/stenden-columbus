@@ -112,6 +112,59 @@ namespace WebserviceColumbus.Database
             }
         }
 
+        public string TempUpdateOrInsertEntity(Travelogue travelogue)
+        {
+            try {
+                if(travelogue.ID == 0) {
+                    using(var db = new ColumbusDbContext()) {
+                        db.Entry(travelogue).State = EntityState.Added;
+                        db.SaveChanges();
+                    }
+                }
+                else {
+                    return TempUpdateEntity(travelogue);
+                }
+                return "TOPPIE MAIN";
+            }
+            catch(Exception ex) {
+                return ex.Message + "|" + ex.InnerException.Message;
+            }
+        }
+
+        public string TempUpdateEntity(Travelogue entity)
+        {
+            try {
+                using(var db = new ColumbusDbContext()) {
+                    if(entity.Paragraphs != null) {
+                        foreach(Paragraph paragraph in entity.Paragraphs) {
+                            if(paragraph.ID == 0) {
+                                db.Entry(paragraph).State = EntityState.Added;
+                            }
+                            else {
+                                db.Entry(paragraph).State = EntityState.Modified;
+                            }
+                        }
+                    }
+                    if(entity.Ratings != null) {
+                        foreach(Rating rating in entity.Ratings) {
+                            if(rating.ID == 0) {
+                                db.Entry(rating).State = EntityState.Added;
+                            }
+                            else {
+                                db.Entry(rating).State = EntityState.Modified;
+                            }
+                        }
+                    }
+                    db.Entry(entity).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return "TOPPIE UPDATE";
+                }
+            }
+            catch(Exception ex) {
+                return ex.Message + "|" + ex.InnerException.Message;
+            }
+        }
+
         /// <summary>
         /// Tries to update or insert the travelogue. The action is determined by the value of the ID.
         /// </summary>
