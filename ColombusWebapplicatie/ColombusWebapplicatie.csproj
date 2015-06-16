@@ -111,6 +111,7 @@
     <Compile Include="Classes\Http\CookieManager.cs" />
     <Compile Include="Classes\Encrpytion.cs" />
     <Compile Include="Classes\Http\HTTPManager.cs" />
+    <Compile Include="Classes\TypeDictionary.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
