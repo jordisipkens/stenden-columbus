@@ -24,10 +24,8 @@ namespace WebserviceColumbus.Database
         public string GetUsername(int travelID)
         {
             Travel travel = new TravelDbManager().GetEntity(travelID);
-            if(travel.User != null) {
-                if(travel.User.Username != null) {
-                    return travel.User.Username;
-                }
+            if(travel != null && travel.User != null && travel.User.Username != null) {
+                return travel.User.Username;
             }
             return string.Empty;
         }
