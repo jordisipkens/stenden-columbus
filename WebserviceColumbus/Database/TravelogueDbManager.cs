@@ -227,8 +227,11 @@ namespace WebserviceColumbus.Database
             if(filter == SearchType.Best) {
                 return GetBest(offset, limit);
             }
+            else if(filter == SearchType.Oldest) {
+                return GetByTime(offset, limit, false);
+            }
             else {
-                return GetLatest(offset, limit);
+                return GetByTime(offset, limit, true);
             }
         }
 
@@ -240,9 +243,13 @@ namespace WebserviceColumbus.Database
         /// <param name="offset"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        private List<Travelogue> GetLatest(int offset, int limit)
+        private List<Travelogue> GetByTime(int offset, int limit, bool decending)
         {
-            List<Travelogue> travelogues = GetEntities().Where(t => t.Published.Equals(true)).OrderByDescending(t => t.PublishedTime).ToList();  
+            List<Travelogue> travelogues = GetEntities().Where(t => t.Published.Equals(true)).OrderByDescending(t => t.PublishedTime).ToList();
+            if(!decending) {
+                travelogues.Reverse();
+            }
+
             if(travelogues != null) {
                 if(offset + limit > travelogues.Count) {
                     limit = travelogues.Count - offset;
@@ -282,6 +289,7 @@ namespace WebserviceColumbus.Database
     public enum SearchType
     {
         Best,
-        Latest
+        Latest,
+        Oldest
     }
 }
