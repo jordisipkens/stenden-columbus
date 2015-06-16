@@ -63,12 +63,15 @@ namespace ColombusWebapplicatie.Controllers
         /// <returns></returns>
         public ActionResult Rate(int travelogueID, double rating)
         {
-            Rating ratingObj = new Rating() {
-                RatingValue = rating,
-                userID = GetCurrentUser().ID
-            };
-            HttpManager.WebservicePostRequest<Rating>("Travelogue/Rate", Request, ratingObj, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() } });
-            return ViewTravelogue(travelogueID);
+            if(GetCurrentUser() != null) {
+                Rating ratingObj = new Rating() {
+                    RatingValue = rating,
+                    userID = GetCurrentUser().ID
+                };
+                HttpManager.WebservicePostRequest<Rating>("Travelogue/Rate", Request, ratingObj, null, new Dictionary<string, string>() { { "travelogueID", travelogueID.ToString() } });
+                return ViewTravelogue(travelogueID);
+            }
+            return ErrorToIndex("U moet ingelogd zijn om een beoordeling te plaatsen");
         }
 
         /// <summary>
@@ -127,7 +130,6 @@ namespace ColombusWebapplicatie.Controllers
         {
             if(travelogueID != 0) {
                 Travelogue travelogue = HttpManager.WebserviceGetRequest<Travelogue>(string.Format("Travelogue/{0}", travelogueID), Request);
-                ViewBag.Rating = GetRatingCurrentUser(travelogue);
                 if(travelogue != null) {
                     if(travelogue.Title != null && travelogue.Title.Length >= maxTitleLenght + 20) {
                         travelogue.Title = travelogue.Title.Substring(0, maxTitleLenght + 17) + "...";
@@ -135,7 +137,7 @@ namespace ColombusWebapplicatie.Controllers
                     foreach(Paragraph par in travelogue.Paragraphs) {
                         par.AlignImageLeft = (par.ID % 2 == 0);  // Check if the ID is an odd number
                     }
-                    return View(travelogue);
+                    return View("ViewTravelogue", travelogue);
                 }
             }
             return ErrorToIndex("Deze Travelogue bestaat niet (meer)");
@@ -194,25 +196,6 @@ namespace ColombusWebapplicatie.Controllers
                 }
             }
             return travelogues;
-        }
-
-        /// <summary>
-        /// Rets the value of the rating the current user has given.
-        /// </summary>
-        /// <param name="travelogue"></param>
-        /// <returns></returns>
-        private int GetRatingCurrentUser(Travelogue travelogue)
-        {
-            if(GetCurrentUser() != null) {
-                int userID = GetCurrentUser().ID;
-                if(userID != 0) {
-                    try {
-                        return Convert.ToInt32(travelogue.Ratings.First(r => r.userID.Equals(userID)).RatingValue);
-                    }
-                    catch(Exception) { }
-                }
-            }
-            return 0;
         }
 
         /// <summary>
