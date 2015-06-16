@@ -127,9 +127,6 @@ namespace WebserviceColumbus.Database
                 return "TOPPIE MAIN";
             }
             catch(Exception ex) {
-                if(ex.InnerException != null && ex.InnerException.InnerException != null) {
-                    return ex.Message + "|" + ex.InnerException.InnerException.Message;
-                }
                 return ex.Message + "|" + ex.InnerException.Message;
             }
         }
@@ -164,9 +161,6 @@ namespace WebserviceColumbus.Database
                 }
             }
             catch(Exception ex) {
-                if(ex.InnerException != null && ex.InnerException.InnerException != null) {
-                    return ex.Message + "|" + ex.InnerException.InnerException.Message;
-                }
                 return ex.Message + "|" + ex.InnerException.Message;
             }
         }
