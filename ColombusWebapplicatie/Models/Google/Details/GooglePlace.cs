@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using ColombusWebapplicatie.Classes;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 namespace ColombusWebapplicatie.Models.Google.Details
 {
     public class GooglePlace
@@ -59,5 +61,24 @@ namespace ColombusWebapplicatie.Models.Google.Details
         public string Website { get; set; }
 
         public DateTime Date { get; set; }
+
+        public string DisplayTypes { 
+            get {
+                string result = string.Empty;
+                Dictionary<string, string> typeDictionary = TypeDictionary.Dictionary;
+                if(Types != null) {
+                    foreach(string type in Types) {
+                        string value;
+                        if(typeDictionary.TryGetValue(type, out value)) {
+                            result += value + ", ";
+                        }
+                    }
+                    if(result.Contains(",")) {
+                        result = result.Substring(0, result.Length - 2);
+                    }
+                }
+                return result;
+            } 
+        }
     }
 }

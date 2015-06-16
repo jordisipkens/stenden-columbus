@@ -36,6 +36,8 @@ namespace ColombusWebapplicatie.Models.Travel.Travelogue
             }
         }
 
+        public string Author { get; set; }
+
         public virtual IList<Paragraph> Paragraphs { get; set; }
 
         [JsonIgnore]

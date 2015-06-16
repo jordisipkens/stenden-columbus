@@ -32,12 +32,17 @@ namespace ColombusWebapplicatie.Controllers
         public ActionResult ViewTravel(int travelID = 0)
         {
             if(travelID != 0) {
-                Travel travel = HttpManager.WebserviceGetRequest<Travel>("Travel/" + travelID, Request);
+                Travel travel = HttpManager.WebserviceGetRequest<Travel>("travel/" + travelID, Request);
                 if(travel != null) {
                     return View(travel);
                 }
             }
             return ErrorToIndex("Deze reis bestaat niet (meer)");
+        }
+
+        public ActionResult Create()
+        {
+            return View();
         }
 
         /// <summary>
@@ -92,19 +97,22 @@ namespace ColombusWebapplicatie.Controllers
         {
             string searchType;
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-
-            if(query.Length == 0 && lat != null && lng != null) {   // If a marker is placed and query is empty
-                searchType = "nearbysearch";         // Add parameters for nearby search
+            // If a marker is placed and query is empty
+            if (query.Length==0&&lat!=null&&lng!=null)
+            {
+                // Add parameters for nearby search
+                searchType = "nearbysearch";
                 parameters.Add("location", lat.ToString() + "," + lng.ToString());
                 parameters.Add("radius", radius.ToString());
                 ModelState.Remove("lat");   // Reset hidden field lat
                 ModelState.Remove("lng");   // Reset hidden field lng
             }
-            else {
-                searchType = "textsearch";  // Add parameters for text search
+            else
+            {
+                // Add parameters for text search
+                searchType = "textsearch";
                 parameters.Add("query", query);
             }
-
             List<LocationDetails> locations = RequestGooglePlaces(searchType, parameters);
             if(locations != null) {
                 ViewBag.TravelID = travelID;
@@ -148,10 +156,16 @@ namespace ColombusWebapplicatie.Controllers
         /// <param name="travel"></param>
         /// <param name="locationID"></param>
         /// <returns></returns>
-        public ActionResult DeleteLocation(int travelID, int locationID)
+        public ActionResult DeleteLocation(Travel travel, int locationID)
         {
-            HttpManager.WebserviceGetRequest<Travel>("Travel/DeleteLocation", Request, null, new Dictionary<string, string>() { { "travelID", travelID.ToString() }, { "locationID", locationID.ToString() } } );
-            return Message(RedirectToAction("ViewTravel", new { travelID = travelID }), "De Locatie is verwijderd");
+            foreach(Location location in travel.Locations) {
+                if(location.ID == locationID) {
+                    locationID = -1;
+                    break;
+                }
+            }
+            HttpManager.WebservicePostRequest<Travel>("Travel", Request, travel);
+            return Message(RedirectToAction("ViewTravel", new { travelID = travel.ID }), "De Locatie is verwijderd");
         }
 
         /// <summary>

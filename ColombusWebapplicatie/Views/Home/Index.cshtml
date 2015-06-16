@@ -14,15 +14,19 @@
     </div>
     <div class="white-block form">
         <div class="container">
-            @if(!Convert.ToBoolean(Session["LoggedIn"])) {
-                using(Html.BeginForm("Login", "Account", FormMethod.Post)) {
+            @if (!Convert.ToBoolean(Session["LoggedIn"]))
+            {
+                using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                {
                     @Html.TextBoxFor(u => u.Username, new { @placeholder = "Gebruikersnaam", @class = "form input" })
                     @Html.PasswordFor(u => u.Password, new { @placeholder = "Wachtwoord", @class = "form input" })
                     <input class="button orange" type="submit" name="submit" value="Inloggen">
                 }
             }
-            else {
-                if(user != null) { 
+            else
+            {
+                if (user != null)
+                {
                     <h1>Hallo @user.FullName</h1>
                 }
             }
@@ -37,10 +41,12 @@
 <div class="white-block">
     <div class="container">
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent convallis vel lorem quis pretium. Pellentesque mattis magna sit amet nisi facilisis, a suscipit erat hendrerit. Pellentesque mollis et mi sed ultrices. Morbi tincidunt nibh sed ligula cursus gravida. Nullam non velit ac urna ornare fringilla. Proin luctus purus at vehicula tincidunt. Vestibulum suscipit turpis et diam posuere consectetur. Suspendisse et lectus eros. Mauris fermentum sit amet dolor vel tempus. Fusce in tortor felis.
-
-            Nam egestas risus in nibh ultricies tincidunt. Sed blandit pellentesque justo. Cras et arcu quis justo pellentesque efficitur. Duis vel tortor consectetur, pretium est eu, placerat sem. Nam quis risus ac ante ullamcorper cursus. Donec molestie neque lectus, sit amet dapibus nisl mollis placerat. Quisque dignissim pretium neque eget lobortis. Nullam rutrum sit amet orci id porta.
-            Donec sagittis lorem lorem, vitae commodo elit scelerisque viverra. Sed blandit massa at malesuada volutpat. Nulla facilisi. Donec sed volutpat purus. Ut dui nisl, egestas eu ultrices eu, viverra sed lacus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec semper pellentesque gravida. Phasellus malesuada, metus non ornare posuere, sapien lacus venenatis lorem, eu dictum velit massa eget augue. Aliquam ac lectus faucibus, consequat risus vel, pretium est. Donec diam velit, rutrum a semper id, aliquam ut nisl.
+            Columbus is een reisapplicatie waarmee je eenvoudig reisverslagen kunt maken, bijgehouden,
+            delen en beoordelen. Op onze website @((!Convert.ToBoolean(Session["LoggedIn"])) ? @Html.ActionLink("maak je een account aan", "Register", "Account") : @Html.Raw("maak je een account aan")) en log je in. Vervolgens maak je een nieuwe reis aan en voeg je de locaties toe die je graag wil bezoeken. Hierna pak je je tas in en ga je op pad!
+            <br />
+            <br />
+            Met de @Html.ActionLink("Android applicatie", "Android", "Home") kun je je reis bijhouden.
+            Je kan je reis zien, de locaties nog eens bekijken en notities en foto's toevoegen voor je reisverslag. Eenmaal thuis log je weer in op de website. Je zoekt je reis weer op en maakt een nieuw reisverslag aan. aan de hand van jouw ervaringen, foto's en notities zet je jouw belevingen op papier. Vervolgens kun je er voor kiezen om je reisverslag voor jezelf te houden, of deze te delen met iedereen, zodat anderen hem kunnen lezen en beoordelen.
         </p>
     </div>
 </div>

@@ -37,7 +37,7 @@
                 markers[markerId] = new google.maps.Marker({
                     id: markerId,
                     position: new google.maps.LatLng(@locationDetails.Coordinates.Latitude, @locationDetails.Coordinates.Longitude),
-                    title: "@locationDetails.Name"
+                title: "@Html.Raw(locationDetails.Name)"
                 });
                 markers[markerId].setMap(map);
                 latLngBounds.extend(markers[markerId].position);
