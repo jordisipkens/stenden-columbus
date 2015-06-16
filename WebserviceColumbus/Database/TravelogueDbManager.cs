@@ -39,7 +39,12 @@ namespace WebserviceColumbus.Database
         {
             try {
                 using(var db = new ColumbusDbContext()) {
-                    return db.Travelogues.Include("Paragraphs").Include("Ratings").ToList();
+                    List<Travelogue> travelogues = db.Travelogues.Include("Paragraphs").Include("Ratings").ToList();
+                    TravelDbManager dbManager = new TravelDbManager();
+                    foreach(Travelogue travelogue in travelogues) {
+                        travelogue.Author = dbManager.GetEntity(travelogue.TravelID).User.Username;
+                    }
+                    return travelogues;
                 }
             }
             catch(Exception ex) {
