@@ -1,6 +1,4 @@
-﻿using ColombusWebapplicatie.Models.Google;
-using ColombusWebapplicatie.Models.Google.Details;
-using ColombusWebapplicatie.Models.Google.Search;
+﻿using ColombusWebapplicatie.Models.Google.Details;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,7 +6,9 @@ namespace ColombusWebapplicatie.Models.Travel
 {
     public class Location
     {
-        public Location() { }
+        public Location()
+        {
+        }
 
         public Location(GooglePlace place, DateTime date)
         {

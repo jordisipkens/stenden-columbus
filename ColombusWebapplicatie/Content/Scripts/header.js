@@ -1,3 +1,3 @@
 ﻿$(window).load(function () {
     $('body').css('margin-top', $('#header').height());
-    }).trigger('resize'); //on page load
+}).trigger('resize'); //on page load

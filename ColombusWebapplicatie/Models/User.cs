@@ -21,7 +21,7 @@ namespace ColombusWebapplicatie.Models
         [Required(ErrorMessage = "Wachtwoord is vereist")]
         public string Password { get; set; }
 
-        [Compare("Password", ErrorMessage="Wachtwoorden komen niet overeen")]
+        [Compare("Password", ErrorMessage = "Wachtwoorden komen niet overeen")]
         public string PasswordRepeat { get; set; }
 
         public string FullName

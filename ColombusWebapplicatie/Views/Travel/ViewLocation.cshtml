@@ -18,7 +18,7 @@
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
 <script>
-    function initialize() 
+    function initialize()
     {
 
         var myLatlng = new google.maps.LatLng(@Model.Geometry.Location.Latitude, @Model.Geometry.Location.Longitude);
@@ -26,20 +26,19 @@
             zoom: 11,
             center: myLatlng,
         }
-    
-    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-    var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        title: '@Model.Name'
-    });
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: '@Model.Name'
+        });
     }
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 
-@using (Html.BeginForm("AddLocation", "Travel", new { travelID = ViewBag.TravelID, date = DateTime.Now.ToLongDateString() }))
-{
+@using(Html.BeginForm("AddLocation", "Travel", new { travelID = ViewBag.TravelID, date = DateTime.Now.ToLongDateString() })) {
     <div class="container">
         <div class="white-block">
             <h2>@Model.Name</h2>
@@ -57,22 +56,19 @@
                         @Html.TextBoxFor(model => model.Date, new { Value = DateTime.Now.ToShortDateString(), @class = "form-control datepicker", @style = "padding:1em; width:95%; text-align: center;" })
                     </td>
                 </tr>
-                @if (!String.IsNullOrWhiteSpace(Model.FormattedAddress))
-                {
+                @if(!String.IsNullOrWhiteSpace(Model.FormattedAddress)) {
                     <tr>
                         <th>Adres</th>
                         <td>@Model.FormattedAddress</td>
                     </tr>
                 }
-                @if (!String.IsNullOrWhiteSpace(Model.FormattedPhoneNumber))
-                {
+                @if(!String.IsNullOrWhiteSpace(Model.FormattedPhoneNumber)) {
                     <tr>
                         <th>Telefoonnummer</th>
                         <td>@Model.FormattedPhoneNumber</td>
                     </tr>
                 }
-                @if (Model.Rating != 0)
-                {
+                @if(Model.Rating != 0) {
                     <tr>
                         <th>Beoordeling</th>
                         <td>@Model.Rating</td>
@@ -84,8 +80,7 @@
                         <td>@Model.DisplayTypes</td>
                     </tr>
                 }
-                @if (!String.IsNullOrWhiteSpace(Model.Website))
-                {
+                @if(!String.IsNullOrWhiteSpace(Model.Website)) {
                     <tr>
                         <th>Website</th>
                         <td style="padding: 0;"><a class="button" href="@Model.Website">@Model.Website</a></td>
@@ -95,13 +90,11 @@
             @{
     TempData["Place"] = Model;
             }
-            @if (Convert.ToBoolean(ViewBag.newLocation))
-            {
+            @if(Convert.ToBoolean(ViewBag.newLocation)) {
                 <div class="white-block" style="margin-bottom:0px;">
                     <input class="button orange float right" type="submit" name="search" value="Voeg toe">
                 </div>
             }
-
         </div>
     </div>
 }

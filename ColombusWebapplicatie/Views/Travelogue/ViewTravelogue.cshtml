@@ -42,11 +42,9 @@
         <p><b>Datum:</b>&nbsp; @Model.PublishedTime.Day-@Model.PublishedTime.Month-@Model.PublishedTime.Year</p>
     </div>
 
-    @using (Html.BeginForm("Rate", "Travelogue", new { travelogueID = Model.ID }, FormMethod.Post, new { id = "rate" }))
-    {
+    @using(Html.BeginForm("Rate", "Travelogue", new { travelogueID = Model.ID }, FormMethod.Post, new { id = "rate" })) {
         <span style="color:#323232; font-weight:lighter;">Beoordeling: &nbsp;</span>
-        for (int i = 0; i < 5; i++)
-        {
+        for(int i = 0; i < 5; i++) {
             @Html.RadioButton("rating", (i + 1), false, new { id = "rating" + (i + 1) })
             <label for="rating@(i + 1)"></label>
         }
@@ -54,29 +52,23 @@
 
     @{var par = Model.Paragraphs;}
 
-    @for (int i = 0; i < @Model.Paragraphs.Count; i++)
-    {
+    @for(int i = 0; i < @Model.Paragraphs.Count; i++) {
         <div class="paragraph">
-            @if (i == 0)
-            {
+            @if(i == 0) {
                 <p>
                     <b>
                         @Html.Raw(par[i].Text)
                     </b>
                 </p>
             }
-            else
-            {
+            else {
                 @* Paragraph Header *@
-                if (!String.IsNullOrWhiteSpace(par[i].Header))
-                {
+                if(!String.IsNullOrWhiteSpace(par[i].Header)) {
                     <h3>@par[i].Header</h3>
                 }
 
-
                 @* Paragraph text *@
-                if (!String.IsNullOrWhiteSpace(par[i].Text))
-                {
+                if(!String.IsNullOrWhiteSpace(par[i].Text)) {
                     <p>
                         @Html.Raw(par[i].Text)
                     </p>

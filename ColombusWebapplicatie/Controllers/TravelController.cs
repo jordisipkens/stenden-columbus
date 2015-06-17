@@ -4,7 +4,6 @@ using ColombusWebapplicatie.Models.Google.Search;
 using ColombusWebapplicatie.Models.Travel;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Web.Mvc;
 
 namespace ColombusWebapplicatie.Controllers
@@ -98,8 +97,7 @@ namespace ColombusWebapplicatie.Controllers
             string searchType;
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             // If a marker is placed and query is empty
-            if (query.Length==0&&lat!=null&&lng!=null)
-            {
+            if(query.Length == 0 && lat != null && lng != null) {
                 // Add parameters for nearby search
                 searchType = "nearbysearch";
                 parameters.Add("location", lat.ToString() + "," + lng.ToString());
@@ -107,8 +105,7 @@ namespace ColombusWebapplicatie.Controllers
                 ModelState.Remove("lat");   // Reset hidden field lat
                 ModelState.Remove("lng");   // Reset hidden field lng
             }
-            else
-            {
+            else {
                 // Add parameters for text search
                 searchType = "textsearch";
                 parameters.Add("query", query);

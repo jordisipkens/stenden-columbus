@@ -1,5 +1,4 @@
-﻿using ColombusWebapplicatie.Models.Google;
-using ColombusWebapplicatie.Models.Google.Details;
+﻿using ColombusWebapplicatie.Models.Google.Details;
 using ColombusWebapplicatie.Models.Google.Search;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +7,9 @@ namespace ColombusWebapplicatie.Models.Travel
 {
     public class LocationDetails
     {
-        public LocationDetails() { }
+        public LocationDetails()
+        {
+        }
 
         public LocationDetails(GoogleResult result)
         {
@@ -21,7 +22,7 @@ namespace ColombusWebapplicatie.Models.Travel
             };
         }
 
-        public LocationDetails(GooglePlace place) 
+        public LocationDetails(GooglePlace place)
         {
             this.Name = place.Name;
             this.Address = place.FormattedAddress;

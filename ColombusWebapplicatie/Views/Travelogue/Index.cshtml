@@ -6,18 +6,18 @@
 
     List<SelectListItem> listItems = new List<SelectListItem>();
     listItems.Add(new SelectListItem {
-          Text = "Beste",
-          Value = "Best"
-        });
+        Text = "Beste",
+        Value = "Best"
+    });
     listItems.Add(new SelectListItem {
-            Text = "Nieuwste",
-            Value = "Latest",
-            Selected = true
-        });
+        Text = "Nieuwste",
+        Value = "Latest",
+        Selected = true
+    });
     listItems.Add(new SelectListItem {
-            Text = "Oudste",
-            Value = "Oldest"
-        });
+        Text = "Oudste",
+        Value = "Oldest"
+    });
 }
 
 <div class="orange-block container">
@@ -38,12 +38,11 @@
                 @Html.TextBox("searchQuery", null, new { @class = "input-fix float left" })
                 <input class="button orange float left" type="submit" style=" margin-left:1em" name="add" value="Zoeken">
             }
-            @using (Html.BeginForm("Display", "Travelogue", FormMethod.Post))
-            {
+            @using(Html.BeginForm("Display", "Travelogue", FormMethod.Post)) {
                 @Html.DropDownList("sortBy", listItems, new { @class = "input-fix float right", OnChange = "javascript:this.form.submit()" })
             }
         </div>
-</div>
+    </div>
 }
 <div class="container">
     <table cellspacing="0" cellpadding="0" id="travels" class="white-block" style="padding-top:0px; margin-top:0px">
@@ -65,17 +64,14 @@
                     }
                     <td>@Html.ActionLink(@travelogue.Title, "ViewTravelogue", new { travelogueID = travelogue.ID })</td>
                     <td>@travelogue.Author</td>
-                    @if (travelogue.Published)
-                    {
+                    @if(travelogue.Published) {
                         <td>@travelogue.PublishedTime.Day-@travelogue.PublishedTime.Month-@travelogue.PublishedTime.Year</td>
                     }
-                    else
-                    {
+                    else {
                         <td>Privé</td>
                     }
                     <td>@travelogue.AvarageRating</td>
-                    @if (!Convert.ToBoolean(ViewBag.DisplayAll))
-                    {
+                    @if(!Convert.ToBoolean(ViewBag.DisplayAll)) {
                         <td style="width:1em;">@Html.ActionLink(HttpUtility.HtmlDecode("&nbsp;"), "EditTravelogue", new { travelogueID = travelogue.ID }, new { @class = "fa fa-pencil", @style = "width:1em;" })</td>
                         <td style="width:1em; margin-left:0.5em;">@Html.ActionLink(HttpUtility.HtmlDecode("&nbsp;"), "DeleteTravelogue", new { travelogueID = travelogue.ID }, new { @class = "fa fa-trash-o", @style = "width:1em;" })</td>
                     }
