@@ -152,14 +152,16 @@ namespace WebserviceColumbus.Database
                 List<Travelogue> foundTravelogues = GetEntities();
                 List<Travelogue> filteredTravelogues = new List<Travelogue>();
                 foreach(Travelogue travelogue in foundTravelogues) {
-                    if(travelogue.Title != null && travelogue.Title.Contains(value)) {
+                    if(travelogue.Title != null && travelogue.Title.ToLower().Contains(value)) {
                         filteredTravelogues.Add(travelogue);
                         continue;
                     }
-
-                    foreach(Paragraph paragraph in travelogue.Paragraphs) {
-                        if((paragraph.Header != null && paragraph.Header.ToLower().Contains(value)) || (paragraph.Text != null && paragraph.Text.ToLower().Contains(value))) {
-                            filteredTravelogues.Add(travelogue);
+                    else {
+                        foreach(Paragraph paragraph in travelogue.Paragraphs) {
+                            if((paragraph.Header != null && paragraph.Header.ToLower().Contains(value)) || (paragraph.Text != null && paragraph.Text.ToLower().Contains(value))) {
+                                filteredTravelogues.Add(travelogue);
+                                break;
+                            }
                         }
                     }
                 }
