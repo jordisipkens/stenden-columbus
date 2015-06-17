@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Reizen";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    if(!Convert.ToBoolean(Session["LoggedIn"])) {
+        Response.Redirect("~/");
+    }
 }
 
 <div class="container">

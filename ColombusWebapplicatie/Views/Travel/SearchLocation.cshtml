@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Locaties Toevoegen";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    if(!Convert.ToBoolean(Session["LoggedIn"])) {
+        Response.Redirect("~/");
+    }
 }
 
     <style>
@@ -59,6 +62,7 @@
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script>
             $(window).load(function () {
+                $("#slider-value").html("Zoeken binnen een straal van: " + ($("#radius").val()/1000) + " kilometer.");
                 $("#slider").slider({
                     value: 10000,
                     min: 0,
@@ -106,7 +110,7 @@
         <div id="map-canvas"></div>
         @using (Html.BeginForm("ShowFoundLocation", "Travel", FormMethod.Post, new { travelID = ViewBag.TravelID }))
         {
-            @Html.Hidden("radius");
+            @Html.Hidden("radius", 10000);
             @Html.Hidden("lat")
             @Html.Hidden("lng")
             @Html.Hidden("travelID", null, new { travelID = ViewBag.TravelID })

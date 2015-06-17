@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Nieuw reisverslag aanmaken";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    if(!Convert.ToBoolean(Session["LoggedIn"])) {
+        Response.Redirect("~/");
+    }
 }
 
 @using (Html.BeginForm("SubmitButton", "Travelogue", FormMethod.Post))
