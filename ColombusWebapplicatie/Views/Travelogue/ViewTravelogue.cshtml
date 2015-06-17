@@ -31,46 +31,59 @@
     </script>
 }
 
-<div class="container">
+<div class="container" style="margin-bottom:10em;">
     <h2>@Model.Title</h2>
     @*
         For reuse in Index where i is inside a loop <span>@(((i) > Model.AvarageRating) ? Html.Raw("&#9734;") : Html.Raw("&#9733;"))</span>
     *@
 
-    @using(Html.BeginForm("Rate", "Travelogue", new { travelogueID = Model.ID }, FormMethod.Post, new { id = "rate" })) {
-        <span>Beoordeling:</span>
-        for(int i = 0; i < 5; i++) {
+    <div class="float left">
+        <p><b>Auteur:</b>&nbsp; @Model.Author <br /></p>
+        <p><b>Datum:</b>&nbsp; @Model.PublishedTime.Day-@Model.PublishedTime.Month-@Model.PublishedTime.Year</p>
+    </div>
+
+    @using (Html.BeginForm("Rate", "Travelogue", new { travelogueID = Model.ID }, FormMethod.Post, new { id = "rate" }))
+    {
+        <span style="color:#323232; font-weight:lighter;">Beoordeling: &nbsp;</span>
+        for (int i = 0; i < 5; i++)
+        {
             @Html.RadioButton("rating", (i + 1), false, new { id = "rating" + (i + 1) })
             <label for="rating@(i + 1)"></label>
         }
     }
 
-    @foreach(var par in Model.Paragraphs) {
-        <div class="paragraph">
-            @* Paragraph Header *@
-            @if(!String.IsNullOrWhiteSpace(par.Header)) {
-                <h3>@par.Header</h3>
-            }
-            @* Fullwidth Image *@
-            @if(par.FullWidth == true) {
-                <img src="http://d2hv3zvds9z8pu.cloudfront.net/img/112367_320x240_4890.jpg" class="TL_image full" />
-            }
-            @*Normal image*@
-            else {
-                if(@par.AlignImageLeft == true) {
-                    <img src="http://d2hv3zvds9z8pu.cloudfront.net/img/112367_320x240_4890.jpg" class="TL_image left" />
-                }
-                else {
-                    <img src="http://d2hv3zvds9z8pu.cloudfront.net/img/112367_320x240_4890.jpg" class="TL_image right" />
-                }
-            }
+    @{var par = Model.Paragraphs;}
 
-            @* Paragraph text *@
-            @if(!String.IsNullOrWhiteSpace(par.Text)) {
+    @for (int i = 0; i < @Model.Paragraphs.Count; i++)
+    {
+        <div class="paragraph">
+            @if (i == 0)
+            {
                 <p>
-                    @par.Text
+                    <b>
+                        @par[i].Text
+                    </b>
                 </p>
+            }
+            else
+            {
+                @* Paragraph Header *@
+                if (!String.IsNullOrWhiteSpace(par[i].Header))
+                {
+                    <h3>@par[i].Header</h3>
+                }
+
+
+                @* Paragraph text *@
+                if (!String.IsNullOrWhiteSpace(par[i].Text))
+                {
+                    <p>
+                        @par[i].Text
+                    </p>
+                }
             }
         </div>
     }
+</div>
+<div class="white-block">
 </div>

@@ -34,6 +34,10 @@ body {
     background-color: @white;
 }
 
+body, html {
+    height: 100%;
+}
+
 #body {
     margin-top: @header_height;
     background-color: @white;
@@ -112,7 +116,7 @@ table {
             background-color: darken(@orange,5%);
             color: @font_color_light;
             font-weight: normal;
-}
+        }
     }
 }
 
@@ -248,7 +252,7 @@ table {
         -webkit-box-shadow: inset 0 0 #e8930c;
         text-decoration: none;
         border: 1px solid @orange;
-}
+    }
 
     &.white:hover, a&.white:hover {
         background-color: darken(@white,2%);
@@ -489,13 +493,23 @@ footer {
 .paragraph {
     width: 100%;
     float: left;
+    margin-top: 1em;
+    margin-bottom: 1em;
 
-    h2 {
-        margin-top: 1em;
+    h2, h3 {
+        margin: 0em;
+        color: @orange;
     }
 
     .TL_image {
         width: 40%;
+        color: @font_color_light;
+        text-align: center;
+        padding-top: 2em;
+        padding-bottom: 2em;
+        float: left;
+        background-position-y: 100%;
+        background-size: 100%;
 
 
         &.left {
@@ -519,15 +533,6 @@ footer {
             background-position-y: 100%;
             background-size: 100%;
         }
-
-        width: 100%;
-        color: @font_color_light;
-        text-align: center;
-        padding-top: 2em;
-        padding-bottom: 2em;
-        float: left;
-        background-position-y: 100%;
-        background-size: 100%;
     }
 }
 
@@ -628,30 +633,28 @@ footer {
     padding: 1em;
 }
 
-#rate:not(old){
+#rate:not(old) {
     float: right;
 }
 
-#rate:not(old) > input{
+#rate:not(old) > input {
     display: none;
 }
 
-#rate:not(old) > label
-{
+#rate:not(old) > label {
     float: right;
     display: block;
 }
 
-#rate:not(old) > span
-{
+#rate:not(old) > span {
     font-size: 1.5em;
     color: @orange;
 }
 
 
-#rate:not(old) > label:before{
-   font-size: 1.5em;
-   color: @orange;
+#rate:not(old) > label:before {
+    font-size: 1.5em;
+    color: @orange;
 }
 
 #rate:hover label:before
@@ -662,9 +665,9 @@ footer {
 
 #rate:not(old) > label:hover:before,
 #rate:not(old) > label:hover ~ label:before,
-#rate:not(:hover) > :checked ~ label:before{
-  content: "\2605";
-  cursor: pointer;
+#rate:not(:hover) > :checked ~ label:before {
+    content: "\2605";
+    cursor: pointer;
 }
 
 #slider

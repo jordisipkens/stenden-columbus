@@ -45,12 +45,21 @@
             for (var i = 0; i < Model.Paragraphs.Count; i++)
             {
                 <div class="new-paragraph">
+                    @if (i != 0)
+                    {
                     <h3 class="orange-block">Paragraaf #@i</h3>
+                    }
+                    else
+                    {
+                        <h3 class="orange-block">Inleiding</h3>
+                    }
                     <table cellpadding="0" cellspacing="0">
                         @Html.HiddenFor(x => x.Paragraphs[i].Height)
                         @Html.HiddenFor(x => x.Paragraphs[i].FullWidth)
                         @Html.HiddenFor(x => x.Paragraphs[i].Width)
                         @Html.HiddenFor(x => x.Paragraphs[i].ID)
+                        @if (i != 0)
+                        {
                         <tr>
                             <th>
                                 Titel
@@ -59,20 +68,13 @@
                                 @Html.TextBoxFor(x => x.Paragraphs[i].Header, new { @style = "width: 96%; padding: 1em;" })
                             </td>
                         </tr>
+                        }
                         <tr>
                             <th>
                                 Tekst
                             </th>
                             <td>
                                 @Html.TextAreaFor(x => x.Paragraphs[i].Text, new { @style = "width: 96%; padding: 1em;" })
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                Foto
-                            </th>
-                            <td>
-                                @Html.TextBoxFor(x => x.Paragraphs[i].PhotoID, new { @style = "width: 96%; padding: 1em;" })
                             </td>
                         </tr>
                     </table>
