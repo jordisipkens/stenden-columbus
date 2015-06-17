@@ -45,10 +45,12 @@
     </div>
 }
 <div class="container">
-    <table cellspacing="0" cellpadding="0" id="travels" class="white-block" style="padding-top:0px; margin-top:0px">
+    <table cellspacing="0" cellpadding="0" id="travels" class="white-block">
         <tr>
             <th style="padding:1em;">Titel</th>
-            <th style="padding:1em;">Auteur</th>
+            @if(Convert.ToBoolean(ViewBag.DisplayAll)) {
+                <th style="padding:1em;">Auteur</th>
+            }
             <th style="padding:1em;">Gepubliceerd</th>
             <th style="padding:1em;">Beoordeling</th>
             @if(!Convert.ToBoolean(ViewBag.DisplayAll)) {
@@ -63,7 +65,9 @@
                         travelogue.Title = "Geen Titel";
                     }
                     <td>@Html.ActionLink(@travelogue.Title, "ViewTravelogue", new { travelogueID = travelogue.ID })</td>
-                    <td>@travelogue.Author</td>
+                    @if(Convert.ToBoolean(ViewBag.DisplayAll)) {
+                        <td>@travelogue.Author</td>
+                    }
                     @if(travelogue.Published) {
                         <td>@travelogue.PublishedTime.Day-@travelogue.PublishedTime.Month-@travelogue.PublishedTime.Year</td>
                     }
