@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,21 +138,23 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
                     logue.setParagraphs(graphsArray);
                     if(MainActivity.travelogues.size() == 0){
                         Travelogue tTravelogue = new Travelogue();
-                        tTravelogue.setId(travelID);
+                        tTravelogue.setTravelId(travelID);
                         tTravelogue.setParagraphs(graphsArray);
                         MainActivity.travelogues.add(tTravelogue);
                     }
                     for(int j = 0; j < MainActivity.travelogues.size(); j++){
-                        if( MainActivity.travelogues.get(j).getId() == travelID){
+                        if( MainActivity.travelogues.get(j).getTravelId() == travelID){
                             MainActivity.travelogues.set(j, logue);
                         } else {
                             Travelogue tLogue = new Travelogue();
-                            tLogue.setId(travelID);
+                            tLogue.setTravelId(travelID);
                             tLogue.setParagraphs(graphsArray);
                             MainActivity.travelogues.add(tLogue);
                         }
                     }
                 }
+                Toast toast = new Toast(getActivity()).makeText(getActivity(), "Reisverslag is opgeslagen", Toast.LENGTH_SHORT);
+                toast.show();
                 break;
             case R.id.add_paragraph:
                 // Create arraylist from the size of the childs of Gridview.

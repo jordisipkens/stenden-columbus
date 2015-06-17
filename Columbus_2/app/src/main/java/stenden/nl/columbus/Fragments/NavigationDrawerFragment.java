@@ -25,6 +25,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import stenden.nl.columbus.MainActivity;
 import stenden.nl.columbus.R;
 
 /**
@@ -61,11 +62,22 @@ public class NavigationDrawerFragment extends Fragment {
     private FragmentManager.OnBackStackChangedListener listener = new FragmentManager.OnBackStackChangedListener() {
         @Override
         public void onBackStackChanged() {
+            try {
+                tag = getActivity().getSupportFragmentManager().getBackStackEntryAt(getActivity().getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                MainActivity.mCurrentFragment = getActivity().getSupportFragmentManager().findFragmentByTag(tag);
+                // Catch for when the last fragment is shown.
+            } catch (ArrayIndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
+
             if(mDrawerListView != null) {
                 ((BaseAdapter) mDrawerListView.getAdapter()).notifyDataSetChanged();
             }
         }
     };
+
+    // Used to highlight the correct menu item.
+    private String tag;
 
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -141,6 +153,9 @@ public class NavigationDrawerFragment extends Fragment {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
 
+    /**
+     * Custom adapter to show the ListView and make the background orange when clicked.
+     */
     private class MenuAdapter extends BaseAdapter {
 
         // Global view returns the menu item.
@@ -177,16 +192,20 @@ public class NavigationDrawerFragment extends Fragment {
 
             title.setText(titles[position]);
 
-            if (!isEnabled(position)) {
+            if(titles[position].equalsIgnoreCase(tag)){
                 v.setBackgroundColor(Color.parseColor("#ffc99d"));
             }
-
             return v;
         }
 
+        /**
+         *
+         * @param position position of the current item in ListView
+         * @return returns true when current fragments tag equals current title.
+         */
         @Override
         public boolean isEnabled(int position) {
-            if (itemClicked == position) {
+            if(titles[position].equalsIgnoreCase(tag)){
                 return false;
             } else {
                 return true;

@@ -21,7 +21,7 @@ public class Paragraph {
     public boolean fullWidth;
     @SerializedName("Width")
     public int width;
-    @SerializedName("height")
+    @SerializedName("Height")
     public int height;
 
     public int getId() {

@@ -18,7 +18,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
+import stenden.nl.columbus.MainActivity;
 import stenden.nl.columbus.R;
 
 /**
@@ -27,9 +31,18 @@ import stenden.nl.columbus.R;
 public class MapFragment extends Fragment {
     private GoogleMap mGoogleMap;
     private float mDeclination;
+    private double[] coordinates;
+    private String locTitle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        try {
+            coordinates = getArguments().getDoubleArray("coordinates");
+            locTitle = getArguments().getString("locTitle");
+            // For when it is not set.
+        } catch (NullPointerException e){
+
+        }
         super.onCreate(savedInstanceState);
     }
 
@@ -98,7 +111,21 @@ public class MapFragment extends Fragment {
 
                         });
 
-                moveMapToCurrentLocation();
+                if(coordinates != null){
+                    mGoogleMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(coordinates[0], coordinates[1]))
+                            .title(locTitle));
+
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(coordinates[0], coordinates[1]))      // Sets the center of the map to location user
+                            .zoom(12)                   // Sets the zoom
+                            .bearing(90)                // Sets the orientation of the camera to east
+                            .tilt(0)                   // Sets the tilt of the camera to 30 degrees
+                            .build();                   // Creates a CameraPosition from the builder
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                } else {
+                    moveMapToCurrentLocation();
+                }
             }
         });
     }
@@ -110,14 +137,12 @@ public class MapFragment extends Fragment {
         Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
         if (location != null)
         {
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(location.getLatitude(), location.getLongitude()), 13));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-                    .zoom(5)                   // Sets the zoom
+                    .zoom(10)                   // Sets the zoom
                     .bearing(90)                // Sets the orientation of the camera to east
-                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                    .tilt(0)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
             mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 

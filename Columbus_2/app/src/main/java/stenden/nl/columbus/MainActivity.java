@@ -5,13 +5,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,25 +21,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.Response;
 import com.google.gson.Gson;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import stenden.nl.columbus.Fragments.AboutFragment;
 import stenden.nl.columbus.Fragments.AccountFragment;
 import stenden.nl.columbus.Fragments.HomeFragment;
 import stenden.nl.columbus.Fragments.MapFragment;
 import stenden.nl.columbus.Fragments.NavigationDrawerFragment;
-import stenden.nl.columbus.GSON.GsonRequest;
 import stenden.nl.columbus.GSON.Objects.LoginResponse;
 import stenden.nl.columbus.GSON.Objects.Travel;
 import stenden.nl.columbus.GSON.Objects.Travelogue;
 import stenden.nl.columbus.GSON.Objects.User;
-import stenden.nl.columbus.GSON.VolleyHelper;
 
 
 public class MainActivity extends ActionBarActivity
@@ -53,7 +59,11 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
-    private Fragment mCurrentFragment;
+    /**
+     * Make it available for NavigationDrawerFragment.
+     * Used for menu.
+     */
+    public static Fragment mCurrentFragment;
 
     /**
      * Static variables that keep all the data retrieved from the API.
@@ -63,6 +73,7 @@ public class MainActivity extends ActionBarActivity
     public static User user = null;
     public static Travel[] travels = null;
     public static List<Travelogue> travelogues = null;
+    public static Uri[] imageUris = null;
 
     // API URL
     public static String BASE_URL = "http://columbus-webservice.azurewebsites.net/api/";
@@ -73,7 +84,10 @@ public class MainActivity extends ActionBarActivity
     public static String ALL_TRAVELOGUE_URL = "Travelogue/GetAll";
 
     // POST requests
-    private static String POST_TRAVELS_URL = "Travelogue/GetAll";
+    private static String POST_TRAVELS_URL = "Travel";
+    private static String POST_TRAVELOGUE_URL = "Travelogue";
+    private static String POST_USER_URL = "User";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,23 +99,23 @@ public class MainActivity extends ActionBarActivity
         user = new Gson().fromJson(settings.getString("user", null), User.class);
         travels = new Gson().fromJson(settings.getString("travels", null), Travel[].class);
         Travelogue[] logues = new Gson().fromJson(settings.getString("travelogues", null), Travelogue[].class);
+        imageUris = new Gson().fromJson(settings.getString("uris", null), Uri[].class);
 
-        travelogues = new ArrayList<Travelogue>();
-
-        if(logues != null){
+        if (logues != null) {
+            travelogues = new ArrayList<Travelogue>();
             for (Travelogue x : logues) {
                 travelogues.add(x);
             }
         }
 
         // Get token and set loginresponse.
-        if(loginResponse == null) {
+        if (loginResponse == null) {
             loginResponse = new LoginResponse();
             loginResponse.setUser(user);
             loginResponse.setToken(settings.getString("loginResponse", null));
         }
 
-        if(loginResponse.getToken() == null) {
+        if (loginResponse.getToken() == null) {
             Intent intent = new Intent(this, LoginScreen.class);
             startActivity(intent);
         }
@@ -126,9 +140,9 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onBackPressed() {
-        if(getSupportFragmentManager().getBackStackEntryCount() >0){
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             String currentBackStackLayer = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-            if(currentBackStackLayer.equals("home")){
+            if (currentBackStackLayer.equals("home")) {
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_HOME);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -143,24 +157,28 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onStop() {
-        if(loginResponse != null){
+        if (loginResponse != null) {
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
 
             editor.putString("loginResponse", loginResponse.getToken()).commit();
             editor.putString("user", new Gson().toJson(user)).commit();
             editor.putString("travels", new Gson().toJson(travels)).commit();
+            editor.putString("uris", new Gson().toJson(imageUris)).commit();
 
-            Travelogue[] logues = new Travelogue[travelogues.size()];
-            for(int i = 0 ; i < travelogues.size(); i++){
-                logues[i] = travelogues.get(i);
-            }
-            if(logues.length != 0) {
-                editor.putString("travelogues", new Gson().toJson(logues)).commit();
+            if (travelogues != null) {
+                Travelogue[] logues = new Travelogue[travelogues.size()];
+                for (int i = 0; i < travelogues.size(); i++) {
+                    logues[i] = travelogues.get(i);
+                }
+                if (logues.length != 0) {
+                    editor.putString("travelogues", new Gson().toJson(logues)).commit();
+                }
             }
         }
         super.onStop();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -174,14 +192,14 @@ public class MainActivity extends ActionBarActivity
     /**
      * Make sure the backstack is in place so the fragments won't misplace.
      */
-    private void setBackStackListener(){
+    private void setBackStackListener() {
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
                 try {
                     String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
                     mCurrentFragment = (Fragment) getSupportFragmentManager().findFragmentByTag(tag);
-                } catch (ArrayIndexOutOfBoundsException e){
+                } catch (ArrayIndexOutOfBoundsException e) {
                     System.exit(0);
                 }
             }
@@ -191,42 +209,43 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-
-
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction trans = manager.beginTransaction();
         Fragment newFragment = null;
         String tag = "";
-        switch(position){
+        switch (position) {
             // Home menu item.
             case 0:
                 newFragment = new HomeFragment();
-                tag = "home";
+                tag = getString(R.string.title_section1);
+                onNewFragment(newFragment, tag);
                 break;
             // Account menu item.
             case 1:
                 newFragment = new AccountFragment();
-                tag = "account";
+                tag =  getString(R.string.title_section2);
+                onNewFragment(newFragment, tag);
                 break;
             // About menu item.
             case 2:
                 newFragment = new AboutFragment();
-                tag = "over_ons";
+                tag =  getString(R.string.title_section3);
+                onNewFragment(newFragment, tag);
                 break;
             // Google Map item.
             case 3:
                 newFragment = new MapFragment();
-                tag = "map";
+                tag =  getString(R.string.title_section4);
+                onNewFragment(newFragment, tag);
                 break;
             // Log out item.
             case 4:
                 loginResponse = null;
                 user = null;
+                travelogues = null;
                 SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
                 settings.edit().putString("loginResponse", null).commit();
-                settings.edit().putString("user", null);
-                settings.edit().putString("travels", null);
-                settings.edit().putString("travelogues", null);
+                settings.edit().putString("user", null).commit();
+                settings.edit().putString("travels", null).commit();
+                settings.edit().putString("travelogues", null).commit();
                 startActivity(new Intent(this, LoginScreen.class));
                 break;
             // Upload your date to database item.
@@ -234,19 +253,21 @@ public class MainActivity extends ActionBarActivity
                 synchData();
                 break;
         }
-        if(mCurrentFragment == null){
-            trans.replace(R.id.container, newFragment, tag);
-            trans.addToBackStack(tag);
-            trans.commit();
-            //trans.hide(mCurrentFragment);
+    }
+
+    private void onNewFragment(Fragment newFragment, String tag) {
+
+        if (mCurrentFragment == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, newFragment, tag)
+                    .addToBackStack(tag).commit();
+
             mCurrentFragment = newFragment;
-        }
-        else if(newFragment != null) {
-            if(newFragment.getClass() != mCurrentFragment.getClass()) {
-                trans.replace(R.id.container, newFragment, tag);
-                trans.addToBackStack("tag");
-                trans.commit();
-                trans.hide(mCurrentFragment);
+        } else if (newFragment != null) {
+            if (newFragment.getClass() != mCurrentFragment.getClass()) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, newFragment, tag)
+                        .addToBackStack(tag).hide(mCurrentFragment).commit();
                 mCurrentFragment = newFragment;
             }
         }
@@ -254,6 +275,7 @@ public class MainActivity extends ActionBarActivity
 
     /**
      * Make sure to add pages in the strings and here.
+     *
      * @param number
      */
     public void onSectionAttached(int number) {
@@ -348,21 +370,111 @@ public class MainActivity extends ActionBarActivity
     }
 
 
-    public void synchData(){ // HTTP Request ombouwen
-        Map<String, String> params = new HashMap<String, String>(), headers = new HashMap<String, String>();
-        for(Travel x: MainActivity.travels) {
-            params.put("travel", new Gson().toJson(x));
-            headers.put("token", MainActivity.loginResponse.getToken());
-
-        VolleyHelper.getInstance(this).addToRequestQueue(
-                new GsonRequest<>(BASE_URL + POST_TRAVELS_URL, params, headers, new Response.Listener<Travel>() {
-                    public void onResponse(Travel tempTravel) {
-                        if (tempTravel != null) {
-                            // Show the desired lists.
-                            Toast toast = new Toast(getApplicationContext()).makeText(getApplicationContext(), "Uplaoden werkt!", Toast.LENGTH_LONG);
-                        }
-                    }
-                }));
+    public void synchData() { // HTTP Request ombouwen
+        new UploadTravels().execute(BASE_URL + POST_TRAVELS_URL);
+        new UploadTravelogue().execute(BASE_URL + POST_TRAVELOGUE_URL);
+        new UploadUser().execute(BASE_URL + POST_USER_URL);
+        Toast toast = new Toast(getApplicationContext()).makeText(getApplicationContext(), "Uploaden is voltooid", Toast.LENGTH_SHORT);
+        toast.show();
     }
+
+    class UploadTravels extends AsyncTask<String, Void, Void> {
+
+        private Exception exception;
+
+        protected Void doInBackground(String... urls) {
+            for (Travel x : travels) {
+                // Build the JSON object to pass parameters
+                x.setUser(user);
+                String json = new Gson().toJson(x);
+                // Create the POST object and add the parameters
+                try {
+                    HttpPost httpPost = new HttpPost(urls[0]);
+                    httpPost.setHeader("Token", loginResponse.getToken());
+                    StringEntity entity = new StringEntity(json);
+                    entity.setContentType("application/json");
+                    httpPost.setEntity(entity);
+                    HttpClient client = new DefaultHttpClient();
+                    HttpResponse response = client.execute(httpPost);
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                    String something = reader.readLine();
+
+                    Log.e("RESPONSE TRAVELOGE ", response.toString());
+                } catch (IOException d) {
+                    d.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        protected void onPostExecute() {
+        }
+    }
+
+    class UploadUser extends AsyncTask<String, Void, Void> {
+
+        private Exception exception;
+
+        protected Void doInBackground(String... urls) {
+
+            // Build the JSON object to pass parameters
+            String json = new Gson().toJson(user);
+            // Create the POST object and add the parameters
+            try {
+                HttpPost httpPost = new HttpPost(urls[0]);
+                httpPost.setHeader("Token", loginResponse.getToken());
+                StringEntity entity = new StringEntity(json);
+                entity.setContentType("application/json");
+                httpPost.setEntity(entity);
+                HttpClient client = new DefaultHttpClient();
+                HttpResponse response = client.execute(httpPost);
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                String something = reader.readLine();
+
+                Log.e("RESPONSE TRAVELOGE ", response.toString());
+            } catch (IOException d) {
+                d.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute() {
+        }
+    }
+
+    class UploadTravelogue extends AsyncTask<String, Void, Void> {
+
+        private Exception exception;
+
+        protected Void doInBackground(String... urls) {
+            for (Travelogue x : travelogues) {
+                // Build the JSON object to pass parameters
+                String json = new Gson().toJson(x);
+                // Create the POST object and add the parameters
+                try {
+                    HttpPost httpPost = new HttpPost(urls[0]);
+                    httpPost.setHeader("Token", loginResponse.getToken());
+                    StringEntity entity = new StringEntity(json);
+                    entity.setContentType("application/json");
+                    httpPost.setEntity(entity);
+                    HttpClient client = new DefaultHttpClient();
+                    HttpResponse response = client.execute(httpPost);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                    String something = reader.readLine();
+
+                    Log.e("RESPONSE TRAVELOGE ", response.toString());
+                } catch (IOException d) {
+                    d.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        protected void onPostExecute() {
+            // TODO: check this.exception
+            // TODO: do something with the feed
+        }
     }
 }

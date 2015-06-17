@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -195,6 +196,24 @@ public class TravelDetailFragment extends Fragment {
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.container, frag)
                             .addToBackStack("LocationNote").commit();
+                }
+            });
+
+            // Make frag ready for when button is clicked.
+            final Fragment fragment = new MapFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putDoubleArray("coordinates", new double[]{loc.getLocationDetails().getLatlng().getLat(), loc.getLocationDetails().getLatlng().getLng()});
+            bundle.putString("locTitle", loc.getLocationDetails().getName());
+            fragment.setArguments(bundle);
+
+            ImageButton button = (ImageButton) v.findViewById(R.id.map_button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .addToBackStack("Maps").commit();
                 }
             });
 
