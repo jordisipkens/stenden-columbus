@@ -61,7 +61,7 @@
             {
                 <p>
                     <b>
-                        @par[i].Text
+                        @Html.Raw(par[i].Text)
                     </b>
                 </p>
             }
@@ -78,7 +78,7 @@
                 if (!String.IsNullOrWhiteSpace(par[i].Text))
                 {
                     <p>
-                        @par[i].Text
+                        @Html.Raw(par[i].Text)
                     </p>
                 }
             }
