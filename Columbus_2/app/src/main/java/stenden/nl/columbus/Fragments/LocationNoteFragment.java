@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import stenden.nl.columbus.GSON.Objects.Location;
@@ -30,7 +29,11 @@ public class LocationNoteFragment extends Fragment implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
+    /**
+     * This method will inflate the view and return it.
+     *
+     * And if necessary set the correct views and lists.
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +91,10 @@ public class LocationNoteFragment extends Fragment implements View.OnClickListen
         super.onDestroy();
     }
 
+    /**
+     * Make sure all the onclicklisteners will come here.
+     * Make a switch case on the view ID to check which view has been clicked.
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()){

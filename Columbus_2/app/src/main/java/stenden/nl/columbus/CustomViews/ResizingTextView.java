@@ -2,6 +2,8 @@ package stenden.nl.columbus.CustomViews;
 
 /**
  * Created by Jordi on 08/01/15.
+ *
+ * Custom class that makes sure that the text will fit. It will rescale it smaller whenever a tekst gets to long.
  */
 
 

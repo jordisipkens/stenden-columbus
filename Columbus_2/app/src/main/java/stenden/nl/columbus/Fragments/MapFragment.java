@@ -20,13 +20,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.List;
-
-import stenden.nl.columbus.MainActivity;
 import stenden.nl.columbus.R;
 
 /**
  * Created by Jordi on 20/05/15.
+ *
+ * Show the Google Maps.
  */
 public class MapFragment extends Fragment {
     private GoogleMap mGoogleMap;
@@ -34,6 +33,10 @@ public class MapFragment extends Fragment {
     private double[] coordinates;
     private String locTitle;
 
+    /**
+     * If the arguments are set this Fragments is been called on from the TravelDetailFragment.
+     * If not then this one is just called from the Menu.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         try {
@@ -46,6 +49,9 @@ public class MapFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Inflate view and start to initialise the Google Map.
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,6 +87,10 @@ public class MapFragment extends Fragment {
         super.onDetach();
     }
 
+    /**
+     * Initialise the Google Map.
+     * If the arguments are set, zoom in on the marker that is added. Otherwise just move the map to your current location.
+     */
     public void initMap() {
         final SupportMapFragment myMAPF = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapView);
@@ -130,6 +140,9 @@ public class MapFragment extends Fragment {
         });
     }
 
+    /**
+     * Move the map to your current GPS location. If it is on.
+     */
     private void moveMapToCurrentLocation(){
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();

@@ -33,9 +33,10 @@ import stenden.nl.columbus.R;
 
 /**
  * Created by Jordi on 19/05/15.
- * <p/>
+ *
  * Fragment for the home screen of the user.
  * Should display travels when they are bounded to the current account.
+ * Also uses a GET method to get the Travelogues already created on the current account.
  */
 public class HomeFragment extends Fragment {
 
@@ -46,11 +47,13 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         super();
     }
-
+    /**
+     * Make sure all the important stuff happens here before setting the view.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Call all travels from user.
+        // GET all travelogues from user.
         if (MainActivity.loginResponse.getUser() != null && MainActivity.travelogues == null) {
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("Token", MainActivity.loginResponse.getToken());
@@ -75,7 +78,11 @@ public class HomeFragment extends Fragment {
                     }, getActivity()));
         }
     }
-
+    /**
+     * This method will inflate the view and return it.
+     *
+     * Get the travelogues in the View so you can set the adapter accordingly.
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,6 +91,7 @@ public class HomeFragment extends Fragment {
         mTravelList = (ListView) v.findViewById(R.id.travel_list);
 
         // If travels is already filled, avoid the api call.
+        // Else make sure to GET all the travels from the user.
         if (MainActivity.loginResponse.getUser() != null && MainActivity.travels == null) {
             Map<String, String> headers = new HashMap<String, String>();
             headers.put("Token", MainActivity.loginResponse.getToken());
@@ -128,6 +136,11 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
     }
@@ -142,6 +155,9 @@ public class HomeFragment extends Fragment {
         super.onDetach();
     }
 
+    /**
+     * Method to open the detail of the selected Travel item.
+     */
     private void setAdapterListener() {
         mTravelList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -166,7 +182,12 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Custom BaseAdapter which sets the view of the TravelList.
+     * GetView inflates the desired View and sets the items.
+     */
     private class TravelAdapter extends BaseAdapter {
+        // According to the size of this list, so many items will the ListView have on screen.
         private Travel[] list;
         private Context ctx;
         private View v;

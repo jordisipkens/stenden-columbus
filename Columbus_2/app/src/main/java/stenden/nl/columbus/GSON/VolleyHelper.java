@@ -8,6 +8,8 @@ import com.android.volley.toolbox.Volley;
 
 /**
  * Created by Jordi on 18/05/15.
+ *
+ * Volleyhelper which is used in combination with the GsonRequest class to use GET methods.
  */
 public class VolleyHelper {
     private static VolleyHelper INSTANCE;

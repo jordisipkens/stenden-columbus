@@ -11,6 +11,8 @@ import stenden.nl.columbus.R;
 
 /**
  * Created by Jordi on 19/05/15.
+ *
+ * Fragment to show information about the project and developers.
  */
 public class AboutFragment extends Fragment {
 
@@ -19,6 +21,10 @@ public class AboutFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+
+    /**
+     * This method will inflate the view and return it.
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

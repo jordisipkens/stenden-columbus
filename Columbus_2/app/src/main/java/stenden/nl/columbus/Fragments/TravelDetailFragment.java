@@ -25,6 +25,8 @@ import stenden.nl.columbus.R;
 
 /**
  * Created by Jordi on 26/05/15.
+ *
+ * Class to show all the locations and details of the selected Travel.
  */
 public class TravelDetailFragment extends Fragment {
 
@@ -43,6 +45,9 @@ public class TravelDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Inflate the view and set all the important variables and checks so the correct views are set and shown.
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,7 +132,11 @@ public class TravelDetailFragment extends Fragment {
         super.onDetach();
     }
 
+    /**
+     * Custom BaseAdapter to show the information trough a custom View.
+     */
     private class LocationAdapter extends BaseAdapter {
+        // The size of this list will mean the size of the ListView.
         private Location[] list;
         private Context ctx;
         private View v;
@@ -154,6 +163,9 @@ public class TravelDetailFragment extends Fragment {
             return i;
         }
 
+        /**
+         * Inflate the View for the list items and set the childviews.
+         */
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             v = LayoutInflater.from(ctx).inflate(R.layout.location_list_item,

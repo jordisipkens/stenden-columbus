@@ -56,33 +56,11 @@ public class GsonRequest<T> extends Request<T> {
     }
 
     /**
-     * Make a POST request.
-     * @param url URL of the api call.
-     * @param params Params which are send with the POST request.
-     * @param headers Headers which are sent with the POST request.
+     * Is required or else it won't return headers.
      */
-    public GsonRequest(String url, Map<String, String> params, Map<String, String> headers,
-                       Response.Listener<T> listener) {
-        super(Request.Method.POST, url, new Response.ErrorListener() {
-            public void onErrorResponse(VolleyError volleyError) {
-                if (volleyError != null) {
-                    Log.e("GsonRequest", "" + volleyError.getMessage());
-                }
-            }
-        });
-        this.headers = headers;
-        this.listener = listener;
-        this.params = params;
-    }
-
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         return headers;
-    }
-
-    @Override
-    protected Map<String, String> getParams() throws AuthFailureError {
-        return params;
     }
 
     @Override

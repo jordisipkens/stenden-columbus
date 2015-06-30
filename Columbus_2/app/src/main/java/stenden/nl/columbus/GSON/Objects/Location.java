@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Jordi on 18/05/15.
  *
- * Serializeble class for the information about a location that is included in the TravelIn he.
+ * Serializeble class for the information about a location that is included in the Travel object.
  */
 public class Location {
     @SerializedName("ID")

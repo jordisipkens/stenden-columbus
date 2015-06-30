@@ -35,6 +35,10 @@ public class LoginScreen extends Activity implements View.OnClickListener {
     private static int keySize = 256;
     private byte[] ivBytes;
 
+    /**
+     * Check if the LoginResponse is already set. If so go back to MainActivity.
+     * Else setup views and onclicklisteners.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -77,6 +81,9 @@ public class LoginScreen extends Activity implements View.OnClickListener {
         super.onPause();
     }
 
+    /**
+     * Save the important information on stopping of this activity.
+     */
     @Override
     protected void onStop() {
         if (MainActivity.loginResponse != null) {
@@ -93,6 +100,10 @@ public class LoginScreen extends Activity implements View.OnClickListener {
         super.onDestroy();
     }
 
+    /**
+     * Make sure all the onclicklisteners will come here.
+     * Make a switch case on the view ID to check which view has been clicked.
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -110,6 +121,9 @@ public class LoginScreen extends Activity implements View.OnClickListener {
         }
     }
 
+    /**
+     * First encrypt the username and password, after the encryption succeeded sent the loginrequest.
+     */
     private void Login(String user, String pass) {
         pass = Encrypt(pass);
         pass = pass.substring(0, pass.length() - 1);
@@ -124,6 +138,10 @@ public class LoginScreen extends Activity implements View.OnClickListener {
 
     }
 
+    /**
+     * Send the loginrequest and retrieve the LoginResponse.
+     * @param header header required for the login method.
+     */
     private void apiRequest(String header) {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Basic " + header);
@@ -149,9 +167,11 @@ public class LoginScreen extends Activity implements View.OnClickListener {
                 }, this));
     }
 
+    /**
+     * Encrypt with Base64 encryption.
+     */
     private String Base64(String plainText) {
         try {
-            //CryptLib crypt = new CryptLib();
             String output = plainText;
             output = Base64.encodeToString(output.getBytes(), Base64.DEFAULT);
             return output;
@@ -160,6 +180,9 @@ public class LoginScreen extends Activity implements View.OnClickListener {
         }
     }
 
+    /**
+     * Encrypt the username + password with the current key to fit the encryption with the webservice.
+     */
     private String Encrypt(String plainText) {
         try {
             CryptLib crypt = new CryptLib();
@@ -175,6 +198,10 @@ public class LoginScreen extends Activity implements View.OnClickListener {
         }
     }
 
+    /**
+     * If the back button is pressed on the login screen, go to the home screen of Android
+     * This is required to prevent from endless looping back to the MainActivity.
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);

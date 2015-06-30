@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Jordi on 18/05/15.
  *
- * Serializeble class for the information about the travel.
+ * Serializable class for the information about the travel.
  */
 public class Travel {
 

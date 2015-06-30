@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Jordi on 27/05/15.
+ *
+ * Serializable object which the login function returns.
  */
 public class LoginResponse {
 

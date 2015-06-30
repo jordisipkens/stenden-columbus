@@ -136,6 +136,7 @@ public class MainActivity extends ActionBarActivity
         ActionBar bar = getSupportActionBar();
         bar.setDisplayShowHomeEnabled(false);
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF7200")));
+
     }
 
     @Override
@@ -189,6 +190,11 @@ public class MainActivity extends ActionBarActivity
         super.onStart();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     /**
      * Make sure the backstack is in place so the fragments won't misplace.
      */
@@ -221,19 +227,19 @@ public class MainActivity extends ActionBarActivity
             // Account menu item.
             case 1:
                 newFragment = new AccountFragment();
-                tag =  getString(R.string.title_section2);
+                tag = getString(R.string.title_section2);
                 onNewFragment(newFragment, tag);
                 break;
             // About menu item.
             case 2:
                 newFragment = new AboutFragment();
-                tag =  getString(R.string.title_section3);
+                tag = getString(R.string.title_section3);
                 onNewFragment(newFragment, tag);
                 break;
             // Google Map item.
             case 3:
                 newFragment = new MapFragment();
-                tag =  getString(R.string.title_section4);
+                tag = getString(R.string.title_section4);
                 onNewFragment(newFragment, tag);
                 break;
             // Log out item.

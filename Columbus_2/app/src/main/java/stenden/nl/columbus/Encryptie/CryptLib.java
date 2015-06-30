@@ -17,6 +17,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
+ * Bron : https://github.com/Pakhee/Cross-platform-AES-encryption/blob/master/Android/CryptLib.java
+ *
  * **************************************************************
  * CrossPlatform CryptLib
  * <p/>

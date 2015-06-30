@@ -2,7 +2,6 @@ package stenden.nl.columbus.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +39,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * This method will inflate the view and return it.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_account, container, false);
@@ -89,6 +91,10 @@ public class AccountFragment extends Fragment implements View.OnClickListener{
         super.onDetach();
     }
 
+    /**
+     * Make sure all the onclicklisteners will come here.
+     * Make a switch case on the view ID to check which view has been clicked.
+     */
     @Override
     public void onClick(View v) {
         switch(v.getId()){

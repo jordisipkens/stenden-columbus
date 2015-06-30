@@ -23,6 +23,8 @@ import stenden.nl.columbus.R;
 
 /**
  * Created by Jordi on 6/10/2015.
+ *
+ * Will show the Travelogue according to the count of the paragraphs.
  */
 public class TravelogueFragment extends Fragment implements View.OnClickListener{
 
@@ -31,10 +33,9 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
     private int travelID;
     private Travelogue travelogue;
 
-    public TravelogueFragment() {
-        super();
-    }
-
+    /**
+     * Get the argument. Check if the travelID is already in the travelogues array.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         travelID = getArguments().getInt("travelID");
@@ -64,6 +65,7 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
         grid = (GridView) v.findViewById(R.id.travelogue_grid);
 
         ArrayList<Paragraph> graphs = new ArrayList<>();
+        // If the travelogue already exists it will create enough grid items to show all the paragraphs.
         try {
            int size = travelogue.getParagraphs().length;
 
@@ -106,7 +108,10 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
     public void onDestroy() {
         super.onDestroy();
     }
-
+    /**
+     * Make sure all the onclicklisteners will come here.
+     * Make a switch case on the view ID to check which view has been clicked.
+     */
     @Override
     public void onClick(View v) {
         switch(v.getId()){
@@ -118,7 +123,7 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
                 Paragraph[] graphsArray = new Paragraph[grid.getCount()];
 
                 // For loop to fill the array of Paragraphs.
-                for(int i = 0; i < grid.getCount(); i++){
+                for(int i = 0; i < grid.getChildCount(); i++){
                     // Get EditText from the current child.
                     View view = grid.getChildAt(i);
                     EditText title = (EditText) view.findViewById(R.id.paragraph_title);
@@ -182,11 +187,15 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    /**
+     * Custom BaseAdapter to create enough paragraphs.
+     */
     private class ParagraphAdapter extends BaseAdapter{
 
         private Context ctx;
         private View v;
         private EditText pTitle, pText;
+        // The size will decide how many grid items will be drawn.
         private List<Paragraph> array;
 
         public ParagraphAdapter(ArrayList<Paragraph> array, Context ctx) {
@@ -209,6 +218,9 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
             return array.get(i).getId();
         }
 
+        /**
+         * Inflate the custom view and set its childs.
+         */
         @Override
         public View getView(final int position, View view, ViewGroup parent) {
             v = LayoutInflater.from(ctx).inflate(R.layout.travelogue_paragraph,
@@ -230,14 +242,15 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
             return v;
         }
 
+        /**
+         * Method to add a graph to the current ArrayList.
+         * Then redraw the whole adapter.
+         * @param graphs
+         */
         public void addParagraph(ArrayList<Paragraph> graphs){
             array = graphs;
             array.add(new Paragraph());
             ((BaseAdapter) grid.getAdapter()).notifyDataSetChanged();
-        }
-
-        public List<Paragraph> getParagraphs(){
-            return array;
         }
     }
 }

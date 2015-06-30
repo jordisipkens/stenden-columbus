@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Jordi on 6/2/2015.
+ *
+ * Serializable class for sending and retrieving Photos from the webservice.
+ *
+ * Not used.
  */
 public class Photo {
     @SerializedName("ID")

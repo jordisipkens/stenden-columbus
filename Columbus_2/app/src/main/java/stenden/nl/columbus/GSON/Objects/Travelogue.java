@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Jordi on 19/05/15.
  *
- *  Serializeble class for Travelogue (reisbeschrijving)
+ *  Serializable class for Travelogue (Reisverslag)
  */
 
 public class Travelogue {
