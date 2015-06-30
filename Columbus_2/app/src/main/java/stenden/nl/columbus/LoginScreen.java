@@ -112,12 +112,27 @@ public class LoginScreen extends Activity implements View.OnClickListener {
                 String username = mUser.getText().toString();
                 String password = mPass.getText().toString();
 
+                if(username.equalsIgnoreCase("columbus") && password.equalsIgnoreCase("columbus")){
+                    // Start MainActivity
+                    MainActivity.loginResponse = new LoginResponse();
+                    // false token to still make the login functionally.
+                    MainActivity.loginResponse.setToken("s fsgnskgnkdsh");
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                }
+
+                // Not available for the test build. Will only work when webservice is hosted.
+                /*
+                String username = mUser.getText().toString();
+                String password = mPass.getText().toString();
+
                 if (!username.equalsIgnoreCase("") && !password.equalsIgnoreCase("") && username != null && password != null) {
                     Login(username, password);
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(), "Please fill in all fields.", Toast.LENGTH_SHORT);
                     toast.show();
                 }
+                */
         }
     }
 

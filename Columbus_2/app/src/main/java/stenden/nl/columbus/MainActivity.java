@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,6 +39,9 @@ import stenden.nl.columbus.Fragments.AccountFragment;
 import stenden.nl.columbus.Fragments.HomeFragment;
 import stenden.nl.columbus.Fragments.MapFragment;
 import stenden.nl.columbus.Fragments.NavigationDrawerFragment;
+import stenden.nl.columbus.GSON.Objects.Coordinates;
+import stenden.nl.columbus.GSON.Objects.Location;
+import stenden.nl.columbus.GSON.Objects.LocationDetails;
 import stenden.nl.columbus.GSON.Objects.LoginResponse;
 import stenden.nl.columbus.GSON.Objects.Travel;
 import stenden.nl.columbus.GSON.Objects.Travelogue;
@@ -70,10 +72,9 @@ public class MainActivity extends ActionBarActivity
      */
     public static LoginResponse loginResponse = null;
     public final static String PREFS_NAME = "C0lumbus";
-    public static User user = null;
+    public static User user = new User();
     public static Travel[] travels = null;
     public static List<Travelogue> travelogues = null;
-    public static Uri[] imageUris = null;
 
     // API URL
     public static String BASE_URL = "http://columbus-webservice.azurewebsites.net/api/";
@@ -97,9 +98,18 @@ public class MainActivity extends ActionBarActivity
 
         // Get user logged in.
         user = new Gson().fromJson(settings.getString("user", null), User.class);
-        travels = new Gson().fromJson(settings.getString("travels", null), Travel[].class);
+        // Method for testing version to create a test travel.
+        fillTravel();
+
         Travelogue[] logues = new Gson().fromJson(settings.getString("travelogues", null), Travelogue[].class);
-        imageUris = new Gson().fromJson(settings.getString("uris", null), Uri[].class);
+
+        // Used to make sure test version works.
+        user = new User();
+        user.setName("columbus");
+        user.setUser("columbus");
+        user.setPassword("columbus");
+        user.setEmail("Columbus@gmail.com");
+        user.setLastName("columbus");
 
         if (logues != null) {
             travelogues = new ArrayList<Travelogue>();
@@ -142,6 +152,35 @@ public class MainActivity extends ActionBarActivity
 
     }
 
+    private void fillTravel() {
+        Travel travel = new Travel();
+        travel.setTitle("Test Reis");
+        travel.setStartDate("2015-06-26T00:00:00");
+        travel.setEndDate("2015-06-30T00:00:00");
+
+        Location loc = new Location();
+        loc.setDate("2015-06-27T00:00:00");
+
+        LocationDetails locDet = new LocationDetails();
+        locDet.setName("Stenden");
+        locDet.setAddress("Schaikweg");
+
+        Coordinates coords = new Coordinates();
+        coords.setLat(52.778754);
+        coords.setLng(6.913565);
+
+        locDet.setLatlng(coords);
+
+        loc.setLocationDetails(locDet);
+
+        Location[] locs = new Location[1];
+        locs[0] = loc;
+        travel.setLocations(locs);
+
+        MainActivity.travels = new Travel[1];
+        travels[0] = travel;
+    }
+
     /**
      * Check which fragment is active. If Home is active, exit the application to the home screen.
      */
@@ -174,8 +213,6 @@ public class MainActivity extends ActionBarActivity
             editor.putString("loginResponse", loginResponse.getToken()).commit();
             editor.putString("user", new Gson().toJson(user)).commit();
             editor.putString("travels", new Gson().toJson(travels)).commit();
-            editor.putString("uris", new Gson().toJson(imageUris)).commit();
-
             // revert the ArrayList to an Array for better serialisation.
             if (travelogues != null) {
                 Travelogue[] logues = new Travelogue[travelogues.size()];
@@ -224,6 +261,7 @@ public class MainActivity extends ActionBarActivity
 
     /**
      * Make sure the right things happen when the menu items are selected.
+     *
      * @param position which is clicked on the menu
      */
     @Override
@@ -263,7 +301,7 @@ public class MainActivity extends ActionBarActivity
                 travelogues = null;
                 SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
                 settings.edit().putString("loginResponse", null).commit();
-                settings.edit().putString("user", null).commit();
+                //settings.edit().putString("user", null).commit();
                 settings.edit().putString("travels", null).commit();
                 settings.edit().putString("travelogues", null).commit();
                 startActivity(new Intent(this, LoginScreen.class));
@@ -276,9 +314,8 @@ public class MainActivity extends ActionBarActivity
     }
 
     /**
-     * 
      * @param newFragment the new fragment created and arguments set in the method @onNavigationDrawerItemSelected.
-     * @param tag tag which will be added into the backstack
+     * @param tag         tag which will be added into the backstack
      */
     private void onNewFragment(Fragment newFragment, String tag) {
 
@@ -439,6 +476,7 @@ public class MainActivity extends ActionBarActivity
         protected void onPostExecute() {
         }
     }
+
     /**
      * AsyncTask method to POST the User to the webservice
      */
@@ -473,6 +511,7 @@ public class MainActivity extends ActionBarActivity
         protected void onPostExecute() {
         }
     }
+
     /**
      * AsyncTask method to POST the Travelogue to the webservice
      */

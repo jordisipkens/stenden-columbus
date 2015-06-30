@@ -40,10 +40,14 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         travelID = getArguments().getInt("travelID");
 
-        for(Travelogue x: MainActivity.travelogues){
-            if(travelID == x.getTravelId()){
-                travelogue = x;
+        if(MainActivity.travelogues != null) {
+            for (Travelogue x : MainActivity.travelogues) {
+                if (travelID == x.getTravelId()) {
+                    travelogue = x;
+                }
             }
+        } else {
+            travelogue = new Travelogue();
         }
 
         super.onCreate(savedInstanceState);
@@ -141,10 +145,11 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
                     Travelogue logue = new Travelogue();
                     logue.setTravelId(travelID);
                     logue.setParagraphs(graphsArray);
-                    if(MainActivity.travelogues.size() == 0){
+                    if(MainActivity.travelogues == null){
                         Travelogue tTravelogue = new Travelogue();
                         tTravelogue.setTravelId(travelID);
                         tTravelogue.setParagraphs(graphsArray);
+                        MainActivity.travelogues = new ArrayList<>();
                         MainActivity.travelogues.add(tTravelogue);
                     }
                     for(int j = 0; j < MainActivity.travelogues.size(); j++){
@@ -166,7 +171,7 @@ public class TravelogueFragment extends Fragment implements View.OnClickListener
                 ArrayList<Paragraph> graphList = new ArrayList<>();
 
                 // For loop to fill the array of Paragraphs.
-                for(int i = 0; i < grid.getCount(); i++){
+                for(int i = 0; i < grid.getChildCount(); i++){
                     // Get EditText from the current child.
                     View view = grid.getChildAt(i);
                     EditText title = (EditText) view.findViewById(R.id.paragraph_title);
