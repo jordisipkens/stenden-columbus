@@ -8,6 +8,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ public class MapFragment extends Fragment {
     private float mDeclination;
     private double[] coordinates;
     private String locTitle;
+    private View view;
 
     /**
      * If the arguments are set this Fragments is been called on from the TravelDetailFragment.
@@ -55,12 +58,21 @@ public class MapFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_map, container, false);
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
+        try {
+            view = inflater.inflate(R.layout.fragment_map, container, false);
+        } catch (InflateException e) {
+        /* map is already there, just return view as it is */
+        }
 
         initMap();
-
-        return v;
+        return view;
     }
+
 
     @Override
     public void onStart() {
@@ -82,6 +94,17 @@ public class MapFragment extends Fragment {
         super.onDestroy();
     }
 
+    /**
+     * Remove the fragment so when reopening map fragment it doesn't crash.
+     */
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.remove(this);
+        ft.commit();
+    }
     @Override
     public void onDetach() {
         super.onDetach();

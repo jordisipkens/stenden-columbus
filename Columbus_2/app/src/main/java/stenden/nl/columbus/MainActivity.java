@@ -115,12 +115,15 @@ public class MainActivity extends ActionBarActivity
             loginResponse.setToken(settings.getString("loginResponse", null));
         }
 
+        // if not logged in, go to login screen.
         if (loginResponse.getToken() == null) {
             Intent intent = new Intent(this, LoginScreen.class);
             startActivity(intent);
         }
+        // Set content view.
         setContentView(R.layout.activity_main);
 
+        // initiate DrawerFragment
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -139,6 +142,9 @@ public class MainActivity extends ActionBarActivity
 
     }
 
+    /**
+     * Check which fragment is active. If Home is active, exit the application to the home screen.
+     */
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -156,6 +162,9 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    /**
+     * Save the necessary information in the sharedpreferences.
+     */
     @Override
     protected void onStop() {
         if (loginResponse != null) {
@@ -167,6 +176,7 @@ public class MainActivity extends ActionBarActivity
             editor.putString("travels", new Gson().toJson(travels)).commit();
             editor.putString("uris", new Gson().toJson(imageUris)).commit();
 
+            // revert the ArrayList to an Array for better serialisation.
             if (travelogues != null) {
                 Travelogue[] logues = new Travelogue[travelogues.size()];
                 for (int i = 0; i < travelogues.size(); i++) {
@@ -212,6 +222,10 @@ public class MainActivity extends ActionBarActivity
         });
     }
 
+    /**
+     * Make sure the right things happen when the menu items are selected.
+     * @param position which is clicked on the menu
+     */
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -261,6 +275,11 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    /**
+     * 
+     * @param newFragment the new fragment created and arguments set in the method @onNavigationDrawerItemSelected.
+     * @param tag tag which will be added into the backstack
+     */
     private void onNewFragment(Fragment newFragment, String tag) {
 
         if (mCurrentFragment == null) {
@@ -377,13 +396,16 @@ public class MainActivity extends ActionBarActivity
 
 
     public void synchData() { // HTTP Request ombouwen
-        new UploadTravels().execute(BASE_URL + POST_TRAVELS_URL);
-        new UploadTravelogue().execute(BASE_URL + POST_TRAVELOGUE_URL);
-        new UploadUser().execute(BASE_URL + POST_USER_URL);
-        Toast toast = new Toast(getApplicationContext()).makeText(getApplicationContext(), "Uploaden is voltooid", Toast.LENGTH_SHORT);
+        //new UploadTravels().execute(BASE_URL + POST_TRAVELS_URL);
+        //new UploadTravelogue().execute(BASE_URL + POST_TRAVELOGUE_URL);
+        //new UploadUser().execute(BASE_URL + POST_USER_URL);
+        Toast toast = new Toast(getApplicationContext()).makeText(getApplicationContext(), "Uploaden werkt momenteel niet door een bug. Zie het Nawoord in de scriptie voor meer informatie.", Toast.LENGTH_SHORT);
         toast.show();
     }
 
+    /**
+     * AsyncTask method to POST the travels to the webservice
+     */
     class UploadTravels extends AsyncTask<String, Void, Void> {
 
         private Exception exception;
@@ -417,7 +439,9 @@ public class MainActivity extends ActionBarActivity
         protected void onPostExecute() {
         }
     }
-
+    /**
+     * AsyncTask method to POST the User to the webservice
+     */
     class UploadUser extends AsyncTask<String, Void, Void> {
 
         private Exception exception;
@@ -449,7 +473,9 @@ public class MainActivity extends ActionBarActivity
         protected void onPostExecute() {
         }
     }
-
+    /**
+     * AsyncTask method to POST the Travelogue to the webservice
+     */
     class UploadTravelogue extends AsyncTask<String, Void, Void> {
 
         private Exception exception;
